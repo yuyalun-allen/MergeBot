@@ -1,0 +1,6 @@
+[submodule "llama.cpp"]
+	path = llama.cpp
+	url = /home/allen/Code/MergeBot/llama.cpp/
+[submodule "llama3"]
+	path = llama3
+	url = /home/allen/Code/MergeBot/llama3/
