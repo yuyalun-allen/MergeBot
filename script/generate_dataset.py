@@ -135,6 +135,17 @@ def write_conflicts_to_file(dataset_path, hexsha, repo: Repo, conflict_index_fil
             file_content = (commit.tree / path).data_stream.read().decode("utf-8")
             file.write(file_content)
 
+def preprocess_merge_conflict_commits(tokenizer):
+    prompt = (
+        f"Resolve this merge conflict:\n{{conflict}}\n---\nResolution:\n"
+    )
+
+    def apply_prompt_template(sample):
+        return {
+            "prompt": prompt.format(dialog=sample["conflict"]),
+            "resolution": sample["resolution"],
+        }
+
 
 if __name__ == '__main__':
     get_merge_conflict_commits('fastjson')
