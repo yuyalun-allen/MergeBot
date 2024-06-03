@@ -4,3 +4,6 @@
 [submodule "llama.cpp"]
 	path = llama.cpp
 	url = https://github.com/ggerganov/llama.cpp.git
+[submodule "llama-recipes"]
+	path = llama-recipes
+	url = https://github.com/meta-llama/llama-recipes.git

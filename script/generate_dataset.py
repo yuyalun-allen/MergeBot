@@ -1,16 +1,16 @@
 import os
 import subprocess
 import tempfile
+from pathlib import Path
+
 from git import Repo
 from git import IndexFile
+from datasets import Dataset
 
 
 def get_merge_conflict_and_resolution(repo_name):
     # 初始化Git仓库对象
-    merge_num = 0
     repo = Repo(f"cases/{repo_name}")
-    # 存储存在合并冲突的提交哈希值的列表
-    conflict_commits = []
 
     # 遍历所有提交
     for commit in repo.iter_commits():
@@ -25,12 +25,7 @@ def get_merge_conflict_and_resolution(repo_name):
         if not compare_index_files(virtual_merge.entries, actual_merge.entries):
             print(commit.hexsha)
             print(commit.message)
-            conflict_commits.append(commit.hexsha)
             write_conflicts_to_file(f"dataset/{repo_name}", commit.hexsha, repo, virtual_merge)
-
-    print(merge_num)
-    print(len(conflict_commits))
-    return conflict_commits
 
 
 def compare_index_files(index1, index2):
@@ -101,23 +96,10 @@ def write_conflicts_to_file(dataset_path, hexsha, repo: Repo, conflict_index_fil
             file_content = (commit.tree / path).data_stream.read().decode("utf-8")
             file.write(file_content)
 
-def preprocess_merge_conflict_commits(tokenizer):
-    prompt = (
-        f"Resolve this merge conflict:\n{{conflict}}\n---\nResolution:\n"
-    )
-
-    def apply_prompt_template(sample):
-        return {
-            "prompt": prompt.format(dialog=sample["conflict"]),
-            "resolution": sample["resolution"],
-        }
-
-
     def read_blob_content(repo, sha):
         """Read the content of a blob by its SHA-1 and return it as a list of lines."""
         blob = repo.git.cat_file('blob', sha)
         return blob.splitlines(keepends=True)
-
 
     def generate_conflict(base_file, ours_file, theirs_file):
         with tempfile.TemporaryDirectory() as tempdir:
@@ -146,9 +128,57 @@ def preprocess_merge_conflict_commits(tokenizer):
                 return e.stdout
 
 
-def lora_data_curation():
-    pass
+def load_merge_conflict_and_resolution(path):
+    c_n_r = []
+    for repo in os.listdir(path):
+        repo_path = os.path.join(path, repo)
+        for commit in os.listdir(repo_path):
+            commit_path = os.path.join(repo_path, commit)
+            files_data = {}
+            files = [str(p) for p in Path(commit_path).rglob('*') if p.is_file()]
+            for file in files:
+                if '-reso.' in file:
+                    with open(file, 'r', encoding='utf-8') as f:
+                        files_data['resolution'] = f.read()
+                elif '-conf.' in file:
+                    with open(file, 'r', encoding='utf-8') as f:
+                        files_data['conflict'] = f.read()
+            if files_data:  # 只有在有有效数据时才添加
+                c_n_r.append(files_data)
+    return c_n_r
+
+
+
+def preprocess_merge_conflict_and_resolution(conflict_and_resolution, tokenizer):
+    dataset = Dataset.from_list(conflict_and_resolution)
+    
+    prompt = (
+        f"Resolve this merge conflict:\n{{conflict}}\n---\nResolution:\n"
+    )
+
+    def apply_prompt_template(sample):
+        return {
+            "prompt": prompt.format(dialog=sample["conflict"]),
+            "resolution": sample["resolution"],
+        }
+
+    dataset = dataset.map(apply_prompt_template, remove_columns=list(dataset.features))
+
+    def tokenize_add_label(sample):
+        prompt = tokenizer.encode(tokenizer.bos_token + sample["prompt"], add_special_tokens=False)
+        resolution = tokenizer.encode(sample["resolution"] +  tokenizer.eos_token, add_special_tokens=False)
+
+        sample = {
+            "input_ids": prompt + resolution,
+            "attention_mask" : [1] * (len(prompt) + len(resolution)),
+            "labels": [-100] * len(prompt) + resolution,
+            }
+
+        return sample
+
+    dataset = dataset.map(tokenize_add_label, remove_columns=list(dataset.features))
+    return dataset
 
 
 if __name__ == '__main__':
-    get_merge_conflict_and_resolution('fastjson')
+    print(load_merge_conflict_and_resolution("dataset"))
