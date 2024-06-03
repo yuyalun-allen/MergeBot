@@ -1,12 +1,11 @@
 import os
-import difflib
 import subprocess
 import tempfile
 from git import Repo
 from git import IndexFile
 
 
-def get_merge_conflict_commits(repo_name):
+def get_merge_conflict_and_resolution(repo_name):
     # 初始化Git仓库对象
     merge_num = 0
     repo = Repo(f"cases/{repo_name}")
@@ -64,39 +63,6 @@ def compare_index_files(index1, index2):
 
 
 def write_conflicts_to_file(dataset_path, hexsha, repo: Repo, conflict_index_files: IndexFile):
-    def read_blob_content(repo, sha):
-        """Read the content of a blob by its SHA-1 and return it as a list of lines."""
-        blob = repo.git.cat_file('blob', sha)
-        return blob.splitlines(keepends=True)
-
-
-    def generate_conflict(base_file, ours_file, theirs_file):
-        with tempfile.TemporaryDirectory() as tempdir:
-            # Create temporary files for base, ours, and theirs
-            base_path = os.path.join(tempdir, 'base')
-            ours_path = os.path.join(tempdir, 'ours')
-            theirs_path = os.path.join(tempdir, 'theirs')
-
-            # Write contents to temporary files
-            with open(base_path, 'w') as f:
-                f.write(base_file)
-            with open(ours_path, 'w') as f:
-                f.write(ours_file)
-            with open(theirs_path, 'w') as f:
-                f.write(theirs_file)
-
-            try:
-            # Use git merge-file to merge the files
-                subprocess.run(['git', 'merge-file', '-p', '--diff3', ours_path, base_path, theirs_path], 
-                                check=True, 
-                                text=True,
-                                capture_output=True).stdout
-                return None
-
-            except subprocess.CalledProcessError as e:
-                return e.stdout
-
-   
     target_dir = f"{dataset_path}/{hexsha[:6]}"
 
     conflicted_files = {}
@@ -136,5 +102,42 @@ def write_conflicts_to_file(dataset_path, hexsha, repo: Repo, conflict_index_fil
             file.write(file_content)
 
 
+    def read_blob_content(repo, sha):
+        """Read the content of a blob by its SHA-1 and return it as a list of lines."""
+        blob = repo.git.cat_file('blob', sha)
+        return blob.splitlines(keepends=True)
+
+
+    def generate_conflict(base_file, ours_file, theirs_file):
+        with tempfile.TemporaryDirectory() as tempdir:
+            # Create temporary files for base, ours, and theirs
+            base_path = os.path.join(tempdir, 'base')
+            ours_path = os.path.join(tempdir, 'ours')
+            theirs_path = os.path.join(tempdir, 'theirs')
+
+            # Write contents to temporary files
+            with open(base_path, 'w') as f:
+                f.write(base_file)
+            with open(ours_path, 'w') as f:
+                f.write(ours_file)
+            with open(theirs_path, 'w') as f:
+                f.write(theirs_file)
+
+            try:
+            # Use git merge-file to merge the files
+                subprocess.run(['git', 'merge-file', '-p', '--diff3', ours_path, base_path, theirs_path], 
+                                check=True, 
+                                text=True,
+                                capture_output=True).stdout
+                return None
+
+            except subprocess.CalledProcessError as e:
+                return e.stdout
+
+
+def lora_data_curation():
+    pass
+
+
 if __name__ == '__main__':
-    get_merge_conflict_commits('fastjson')
+    get_merge_conflict_and_resolution('fastjson')
