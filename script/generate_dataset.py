@@ -17,7 +17,6 @@ def get_merge_conflict_and_resolution(repo_name):
         # 检查提交是否存在合并冲突
         if len(commit.parents) != 2:
             continue
-        merge_num += 1
         base = repo.merge_base(commit.parents[0], commit.parents[1])
         virtual_merge = IndexFile.from_tree(repo, base, commit.parents[0], commit.parents[1])
         actual_merge = IndexFile.from_tree(repo, commit)
@@ -59,8 +58,39 @@ def compare_index_files(index1, index2):
 
 def write_conflicts_to_file(dataset_path, hexsha, repo: Repo, conflict_index_files: IndexFile):
     target_dir = f"{dataset_path}/{hexsha[:6]}"
-
     conflicted_files = {}
+
+    def read_blob_content(repo, sha):
+        """Read the content of a blob by its SHA-1 and return it as a list of lines."""
+        blob = repo.git.cat_file('blob', sha)
+        return blob.splitlines(keepends=True)
+
+    def generate_conflict(base_file, ours_file, theirs_file):
+        with tempfile.TemporaryDirectory() as tempdir:
+            # Create temporary files for base, ours, and theirs
+            base_path = os.path.join(tempdir, 'base')
+            ours_path = os.path.join(tempdir, 'ours')
+            theirs_path = os.path.join(tempdir, 'theirs')
+
+            # Write contents to temporary files
+            with open(base_path, 'w') as f:
+                f.write(base_file)
+            with open(ours_path, 'w') as f:
+                f.write(ours_file)
+            with open(theirs_path, 'w') as f:
+                f.write(theirs_file)
+
+            try:
+            # Use git merge-file to merge the files
+                subprocess.run(['git', 'merge-file', '-p', '--diff3', ours_path, base_path, theirs_path], 
+                                check=True, 
+                                text=True,
+                                capture_output=True).stdout
+                return None
+
+            except subprocess.CalledProcessError as e:
+                return e.stdout
+
     for entry in conflict_index_files.entries.values():
         if entry.stage == 0:
             continue
@@ -96,39 +126,9 @@ def write_conflicts_to_file(dataset_path, hexsha, repo: Repo, conflict_index_fil
             file_content = (commit.tree / path).data_stream.read().decode("utf-8")
             file.write(file_content)
 
-    def read_blob_content(repo, sha):
-        """Read the content of a blob by its SHA-1 and return it as a list of lines."""
-        blob = repo.git.cat_file('blob', sha)
-        return blob.splitlines(keepends=True)
-
-    def generate_conflict(base_file, ours_file, theirs_file):
-        with tempfile.TemporaryDirectory() as tempdir:
-            # Create temporary files for base, ours, and theirs
-            base_path = os.path.join(tempdir, 'base')
-            ours_path = os.path.join(tempdir, 'ours')
-            theirs_path = os.path.join(tempdir, 'theirs')
-
-            # Write contents to temporary files
-            with open(base_path, 'w') as f:
-                f.write(base_file)
-            with open(ours_path, 'w') as f:
-                f.write(ours_file)
-            with open(theirs_path, 'w') as f:
-                f.write(theirs_file)
-
-            try:
-            # Use git merge-file to merge the files
-                subprocess.run(['git', 'merge-file', '-p', '--diff3', ours_path, base_path, theirs_path], 
-                                check=True, 
-                                text=True,
-                                capture_output=True).stdout
-                return None
-
-            except subprocess.CalledProcessError as e:
-                return e.stdout
 
 
-def load_merge_conflict_and_resolution(path):
+def load_merge_conflict_and_resolution(path, split):
     c_n_r = []
     for repo in os.listdir(path):
         repo_path = os.path.join(path, repo)
@@ -145,20 +145,22 @@ def load_merge_conflict_and_resolution(path):
                         files_data['conflict'] = f.read()
             if files_data:  # 只有在有有效数据时才添加
                 c_n_r.append(files_data)
-    return c_n_r
+    if split == "train":
+        return c_n_r[:int(len(c_n_r) * 0.8)]
+    else:
+        return c_n_r[int(len(c_n_r) * 0.8):]
 
 
 
-def preprocess_merge_conflict_and_resolution(conflict_and_resolution, tokenizer):
-    dataset = Dataset.from_list(conflict_and_resolution)
-    
+def preprocess_merge_conflict_and_resolution(dataset_config, tokenizer, split):
+    dataset = Dataset.from_list(load_merge_conflict_and_resolution("dataset", split))
     prompt = (
         f"Resolve this merge conflict:\n{{conflict}}\n---\nResolution:\n"
     )
 
     def apply_prompt_template(sample):
         return {
-            "prompt": prompt.format(dialog=sample["conflict"]),
+            "prompt": prompt.format(conflict=sample["conflict"]),
             "resolution": sample["resolution"],
         }
 
@@ -181,4 +183,4 @@ def preprocess_merge_conflict_and_resolution(conflict_and_resolution, tokenizer)
 
 
 if __name__ == '__main__':
-    print(load_merge_conflict_and_resolution("dataset"))
+    preprocess_merge_conflict_and_resolution(None, None, "train")
