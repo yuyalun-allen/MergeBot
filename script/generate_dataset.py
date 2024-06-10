@@ -1,6 +1,7 @@
 import os
 import subprocess
 import tempfile
+import json
 from pathlib import Path
 
 from git import Repo
@@ -128,7 +129,7 @@ def write_conflicts_to_file(dataset_path, hexsha, repo: Repo, conflict_index_fil
 
 
 
-def load_merge_conflict_and_resolution(path, split):
+def load_merge_conflict_and_resolution_file(path, split):
     c_n_r = []
     for repo in os.listdir(path):
         repo_path = os.path.join(path, repo)
@@ -151,9 +152,28 @@ def load_merge_conflict_and_resolution(path, split):
         return c_n_r[int(len(c_n_r) * 0.8):]
 
 
+def load_merge_conflict_and_resolution_chunk(filepath, split):
+    # 读取原始 JSON 文件
+    with open(filepath, 'r') as file:
+        data = json.load(file)
+
+    # 解析并转换数据
+    c_n_r_chunks = []
+    for conflict in data:
+        for chunk in conflict['chunk']:
+            c_n_r_chunks.append({
+                "conflict": chunk['conflict_content'],
+                "resolution": chunk['solution_content']
+            })
+    if split == "train":
+        return c_n_r_chunks[:int(len(c_n_r_chunks) * 0.8)]
+    else:
+        return c_n_r_chunks[int(len(c_n_r_chunks) * 0.8):]
+
 
 def preprocess_merge_conflict_and_resolution(dataset_config, tokenizer, split):
-    dataset = Dataset.from_list(load_merge_conflict_and_resolution("dataset", split))
+    # dataset = Dataset.from_list(load_merge_conflict_and_resolution_file("dataset", split))
+    dataset = Dataset.from_list(load_merge_conflict_and_resolution_chunk("output.json", split))
     prompt = (
         f"Resolve this merge conflict:\n{{conflict}}\n---\nResolution:\n"
     )
