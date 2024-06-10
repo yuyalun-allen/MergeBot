@@ -1,10 +1,15 @@
-import tqdm
+import os
 import torch
+from tqdm import tqdm
 import fire
 from transformers import (
     AutoTokenizer,
-    LlamaForCausalLM
+    LlamaForCausalLM,
+    default_data_collator
 )
+from peft import PeftModel
+from llama_recipes.data.concatenator import ConcatDataset
+from codebleu import calc_codebleu
 
 from generate_dataset import preprocess_merge_conflict_and_resolution
 
@@ -15,18 +20,24 @@ def main(**kwargs):
         device_map="auto",
     )
 
+    model = PeftModel.from_pretrained(model, kwargs["from_peft_checkpoint"], is_trainable=True)
+
     # Load the tokenizer and add special tokens
-    tokenizer = AutoTokenizer.from_pretrained(kwargs["model_name"] if kwargs["tokenizer_name"] is None else kwargs["tokenizer_name"])
+    tokenizer = AutoTokenizer.from_pretrained(kwargs["model_name"])
     tokenizer.pad_token_id = tokenizer.eos_token_id
     if len(tokenizer) > model.get_input_embeddings().weight.shape[0]:
         print("WARNING: Resizing the embedding matrix to match the tokenizer vocab size.")
         model.resize_token_embeddings(len(tokenizer))
 
     dataset_val = preprocess_merge_conflict_and_resolution(dataset_config=None, tokenizer=tokenizer, split="test")
+    dataset_val = ConcatDataset(dataset_val, chunk_size=4096)
     eval_dataloader = torch.utils.data.DataLoader(
         dataset_val,
         num_workers=1,
         pin_memory=True,
+        batch_size=1,
+        drop_last=True,
+        collate_fn=default_data_collator
     )
     if len(eval_dataloader) == 0:
         raise ValueError("The eval set size is too small for dataloader to load even one batch. Please increase the size of eval set.")
@@ -47,9 +58,9 @@ def evaluation(model, eval_dataloader, tokenizer):
     Returns: Accuracy, CodeBLEU
     """
     model.eval()
-    eval_preds = []
     total_eval_steps = 0
-    for _, batch in enumerate(tqdm(eval_dataloader,colour="green", desc="evaluating Epoch", dynamic_ncols=True)):
+    os.makedirs("results", exist_ok=True)
+    for id, batch in enumerate(tqdm(eval_dataloader,colour="green", desc="evaluating Epoch", dynamic_ncols=True)):
         total_eval_steps += 1
         for key in batch.keys():
             batch[key] = batch[key].to('cuda:0')
@@ -60,9 +71,15 @@ def evaluation(model, eval_dataloader, tokenizer):
 
         # Decode predictions and add to evaluation predictions list
         preds = torch.argmax(outputs.logits, -1)
-        eval_preds.extend(
-            tokenizer.batch_decode(preds.detach().cpu().numpy(), skip_special_tokens=True)
-        )
+        is_match = torch.all(batch["input_ids"] == preds)
+        print(f"Match the result:\n{is_match}")
+        input_string = tokenizer.batch_decode(batch["input_ids"].detach().cpu().numpy(), skip_special_tokens=True)
+        pred_string = tokenizer.batch_decode(preds.detach().cpu().numpy(), skip_special_tokens=True)
+        codebleu_result = calc_codebleu(input_string, pred_string, lang="java", weights=(0.25, 0.25, 0.25, 0.25), tokenizer=tokenizer)
+        print(f"codebleu result:\n{codebleu_result}")
+
+        with open(os.path.join("results", f"{id}.txt"), mode='w') as f:
+            f.write(f"input string:\n{input_string}\n\noutput string:\n{pred_string}")
 
 
 if __name__ == "__main__":
