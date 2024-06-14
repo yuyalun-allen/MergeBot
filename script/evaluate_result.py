@@ -1,17 +1,17 @@
 import os
+import time
+
 import torch
 from tqdm import tqdm
 import fire
 from transformers import (
     AutoTokenizer,
     LlamaForCausalLM,
-    default_data_collator
 )
 from peft import PeftModel
-from llama_recipes.data.concatenator import ConcatDataset
 from codebleu import calc_codebleu
 
-from generate_dataset import preprocess_merge_conflict_and_resolution
+from generate_dataset import load_merge_conflict_and_resolution_chunk
 
 def main(**kwargs):
     model = LlamaForCausalLM.from_pretrained(
@@ -20,7 +20,8 @@ def main(**kwargs):
         device_map="auto",
     )
 
-    model = PeftModel.from_pretrained(model, kwargs["from_peft_checkpoint"], is_trainable=True)
+    if kwargs["from_peft_checkpoint"]:
+        model = PeftModel.from_pretrained(model, kwargs["from_peft_checkpoint"], is_trainable=True)
 
     # Load the tokenizer and add special tokens
     tokenizer = AutoTokenizer.from_pretrained(kwargs["model_name"])
@@ -29,24 +30,10 @@ def main(**kwargs):
         print("WARNING: Resizing the embedding matrix to match the tokenizer vocab size.")
         model.resize_token_embeddings(len(tokenizer))
 
-    dataset_val = preprocess_merge_conflict_and_resolution(dataset_config=None, tokenizer=tokenizer, split="test")
-    dataset_val = ConcatDataset(dataset_val, chunk_size=4096)
-    eval_dataloader = torch.utils.data.DataLoader(
-        dataset_val,
-        num_workers=1,
-        pin_memory=True,
-        batch_size=1,
-        drop_last=True,
-        collate_fn=default_data_collator
-    )
-    if len(eval_dataloader) == 0:
-        raise ValueError("The eval set size is too small for dataloader to load even one batch. Please increase the size of eval set.")
-    else:
-        print(f"--> Num of Validation Set Batches loaded = {len(eval_dataloader)}")
-    
-    evaluation(model=model, eval_dataloader=eval_dataloader, tokenizer=tokenizer)
+    c_n_r_chunks = load_merge_conflict_and_resolution_chunk("output.json", "test")
+    evaluation(model=model, eval_data=c_n_r_chunks, tokenizer=tokenizer)
 
-def evaluation(model, eval_dataloader, tokenizer):
+def evaluation(model, eval_data, tokenizer):
     """
     Evaluates the model on the given dataloader
 
@@ -58,28 +45,33 @@ def evaluation(model, eval_dataloader, tokenizer):
     Returns: Accuracy, CodeBLEU
     """
     model.eval()
-    total_eval_steps = 0
     os.makedirs("results", exist_ok=True)
-    for id, batch in enumerate(tqdm(eval_dataloader,colour="green", desc="evaluating Epoch", dynamic_ncols=True)):
-        total_eval_steps += 1
-        for key in batch.keys():
-            batch[key] = batch[key].to('cuda:0')
-        # Ensure no gradients are computed for this scope to save memory
-        with torch.no_grad():
-            # Forward pass and compute loss
-            outputs = model(**batch)
+    for id, batch in enumerate(tqdm(eval_data,colour="green", desc="evaluating Epoch", dynamic_ncols=True)):
+        prompt = (
+            f"Resolve this merge conflict:\n{batch['conflict']}\n---\nResolution:\n"
+        )
+        prompt_ids = tokenizer(prompt, padding='max_length', truncation=True, max_length=1024, return_tensors="pt")
+        prompt_ids = {k: v.to("cuda") for k, v in prompt_ids.items()}
 
-        # Decode predictions and add to evaluation predictions list
-        preds = torch.argmax(outputs.logits, -1)
-        is_match = torch.all(batch["input_ids"] == preds)
-        print(f"Match the result:\n{is_match}")
-        input_string = tokenizer.batch_decode(batch["input_ids"].detach().cpu().numpy(), skip_special_tokens=True)
-        pred_string = tokenizer.batch_decode(preds.detach().cpu().numpy(), skip_special_tokens=True)
-        codebleu_result = calc_codebleu(input_string, pred_string, lang="java", weights=(0.25, 0.25, 0.25, 0.25), tokenizer=tokenizer)
+        start = time.perf_counter()
+        with torch.no_grad():
+            outputs = model.generate(
+                **prompt_ids,
+                max_new_tokens=1024,
+                do_sample=True,
+                top_p=1.0,
+                temperature=1.0,
+                use_cache=True,
+                top_k=50,
+                repetition_penalty=1.0,
+                length_penalty=1,
+            )
+        e2e_inference_time = (time.perf_counter()-start)*1000
+        print(f"the inference time is {e2e_inference_time} ms")
+        output_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        codebleu_result = calc_codebleu(batch['resolution'], output_text, lang="java", weights=(0.25, 0.25, 0.25, 0.25), tokenizer=tokenizer)
         print(f"codebleu result:\n{codebleu_result}")
 
-        with open(os.path.join("results", f"{id}.txt"), mode='w') as f:
-            f.write(f"input string:\n{input_string}\n\noutput string:\n{pred_string}")
 
 
 if __name__ == "__main__":
