@@ -152,7 +152,7 @@ def load_merge_conflict_and_resolution_file(path, split):
         return c_n_r[int(len(c_n_r) * 0.8):]
 
 
-def load_merge_conflict_and_resolution_chunk(filepath, split):
+def load_merge_conflict_and_resolution_chunk(filepath):
     # 读取原始 JSON 文件
     with open(filepath, 'r') as file:
         data = json.load(file)
@@ -165,15 +165,40 @@ def load_merge_conflict_and_resolution_chunk(filepath, split):
                 "conflict": chunk['conflict_content'],
                 "resolution": chunk['solution_content']
             })
-    if split == "train":
-        return c_n_r_chunks[:int(len(c_n_r_chunks) * 0.8)]
-    else:
-        return c_n_r_chunks[int(len(c_n_r_chunks) * 0.8):]
+    return c_n_r_chunks
+
+def filter_merge_conflict_and_resolution_chunk(input_file, output_file):
+    c_n_r_chunks = load_merge_conflict_and_resolution_chunk(input_file)
+    filtered_chunks = []
+    for chunk in c_n_r_chunks:
+        merge_res = chunk['conflict']
+        if _data_validation(merge_res):
+            filtered_chunks.append(chunk)
+    with open(output_file, "w", encoding="utf-8") as f:
+        json.dump(filtered_chunks, f, indent=4)
+
+
+def _data_validation(merge_res: str):
+    merge_res = merge_res.splitlines()
+    format_ids = [k for k, x in enumerate(merge_res) if x.startswith('<<<<<<<') or x.startswith('>>>>>>>') or x.startswith('=======')]
+    if len(format_ids) != 3:
+        return False
+    if not (merge_res[format_ids[0]].startswith('<<<<<<<') 
+            and merge_res[format_ids[1]].startswith('=======') 
+            and merge_res[format_ids[2]].startswith('>>>>>>>')):
+        return False 
+    return True
 
 
 def preprocess_merge_conflict_and_resolution(dataset_config, tokenizer, split):
     # dataset = Dataset.from_list(load_merge_conflict_and_resolution_file("dataset", split))
-    dataset = Dataset.from_list(load_merge_conflict_and_resolution_chunk("output.json", split))
+    with open("filtered_chunks.json", "r") as f:
+        data_list = json.load(f)
+    if split ==  "train":
+        data_list = data_list[ :int(len(data_list)*0.8)]
+    elif split == "validation":
+        data_list = data_list[int(len(data_list)*0.8) :]
+    dataset = Dataset.from_list(data_list)
     prompt = (
         f"Resolve this merge conflict:\n{{conflict}}\n---\nResolution:\n"
     )
@@ -203,4 +228,4 @@ def preprocess_merge_conflict_and_resolution(dataset_config, tokenizer, split):
 
 
 if __name__ == '__main__':
-    preprocess_merge_conflict_and_resolution(None, None, "train")
+    filter_merge_conflict_and_resolution_chunk("output.json", "filtered_chunks.json")
