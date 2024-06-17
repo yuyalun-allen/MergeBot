@@ -1,6 +1,7 @@
 import os
 import time
 import json
+from functools import partial
 
 import torch
 from tqdm import tqdm
@@ -13,23 +14,52 @@ from transformers import (
 from peft import PeftModel
 from codebleu import calc_codebleu
 from sentence_transformers import SentenceTransformer
-import faiss
-import numpy as np
+from datasets import Dataset
 
-from generate_dataset import load_merge_conflict_and_resolution_chunk
+
+def embed(chunk: dict, model: SentenceTransformer) -> dict:
+    """Compute the SentenceTransformer embeddings of document passages"""
+    # 拼接标题和内容为一个输入
+    texts = [f"{chunk['conflict']}"]
+    # 生成嵌入
+    embeddings = model.encode(texts, convert_to_tensor=True)
+    # 返回原始字段和新生成的嵌入
+    return {
+        "conflict": chunk["conflict"],
+        "resolution": chunk["resolution"],
+        "embeddings": embeddings.cpu().numpy()
+    }
+
+
+def create_index(ST: SentenceTransformer):
+    with open("filtered_chunks.json", "r") as f:
+        c_n_r_chunks  = json.load(f)
+    c_n_r_chunks_index = c_n_r_chunks[: int(len(c_n_r_chunks)*0.8)]
+    chunks_dataset = Dataset.from_list(c_n_r_chunks_index)
+    chunks_dataset.map(
+        partial(embed, model=ST),
+        batched=True,
+        batch_size=16
+    )
+    chunks_dataset.add_faiss_index("embeddings")
+    chunks_dataset.to_json("embedding_chunks.json")
+    return chunks_dataset
+
+
+def search(query: str, model: SentenceTransformer, dataset: Dataset, k: int = 3 ):
+    """a function that embeds a new query and returns the most probable results"""
+    embedded_query = model.encode(query) # embed new query
+    scores, retrieved_examples = dataset.get_nearest_examples( # retrieve results
+        "embeddings", embedded_query, # compare our new embedded query with the dataset embeddings
+        k=k # get only top k results
+    )
+    return scores, retrieved_examples
 
 
 def main(**kwargs):
     with open("filtered_chunks.json", "r") as f:
         c_n_r_chunks  = json.load(f)
-    c_n_r_chunks_index = c_n_r_chunks[: int(len(c_n_r_chunks)*0.8)]
     c_n_r_chunks_eval = c_n_r_chunks[int(len(c_n_r_chunks)*0.999) :]
-
-    ST = SentenceTransformer("mixedbread-ai/mxbai-embed-large-v1")
-    chunks_embeddings = ST.encode(c_n_r_chunks_index)
-    chunks_embeddings = np.array(chunks_embeddings).astype('float32')
-    index = faiss.IndexFlatL2(chunks_embeddings.shape[1])
-    index.add(chunks_embeddings)
 
     # use quantization to lower GPU usage
     bnb_config = BitsAndBytesConfig(
@@ -53,17 +83,15 @@ def main(**kwargs):
     if len(tokenizer) > model.get_input_embeddings().weight.shape[0]:
         print("WARNING: Resizing the embedding matrix to match the tokenizer vocab size.")
         model.resize_token_embeddings(len(tokenizer))
+    ST = SentenceTransformer("mixedbread-ai/mxbai-embed-large-v1")
+    index_dateset = create_index(ST)
 
     # c_n_r_chunks = c_n_r_chunks[:int(len(c_n_r_chunks)*0.001)]
-    evaluation(model=model, eval_data=c_n_r_chunks_eval, tokenizer=tokenizer)
-
-def retrieve_docs(query, retriever_model, index, corpus_texts, top_k=5):
-    query_embedding = retriever_model.encode([query]).astype('float32')
-    _, indices = index.search(query_embedding, top_k)
-    return [corpus_texts[idx] for idx in indices[0]]
+    evaluation(model=model, eval_data=c_n_r_chunks_eval, tokenizer=tokenizer, index=index_dateset, ST=ST)
 
 
-def evaluation(model, eval_data, tokenizer, retriever_model, index, corpus_text):
+
+def evaluation(model, eval_data, tokenizer, index, ST):
     """
     Evaluates the model on the given dataloader
 
@@ -74,14 +102,30 @@ def evaluation(model, eval_data, tokenizer, retriever_model, index, corpus_text)
 
     Returns: Accuracy, CodeBLEU
     """
-    model.eval()
     os.makedirs("results", exist_ok=True)
     for id, batch in enumerate(tqdm(eval_data,colour="green", desc="evaluating Epoch", dynamic_ncols=True)):
         SYS_PROMPT = """You are an assistant for resolving merge conflicts with given conflict chunks.
-        You are first given an unresolved conflict chunk following with several resolution examples. Provide the resolution of the conflict chunk.
+        You are first given several resolution examples following with an unresolved conflict chunk. Provide the resolution of the conflict chunk.
         Only output the resolution and do not output any explanation."""
+        prompt = ""
+        _ , retrieved_chunks = search(batch['conflict'], ST, index,  5)
+        for i, chunk in enumerate(retrieved_chunks):
+            prompt += (f"""
+Resolved Conflict {i}:
+
+```
+{chunk['conflict']}
+```
+
+Resolution:
+
+```
+{chunk['resolution']}
+```
+
+""")
         prompt = (f"""
-Conflict:
+Unresolved Conflict:
 
 ```
 {batch['conflict']}
@@ -90,7 +134,6 @@ Conflict:
 Resolution:
 
         """)
-        _ , retrieved_documents = retrieve_docs(prompt, retriever_model, index, corpus_text, 5)
         messages = [{"role":"system","content":SYS_PROMPT},{"role":"user","content":prompt}]
         # tell the model to generate
         input_ids = tokenizer.apply_chat_template(
