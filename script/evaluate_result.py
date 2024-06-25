@@ -1,4 +1,3 @@
-import os
 import time
 import json
 from functools import partial
@@ -12,9 +11,12 @@ from transformers import (
     BitsAndBytesConfig
 )
 from peft import PeftModel
-from codebleu import calc_codebleu
 from sentence_transformers import SentenceTransformer
 from datasets import Dataset
+from codebleu import calc_codebleu
+from nltk.translate.bleu_score import sentence_bleu
+from rouge_score import rouge_scorer
+import Levenshtein
 
 
 def embed(chunk: dict, model: SentenceTransformer) -> dict:
@@ -90,6 +92,30 @@ def main(**kwargs):
     evaluation(model=model, eval_data=c_n_r_chunks_eval, tokenizer=tokenizer, index=index_dateset, ST=ST)
 
 
+def get_evaluation_metrics(ref, pred):
+    """
+    Calculate various scores between reference and prediction
+    Args:
+        ref: reference resolution
+        pred: predicted resolution
+    Returns:
+        various scores between reference and prediction
+    """
+    codebleu = calc_codebleu(ref, pred, lang="java")['codebleu']
+    bleu = sentence_bleu([ref.split()], pred.split())
+    my_rouge_scorer = rouge_scorer.RougeScorer(['rougeL'], use_stemmer=True)
+    rouge = my_rouge_scorer.score(ref, pred)['rougeL'].fmeasure
+    levenshtein = Levenshtein.distance(ref, pred)
+
+    return {
+        "ref": ref,
+        "pred": pred,
+        "codebleu": codebleu,
+        "bleu": bleu,
+        "rouge": rouge,
+        "levenshtein": levenshtein
+    }
+
 
 def evaluation(model, eval_data, tokenizer, index, ST):
     """
@@ -102,8 +128,8 @@ def evaluation(model, eval_data, tokenizer, index, ST):
 
     Returns: Accuracy, CodeBLEU
     """
-    os.makedirs("results", exist_ok=True)
-    for id, batch in enumerate(tqdm(eval_data,colour="green", desc="evaluating Epoch", dynamic_ncols=True)):
+    results = []
+    for _, batch in enumerate(tqdm(eval_data,colour="green", desc="evaluating Epoch", dynamic_ncols=True)):
         SYS_PROMPT = """You are an assistant for resolving merge conflicts with given conflict chunks.
         You are first given several resolution examples following with an unresolved conflict chunk. Provide the resolution of the conflict chunk.
         Only output the resolution and do not output any explanation."""
@@ -141,7 +167,6 @@ Resolution:
             add_generation_prompt=True,
             return_tensors="pt"
             ).to(model.device)
-        codebleu_score = []
 
         start = time.perf_counter()
         with torch.no_grad():
@@ -166,14 +191,10 @@ Resolution:
             resolution = '\n'.join(resolution[1:-1])
         else:
             resolution = ''
-        codebleu_result = calc_codebleu([batch['resolution']], [resolution], lang="java", weights=(0.25, 0.25, 0.25, 0.25), tokenizer=tokenizer)
-        codebleu_score.append(codebleu_result['codebleu'])
-        with open(f"results/{id}.txt", "w") as f:
-            f.write(f"######Resolution output:\n{resolution}\n######Reference resolution\n{batch['resolution']}\n######codebleu result:\n{codebleu_result}")
-        print(codebleu_result['codebleu'])
-        
-    with open(f"results/average_codebleu.txt", "w") as f:
-        f.write(f"codebleu result:\n{sum(codebleu_score) / len(codebleu_score)}")
+        result = get_evaluation_metrics(batch['resolution'], resolution)
+        results.append(result)
+    with open("evaluation_results.json", "w") as f:
+        json.dump(results, f, indent=4)
 
 
 
