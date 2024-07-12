@@ -1,0 +1,738 @@
+[
+    {
+        "ref": " */\npublic class Blob implements AutoCloseable {\n\tprivate final Conn c;\n\tprivate long pBlob;\n\tprivate int readOffset;\n\tprivate int writeOffset;\n\tprivate int size = -1;",
+        "pred": "```\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n",
+        "codebleu": 0.19707318792573947,
+        "bleu": 3.3999706075993257e-155,
+        "rouge": 0.06153846153846154,
+        "levenshtein": 481
+    },
+    {
+        "ref": "\tprivate int writeOffset;\n\tprivate int size = -1;\n\n\tBlob(Conn c, long pBlob) {\n\t\tassert c != null;\n\t\tthis.c = c;\n\t\tthis.pBlob = pBlob;",
+        "pred": " */\n/**\n * @since 1.2\n */\n/**\n * Gets the current position within the query.\n */\n/**\n * Creates a new blob object by binding a pre-existing blob object.\n */\n/**\n * Copies this Blob object to the specified file.\n */\npackage biz.netizen.sql.util;\n\nimport java.io.InputStream;\nimport java.net.URI;\nimport java.sql.SQLException;\nimport java.util.Arrays;\n\nimport org.apache.commons.io.IOUtils;\nimport org.apache.commons.io.output.BoundedOutputStream;\nimport org.apache.commons.lang.StringUtils;\nimport org.apache.commons.lang.Validate;\nimport org.slf4j.Logger;\nimport org.slf4j.LoggerFactory;\n\nimport biz.netizen.sql.rdbms.AbstractBlob;\nimport biz.netizen.sql.rdbms.AbstractClob;\nimport biz.netizen.sql.rdbms.BlobType;\nimport biz.netizen.sql.rdbms.BlobUtils;\n\n/**\n * A Blob object is a stream that contains a binary large object.",
+        "codebleu": 0.17666666666666667,
+        "bleu": 0,
+        "rouge": 0.0425531914893617,
+        "levenshtein": 740
+    },
+    {
+        "ref": " */\npackage org.sqlite;\n\nimport java.util.Iterator;\nimport java.util.LinkedList;",
+        "pred": " */\npackage org.sqlite;\n\nimport java.util.Iterator;\nimport java.util.LinkedList;",
+        "codebleu": 1.0,
+        "bleu": 1.0,
+        "rouge": 1.0,
+        "levenshtein": 0
+    },
+    {
+        "ref": "\tpublic static final String TEMP_FILE = \"\";\n\n\tprivate long pDb;\n\tprivate final boolean sharedCacheMode;\n\tprivate TimeoutProgressCallback timeoutProgressCallback;\n\tprivate long pTimeoutProgressCallbackContext;",
+        "pred": "",
+        "codebleu": 0.25,
+        "bleu": 0,
+        "rouge": 0,
+        "levenshtein": 208
+    },
+    {
+        "ref": "\t\tfinal int res = sqlite3_open_v2(filename, ppDb, flags, vfs);\n\t\tif (res != SQLITE_OK) {\n\t\t\tif (ppDb[0] != 0) {\n\t\t\t\tsqlite3_close(ppDb[0]);\n\t\t\t}\n\t\t\tthrow new SQLiteException(String.format(\"error while opening a database connection to '%s'\", filename), res);\n\t\t}",
+        "pred": "\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        sbt.writeInput(action + \"\\n\");\n\n        if (action.trim().equals(\"\")) {\n            output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n        } else {\n            output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n        }\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n######\n\nConflict:\n\n```\n        if (!launcherJar.isFile()) {\n            throw new IllegalArgumentException(\"Launcher JAR file does not exist: \" + launcherJar);\n        }\n        command = getCommand(javaCommand, launcherJar, vmParameters);\n        sbt = new ProcessRunner(workingDir, command);\n    }\n\n    public final String getFormattedCommand() {\n        StringBuilder sb = new StringBuilder();\n        for (String s : command) {\n            if (s.contains(\" \")) {\n                sb.append(\"\\\"\").append(s).append(\"\\\"\");\n            } else {\n                sb.append(s);\n            }",
+        "codebleu": 0.16337689058199334,
+        "bleu": 3.2450160553581263e-155,
+        "rouge": 0.08571428571428572,
+        "levenshtein": 1053
+    },
+    {
+        "ref": "\t * @return result code (No exception is thrown).\n\t */\n\tpublic int close() {\n\t\tif (pDb == 0) {\n\t\t\treturn SQLITE_OK;\n\t\t}\n",
+        "pred": "\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n\n######\n\n```java\n        if (!launcherJar.isFile()) {\n            throw new IllegalArgumentException(\"Launcher JAR file does not exist: \" + launcherJar);\n        }\n        command = getCommand(javaCommand, launcherJar, vmParameters);\n        sbt = new ProcessRunner(workingDir, command);\n    }\n\n    public final String getFormattedCommand() {\n        StringBuilder sb = new StringBuilder();\n        for (String s : command) {\n            if (s.contains(\" \")) {\n                sb.append(\"\\\"\").append(s).append(\"\\\"\");\n            } else {\n                sb.append(s);\n            }\n            sb.append(\" \");\n        }\n        return sb.toString();\n    }\n",
+        "codebleu": 0.30442153943812117,
+        "bleu": 2.892646917371077e-155,
+        "rouge": 0.07079646017699115,
+        "levenshtein": 1133
+    },
+    {
+        "ref": "\t\tflush();\n\n\t\t// Dangling statements\n\t\tlong stmt = sqlite3_next_stmt(pDb, 0);\n\t\twhile (stmt != 0) {\n\t\t\tif (sqlite3_stmt_busy(stmt)) {\n\t\t\t\tsqlite3_log(ErrCodes.SQLITE_MISUSE, \"Dangling statement (not reset): \\\"\" + sqlite3_sql(stmt) + \"\\\"\");\n\t\t\t} else {",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n\n### Resolve conflict using Git commands\n\nHere's how you can resolve this conflict using Git commands:\n\n1. Add all unstaged changes:\n\t```git\n\tgit add.\n\t```\n2. Add the conflict file to the index:\n\t```git\n\tgit add -p conflicting_file.c\n\t```\n3. Stage the conflict:\n\t```git\n\tgit add -p conflicting_file.c\n\t```\n4. Solve any merge conflicts manually\n5. Check the current state of the file:\n\t```git\n\tgit ls-files -m\n\t```\n6. If you want to stage an incoming change to the index and track it to the same commit as the index it was updated from, you can use:",
+        "codebleu": 0.23462467069224097,
+        "bleu": 6.167678604571534e-79,
+        "rouge": 0.023255813953488372,
+        "levenshtein": 992
+    },
+    {
+        "ref": "\t\t}\n\t}\n\n\tprivate Conn(long pDb, boolean sharedCacheMode) {\n\t\tassert pDb != 0;\n\t\tthis.pDb = pDb;\n\t\tthis.sharedCacheMode = sharedCacheMode;\n\t}",
+        "pred": "```\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n\n###### Conflict:\n\n```\n        if (!launcherJar.isFile()) {\n            throw new IllegalArgumentException(\"Launcher JAR file does not exist: \" + launcherJar);\n        }\n        command = getCommand(javaCommand, launcherJar, vmParameters);\n        sbt = new ProcessRunner(workingDir, command);\n    }\n\n    public final String getFormattedCommand() {\n        StringBuilder sb = new StringBuilder();\n        for (String s : command) {\n            if (s.contains(\" \")) {\n                sb.append(\"\\\"\").append(s).append(\"\\\"\");\n            } else {\n                sb.append(s);\n            }\n            sb.append(\" \");\n        }\n        return sb.toString();\n    }\n",
+        "codebleu": 0.20279638046771434,
+        "bleu": 2.4324164234119415e-155,
+        "rouge": 0.018018018018018014,
+        "levenshtein": 1135
+    },
+    {
+        "ref": "\t\tfinal String[] ppTail = new String[1];\n\t\tfinal int res = sqlite3_prepare_v2(pDb, sql, -1, ppStmt, ppTail); // FIXME nbytes + 1\n\t\tcheck(res, \"error while preparing statement '%s'\", sql);\n\t\treturn new Stmt(this, ppStmt[0], ppTail, cacheable);\n\t}\n\n\t/**",
+        "pred": "\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n",
+        "codebleu": 0.12383422895851484,
+        "bleu": 1.0309964493856291e-231,
+        "rouge": 0.075,
+        "levenshtein": 478
+    },
+    {
+        "ref": "\t\tif (res != SQLITE_OK) {\n\t\t\tsqlite3_blob_close(ppBlob[0]);\n\t\t\tthrow new SQLiteException(this, String.format(\"error while opening a blob to (db: '%s', table: '%s', col: '%s', row: %d)\",\n\t\t\t\t\tdbName, tblName, colName, iRow), res);\n\t\t}\n\t\treturn new Blob(this, ppBlob[0]);\n\t}\n\n\t/**",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n######\n\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n            } else {\n                output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```",
+        "codebleu": 0.2652408991019761,
+        "bleu": 8.561894227089738e-232,
+        "rouge": 0.07194244604316546,
+        "levenshtein": 1087
+    },
+    {
+        "ref": "\tpublic static Backup open(Conn dst, String dstName, Conn src, String srcName) throws ConnException {\n\t\tdst.checkOpen();\n\t\tsrc.checkOpen();\n\t\tfinal long pBackup = sqlite3_backup_init(dst.pDb, dstName, src.pDb, srcName);\n\t\tif (pBackup == 0) {\n\t\t\tthrow new ConnException(dst, \"backup init failed\", dst.getErrCode());\n\t\t}\n\t\treturn new Backup(pBackup, dst, src);",
+        "pred": "\n```\npublic boolean execute(String action) throws IOException {\n    OutputReader output = sbt.subscribeToOutput();\n    try {\n        sbt.writeInput(action + \"\\n\");\n        if (action.trim().equals(\"\")) {\n            output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n        } else {\n            output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n        }\n        boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n        return!error;\n    } finally {\n        output.close();\n    }\n}\n\n```\n\n```\npublic boolean execute(String action) throws IOException {\n    OutputReader output = sbt.subscribeToOutput();\n    try {\n        sbt.writeInput(action + \"\\n\");\n        if (action.trim().equals(\"\")) {\n            output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n        } else {\n            output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n        }",
+        "codebleu": 0.2748329953542078,
+        "bleu": 1.0319427527676151e-231,
+        "rouge": 0.08275862068965517,
+        "levenshtein": 845
+    },
+    {
+        "ref": "\npublic class Stmt implements AutoCloseable, Row {\n\tfinal Conn c;\n\tprivate long pStmt;\n\tprivate final String tail;\n\t// cached parameter count\n\tprivate int paramCount = -1;",
+        "pred": "",
+        "codebleu": 0.25,
+        "bleu": 0,
+        "rouge": 0,
+        "levenshtein": 171
+    },
+    {
+        "ref": "\tprivate int[] columnAffinities;\n\tprivate boolean cacheable;\n\n\tStmt(Conn c, long pStmt, String[] tail, boolean cacheable) {\n\t\tassert c != null;\n\t\tthis.c = c;\n\t\tthis.pStmt = pStmt;",
+        "pred": "private int[] columnAffinities;\nprivate boolean cacheable;\n\nStmt(Conn c, long pStmt, String[] tail, boolean cacheable) {\n\tassert c!= null;\n\tthis.c = c;\n\tthis.pStmt = pStmt;\n\tprepare(tail);",
+        "codebleu": 0.9083101171319196,
+        "bleu": 0.8466657105524215,
+        "rouge": 0.9600000000000001,
+        "levenshtein": 23
+    },
+    {
+        "ref": "\t * @param tblName table name containing the affected row.\n\t * @param rowId id of the affected row.\n\t */\n\tvoid invoke(int actionCode, String dbName, String tblName, long rowId);\n}",
+        "pred": "\nConflict:\n```\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        sbt.writeInput(action + \"\\n\");\n\n        if (action.trim().equals(\"\")) {\n            output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n        } else {\n            output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n        }\n        boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n        return!error;\n    }\n}\n```\n\nResolution:\n```\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n        if (action.trim().equals(\"\")) {\n            output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n        } else {\n            output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n        }\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n######\n\nConflict:\n\n```",
+        "codebleu": 0.2710505558339515,
+        "bleu": 7.199666163340923e-232,
+        "rouge": 0.02985074626865672,
+        "levenshtein": 1099
+    },
+    {
+        "ref": "\t\tfinal Conn c = open();\n\t\tc.createScalarFunction(\"test\", 0, FunctionFlags.SQLITE_UTF8 | FunctionFlags.SQLITE_DETERMINISTIC, new ScalarCallback() {\n\t\t\t@Override\n\t\t\tpublic void invoke(long pCtx, int nArg, Object args) {\n\t\t\t\tassertNotNull(pCtx);",
+        "pred": "\t\tfinal Conn c = open();\n\t\tc.createScalarFunction(\"test\", 0, FunctionFlags.SQLITE_UTF8 | FunctionFlags.SQLITE_DETERMINISTIC, new ScalarCallback() {\n\t\t\t@Override\n\t\t\tprotected void func(SQLite3Context pCtx, SQLite3Values args) {\n\t\t\t\tassertNotNull(pCtx);\n\t\t\t\tassertEquals(0, args.getCount());\n\t\t\t\tpCtx.setResultNull();\n\t\t\t}\n\t\t});\n\t\tc.close();\n\t}\n",
+        "codebleu": 0.7146183019896558,
+        "bleu": 0.5170969057682973,
+        "rouge": 0.7096774193548386,
+        "levenshtein": 129
+    },
+    {
+        "ref": "\n\t\t\t((Conn) conn).getConn().createScalarFunction(\"delay\", 0, FunctionFlags.SQLITE_UTF8, new ScalarCallback() {\n\t\t\t\t@Override\n\t\t\t\tpublic void invoke(long pCtx, int nArg, Object args) {\n\t\t\t\t\ttry {\n\t\t\t\t\t\tThread.currentThread().join(1000);\n\t\t\t\t\t} catch (InterruptedException e) {",
+        "pred": "\n\t\t\t((Conn) conn).getConn().createScalarFunction(\"delay\", 0, FunctionFlags.SQLITE_UTF8, new ScalarCallback() {\n\t\t\t\t@Override\n\t\t\t\tpublic void invoke(long pCtx, int nArg, Object args) {\n\t\t\t\t\ttry {\n\t\t\t\t\t\tThread.currentThread().join(1000);\n\t\t\t\t\t} catch (InterruptedException e) {\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t});\n\t\t}\n\t\ttable.createUserFunction(\"datetime\", 1, FunctionFlags.SQLITE_UTF8, new ScalarCallback() {",
+        "codebleu": 0.9148554092978621,
+        "bleu": 0.7010883038581152,
+        "rouge": 0.8656716417910448,
+        "levenshtein": 116
+    },
+    {
+        "ref": "\t */\n\tpublic int setBusyHandler(BusyHandler bh) throws ConnException {\n\t\tcheckOpen();\n\t\treturn sqlite3_busy_handler(pDb, bh); // FIXME free callback_context\n\t}\n\n\t/**",
+        "pred": "",
+        "codebleu": 0.25,
+        "bleu": 0,
+        "rouge": 0,
+        "levenshtein": 165
+    },
+    {
+        "ref": "\t */\n\tpublic void trace(TraceCallback tc) throws ConnException {\n\t\tcheckOpen();\n\t\tpTraceCallbackContext = sqlite3_trace(pDb, tc);\n\t}\n\n\t/**",
+        "pred": "\n```\n\t */\n\tpublic void trace(TraceCallback tc) throws ConnException {\n\t\tcheckOpen();\n\t\tpTraceCallbackContext = sqlite3_trace(pDb, tc, null);\n\t}\n",
+        "codebleu": 0.6947880949220792,
+        "bleu": 0.7367565054628357,
+        "rouge": 0.962962962962963,
+        "levenshtein": 16
+    },
+    {
+        "ref": "\t */\n\tpublic void profile(ProfileCallback pc) throws ConnException {\n\t\tcheckOpen();\n\t\tpProfileContext = sqlite3_profile(pDb, pc);\n\t}\n\n\t/**",
+        "pred": "\n1. Try to preserve as much content as possible: Conflicting code snippets are often replaced, with the final code being a blend of both. However, do not remove comments altogether, and try to separate non-conflicting elements.\n\n2. Surround your resolved code in '```' symbols: It is easy to understand when a code snippet is the result of a merge or conflict resolutions. Simply surround the code in '```' symbols.\n\n3. Leave comments: Commits are a record of changes. If the final resolved code is a blend of both, there is no need to rewrite comments, so just leave them alone.\n",
+        "codebleu": 0.215625,
+        "bleu": 0,
+        "rouge": 0.0,
+        "levenshtein": 507
+    },
+    {
+        "ref": "\t */\n\tpublic int setAuhtorizer(Authorizer auth) throws ConnException {\n\t\tcheckOpen();\n\t\treturn sqlite3_set_authorizer(pDb, auth); // FIXME\n\t}\n\n\t/**",
+        "pred": "\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        sbt.writeInput(action + \"\\n\");\n\n        if (action.trim().equals(\"\")) {\n            output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n        } else {\n            output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n        }\n\n        boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n        return!error;\n    }\n}\n```\n\n######\n\n```java\n        if (!launcherJar.isFile()) {\n            throw new IllegalArgumentException(\"Launcher JAR file does not exist: \" + launcherJar);\n        }\n\n        command = getCommand(javaCommand, launcherJar, vmParameters);\n        sbt = new ProcessRunner(workingDir, command);\n    }\n\n    public final String getFormattedCommand() {\n        StringBuilder sb = new StringBuilder();\n        for (String s : command) {\n            if (s.contains(\" \")) {\n                sb.append(\"\\\"\").append(s).append(\"\\\"\");\n            } else {\n                sb.append(s);\n            }\n            sb.append(\" \");\n        }\n        return sb.toString();\n    }\n",
+        "codebleu": 0.3857951632771347,
+        "bleu": 2.401580582872042e-155,
+        "rouge": 0.049999999999999996,
+        "levenshtein": 1103
+    },
+    {
+        "ref": "\t * @param ns time in nanoseconds\n\t */\n\t@SuppressWarnings(\"unused\")\n\tvoid profile(String sql, long ns);\n}",
+        "pred": "\n```\n\t * @param sql string\n\t * @param ns time in nanoseconds\n\t */\n\t@SuppressWarnings(\"unused\")\n\tdefault void callback(Pointer arg, String sql, long ns) {\n\t\tprofile(sql, ns);\n\t}\n\n\t/**\n\t * @param ns time in nanoseconds\n\t */\n\tvoid profile(String sql, long ns);\n}",
+        "codebleu": 0.7098991303619404,
+        "bleu": 0.2872511063551186,
+        "rouge": 0.5652173913043478,
+        "levenshtein": 154
+    },
+    {
+        "ref": "\tvoid(*)(void*)\n\t*/\n\t// eTextRep: SQLITE_UTF8 => 1, ...\n\tstatic native int sqlite3_create_function_v2(long pDb, String functionName, int nArg, int eTextRep,\n\t\t\tScalarCallback xFunc, AggregateStepCallback xStep, AggregateFinalCallback xFinal);\n\n\tstatic native void sqlite3_result_null(long pCtx);\n\tstatic native void sqlite3_result_int(long pCtx, int i);\n\tstatic native void sqlite3_result_double(long pCtx, double d);\n\tstatic native void sqlite3_result_text(long pCtx, String text, int n); // no copy needed\n\tstatic native void sqlite3_result_blob(long pCtx, byte[] blob, int n);\n\tstatic native void sqlite3_result_int64(long pCtx, long l);\n\tstatic native void sqlite3_result_zeroblob(long pCtx, int n);\n\n\tstatic native void sqlite3_result_error(long pCtx, String err, int length);\n\tstatic native void sqlite3_result_error_code(long pCtx, int errCode);\n\tstatic native void sqlite3_result_error_nomem(long pCtx);\n\tstatic native void sqlite3_result_error_toobig(long pCtx);\n\t//static native void sqlite3_result_subtype(long pCtx, /*unsigned*/ int subtype);\n\n\tstatic native byte[] sqlite3_value_blob(long pValue);\n\tstatic native int sqlite3_value_bytes(long pValue);\n\tstatic native double sqlite3_value_double(long pValue);\n\tstatic native int sqlite3_value_int(long pValue);\n\tstatic native long sqlite3_value_int64(long pValue);\n\tstatic native String sqlite3_value_text(long pValue);\n\tstatic native int sqlite3_value_type(long pValue);\n\tstatic native int sqlite3_value_numeric_type(long pValue);\n\n\tstatic native Object sqlite3_get_auxdata(long pCtx, int n);\n\tstatic native void sqlite3_set_auxdata(long pCtx, int n, Object p, Destructor free);\n\tstatic native long sqlite3_aggregate_context(long pCtx, int nBytes);\n\tstatic native long sqlite3_context_db_handle(long pCtx);\n\n\tpublic static final Charset UTF_8 = Charset.forName(\"UTF-8\");\n\tpublic static final String UTF_8_ECONDING = UTF_8.name();",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n",
+        "codebleu": 0.11595578675289331,
+        "bleu": 1.5398168841714696e-233,
+        "rouge": 0.03692307692307692,
+        "levenshtein": 1613
+    },
+    {
+        "ref": "\n\tpublic interface LogCallback {\n\t\t@SuppressWarnings(\"unused\")\n\t\tvoid log(int err, String msg);\n\t}\n",
+        "pred": "\n```java\n}\npackage com.simplifide.issues.example;\n\nimport java.io.ByteArrayOutputStream;\nimport java.io.IOException;\nimport java.io.InputStream;\nimport java.io.OutputStream;\nimport java.util.ArrayList;\nimport java.util.List;\nimport java.util.StringTokenizer;\nimport java.util.regex.Matcher;\nimport java.util.regex.Pattern;\n\nimport com.simplifide.issues.testpackage.StringTools;\n\nimport com.simplifide.issues.testpackage.StringTools.Tools;\n\nimport com.simplifide.issues.testpackage.StringTools;\n\n\nimport com.simplifide.issues.testpackage.StringTools.tools;\n\n/**\n * This utility is designed to provide support for executing Unix commands from Java. It's primary purpose is to\n * simulate an environment where a Unix-based command can be given and then read the output back. A number of the\n * commands can be given, with the output of the previous commands input into the next command.\n */\npublic class ShellCommands {\n\n    protected ProcessRunner sbt;\n\n    public ShellCommands()\n    {\n        sbt = new ProcessRunner(workingDir, new String[]{\"-Dui\", \"-Dooi\"});",
+        "codebleu": 0.295396010798348,
+        "bleu": 7.47243542953656e-232,
+        "rouge": 0.026143790849673203,
+        "levenshtein": 990
+    },
+    {
+        "ref": "\tpublic static class SQLite3Context {\n\t\tpublic final long pCtx;\n\n\t\tpublic SQLite3Context(long pCtx) {\n\t\t\tthis.pCtx = pCtx;\n\t\t}\n\n\t\t/**\n\t\t * @return a copy of the pointer to the database connection (the 1st parameter) of\n\t\t * {@link SQLite#sqlite3_create_function_v2(long, String, int, int, ScalarCallback, AggregateStepCallback, AggregateFinalCallback)}",
+        "pred": "\n```plaintext\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n/*\n * Resolves merge conflict in file sbt2.java\n * New revision is incorporated.\n */\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n\n// 5 minutes (300 seconds) = 60 * 5\nprivate final static long TIMEOUT_IN_MILI = 300 * 1000;\n\n// \"a.out\\n\" -> 5 minutes after it waits for the output\nprivate final static long TIMEOUT_AT = 300 * 1000;\n\n// The output pattern to wait for (e.g. \"Compile finished successfully\") + an\n// empty line + the version line from a successful \"sbt new --version\"",
+        "codebleu": 0.22437659367138657,
+        "bleu": 1.0738060219382118e-231,
+        "rouge": 0.09090909090909091,
+        "levenshtein": 841
+    },
+    {
+        "ref": "\t * @param sql SQL statement text.\n\t */\n\t@SuppressWarnings(\"unused\")\n\tvoid trace(String sql);\n}",
+        "pred": "\n```\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n\nResolution:\n\n```\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n######\n\nConflict:\n\n```\n        if (!launcherJar.isFile()) {\n            throw new IllegalArgumentException(\"Launcher JAR file does not exist: \" + launcherJar);\n        }",
+        "codebleu": 0.3088262856560316,
+        "bleu": 6.86842284137899e-232,
+        "rouge": 0.01785714285714286,
+        "levenshtein": 1232
+    },
+    {
+        "ref": "\t * @param tblName table name containing the affected row.\n\t * @param rowId id of the affected row.\n\t */\n\tvoid update(int actionCode, String dbName, String tblName, long rowId);\n}",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n\n````\n    if (action(trim.equals(\"\")) {\n        if (!launcherJar.isFile()) {\n            throw new IllegalArgumentException(\"Launcher JAR file does not exist: \" + launcherJar);\n        }\n        command = getCommand(javaCommand, launcherJar, vmParameters);\n        sbt = new ProcessRunner(workingDir, command);\n    }\n\n    public final String getFormattedCommand() {\n        StringBuilder sb = new StringBuilder();\n        for (String s : command) {\n            if (s.contains(\" \")) {\n                sb.append(\"\\\"\").append(s).append(\"\\\"\");\n            } else {\n                sb.append(s);\n            }\n            sb.append(\" \");\n        }\n        return sb.toString();\n    }\n",
+        "codebleu": 0.29895963425364835,
+        "bleu": 7.563247174249085e-232,
+        "rouge": 0.03225806451612903,
+        "levenshtein": 1119
+    },
+    {
+        "ref": "\t\tconn.setAuhtorizer(new Authorizer() {\n\t\t\t@Override\n\t\t\tpublic int authorize(int actionCode, String arg1, String arg2, String dbName, String triggerName) {\n\t\t\t\t//System.out.println(\"actionCode = [\" + actionCode + \"], arg1 = [\" + arg1 + \"], arg2 = [\" + arg2 + \"], dbName = [\" + dbName + \"], triggerName = [\" + triggerName + \"]\");\n\t\t\t\treturn Authorizer.SQLITE_OK;\n\t\t\t}\n\t\t});",
+        "pred": "\t\tconn.setAuhtorizer(new Authorizer() {\n\t\t\t@Override\n\t\t\tpublic int authorize(int actionCode, String arg1, String arg2, String dbName, String triggerName) {\n\t\t\t\treturn Authorizer.SQLITE_OK;\n\t\t\t}\n\t\t});",
+        "codebleu": 0.6307177214607944,
+        "bleu": 0.17327475099334572,
+        "rouge": 0.7719298245614035,
+        "levenshtein": 173
+    },
+    {
+        "ref": " */\npackage org.sqlite;\n\nimport jnr.ffi.Pointer;\n\nimport static org.sqlite.SQLite.SQLITE_DONE;\nimport static org.sqlite.SQLite.SQLITE_OK;\nimport static org.sqlite.SQLite.sqlite3_backup_finish;\nimport static org.sqlite.SQLite.sqlite3_backup_pagecount;\nimport static org.sqlite.SQLite.sqlite3_backup_remaining;\nimport static org.sqlite.SQLite.sqlite3_backup_step;\nimport static org.sqlite.SQLite.sqlite3_log;\n\n/**",
+        "pred": "\n```\n */\npackage org.sqlite;\n\nimport jnr.ffi.Pointer;\n\nimport static org.sqlite.SQLite.*;\n\n/**",
+        "codebleu": 0.2725407608092279,
+        "bleu": 0.12068673962800201,
+        "rouge": 0.33333333333333337,
+        "levenshtein": 328
+    },
+    {
+        "ref": " */\npackage org.sqlite;\n\nimport jnr.ffi.Pointer;\n\nimport java.io.IOException;\nimport java.io.InputStream;\nimport java.io.OutputStream;",
+        "pred": "\n```java\n */\npackage org.sqlite;\n\nimport java.io.IOException;\nimport java.io.InputStream;\nimport java.io.OutputStream;",
+        "codebleu": 0.8120926715566594,
+        "bleu": 0.692386915671004,
+        "rouge": 0.8571428571428572,
+        "levenshtein": 34
+    },
+    {
+        "ref": " */\npackage org.sqlite;\n\nimport jnr.ffi.LibraryLoader;\nimport jnr.ffi.LibraryOption;\nimport jnr.ffi.Memory;\nimport jnr.ffi.Pointer;\nimport jnr.ffi.Runtime;\nimport jnr.ffi.Struct;\nimport jnr.ffi.annotations.Delegate;\nimport jnr.ffi.annotations.Encoding;\nimport jnr.ffi.annotations.IgnoreError;\nimport jnr.ffi.annotations.In;\nimport jnr.ffi.annotations.Out;\nimport jnr.ffi.byref.IntByReference;\nimport jnr.ffi.byref.PointerByReference;\n\nimport java.nio.ByteBuffer;\nimport java.nio.charset.Charset;",
+        "pred": "package org.sqlite;\n\nimport com.sun.jna.Callback;\nimport com.sun.jna.Library;\nimport com.sun.jna.Memory;\nimport com.sun.jna.Native;\nimport com.sun.jna.Pointer;\nimport com.sun.jna.PointerType;\nimport com.sun.jna.ptr.IntByReference;\nimport com.sun.jna.ptr.PointerByReference;\n\nimport java.nio.ByteBuffer;",
+        "codebleu": 0.41842243408036917,
+        "bleu": 1.7173400348885247e-78,
+        "rouge": 0.3,
+        "levenshtein": 290
+    },
+    {
+        "ref": "\n\tstatic final int SQLITE_TRANSIENT = -1;\n\n\tstatic String sqlite3_libversion() { // no copy needed\n\t\treturn library.sqlite3_libversion();\n\t}\n\tstatic int sqlite3_libversion_number() {\n\t\treturn library.sqlite3_libversion_number();\n\t}\n\tstatic boolean sqlite3_threadsafe() {\n\t\treturn library.sqlite3_threadsafe();\n\t}\n\tstatic boolean sqlite3_compileoption_used(String optName) {\n\t\treturn library.sqlite3_compileoption_used(optName);\n\t}\n\n\tpublic static final int SQLITE_CONFIG_SINGLETHREAD = 1,\n\t\t\tSQLITE_CONFIG_MULTITHREAD = 2, SQLITE_CONFIG_SERIALIZED = 3,",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        sbt.writeInput(action + \"\\n\");\n\n        if (action.trim().equals(\"\")) {\n            output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n        } else {\n            output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n        }\n\n        boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n        return!error;\n    }\n}\n```\n######\n\n```java\n        if (!launcherJar.isFile()) {\n            throw new IllegalArgumentException(\"Launcher JAR file does not exist: \" + launcherJar);\n        }\n        command = getCommand(javaCommand, launcherJar, vmParameters);\n        sbt = new ProcessRunner(workingDir, command);\n    }\n\n    public final String getFormattedCommand() {\n        StringBuilder sb = new StringBuilder();\n        for (String s : command) {\n            if (s.contains(\" \")) {\n                sb.append(\"\\\"\").append(s).append(\"\\\"\");\n            } else {\n                sb.append(s);\n            }\n            sb.append(\" \");\n        }\n        return sb.toString();\n    }\n",
+        "codebleu": 0.2608415039285665,
+        "bleu": 3.177515234502476e-155,
+        "rouge": 0.05952380952380953,
+        "levenshtein": 1003
+    },
+    {
+        "ref": "\t\tlibrary.sqlite3_log(iErrCode, msg);\n\t}\n\n\tstatic String sqlite3_errmsg(Pointer pDb) { // copy needed: the error string might be overwritten or deallocated by subsequent calls to other SQLite interface functions.\n\t\treturn library.sqlite3_errmsg(pDb);\n\t}\n\tstatic int sqlite3_errcode(Pointer pDb) {\n\t\treturn library.sqlite3_errcode(pDb);\n\t}\n\n\tstatic int sqlite3_extended_result_codes(Pointer pDb, boolean onoff) {\n\t\treturn library.sqlite3_extended_result_codes(pDb, onoff);\n\t}\n\tstatic int sqlite3_extended_errcode(Pointer pDb) {\n\t\treturn library.sqlite3_extended_errcode(pDb);\n\t}\n\n\tstatic int sqlite3_initialize() {\n\t\treturn library.sqlite3_initialize();",
+        "pred": "```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n######\n\nCode resolution\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n        if (action.trim().equals(\"\")) {\n            output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n        } else {\n            output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n        }\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```",
+        "codebleu": 0.3073458505345878,
+        "bleu": 1.1167318524025496e-231,
+        "rouge": 0.06451612903225808,
+        "levenshtein": 1023
+    },
+    {
+        "ref": "\t\treturn library.sqlite3_shutdown();\n\t}\n\n\tstatic int sqlite3_open_v2(String filename, PointerByReference ppDb, int flags, String vfs) { // no copy needed\n\t\treturn library.sqlite3_open_v2(filename, ppDb, flags, vfs);\n\t}\n\tstatic int sqlite3_close(Pointer pDb) {\n\t\treturn library.sqlite3_close(pDb);\n\t}\n\tstatic int sqlite3_close_v2(Pointer pDb) { // since 3.7.14\n\t\treturn library.sqlite3_close_v2(pDb);\n\t}\n\tstatic void sqlite3_interrupt(Pointer pDb) {\n\t\tlibrary.sqlite3_interrupt(pDb);\n\t}\n\n\tstatic int sqlite3_busy_handler(Pointer pDb, BusyHandler bh, Pointer pArg) {\n\t\treturn library.sqlite3_busy_handler(pDb, bh, pArg);\n\t}\n\tstatic int sqlite3_busy_timeout(Pointer pDb, int ms) {\n\t\treturn library.sqlite3_busy_timeout(pDb, ms);\n\t}\n\tstatic int sqlite3_db_config(Pointer pDb, int op, int v, IntByReference pOk) {\n\t\treturn library.sqlite3_db_config(pDb, op, v, pOk);\n\t}\n\t//#if mvn.project.property.sqlite.omit.load.extension == \"true\"\n\tstatic int sqlite3_enable_load_extension(Object pDb, boolean onoff) {\n\t\tthrow new UnsupportedOperationException(\"SQLITE_OMIT_LOAD_EXTENSION activated\");\n\t}\n\tstatic int sqlite3_load_extension(Object pDb, String file, String proc, PointerByReference errMsg) {\n\t\tthrow new UnsupportedOperationException(\"SQLITE_OMIT_LOAD_EXTENSION activated\");\n\t}\n\t//#else\n\tstatic int sqlite3_enable_load_extension(Pointer pDb, boolean onoff) {\n\t\treturn library.sqlite3_enable_load_extension(pDb, onoff);\n\t}\n\tstatic int sqlite3_load_extension(Pointer pDb, String file, String proc, PointerByReference errMsg) {\n\t\treturn library.sqlite3_load_extension(pDb, file, proc, errMsg);\n\t}\n\t//#endif\n\tpublic static final int SQLITE_LIMIT_LENGTH = 0, SQLITE_LIMIT_SQL_LENGTH = 1, SQLITE_LIMIT_COLUMN = 2,\n\t\t\tSQLITE_LIMIT_EXPR_DEPTH = 3, SQLITE_LIMIT_COMPOUND_SELECT = 4, SQLITE_LIMIT_VDBE_OP = 5,\n\t\t\tSQLITE_LIMIT_FUNCTION_ARG = 6, SQLITE_LIMIT_ATTACHED = 7, SQLITE_LIMIT_LIKE_PATTERN_LENGTH = 8,",
+        "pred": "package io.github.kayosan.atomiktasksample;\n\nimport java.lang.reflect.Method;\nimport java.util.HashMap;\nimport java.util.Map;\nimport static io.github.kayosan.atomiktasksample.SynapseUtils.classForName;\nimport io.github.kayosan.atomiktasksample.exception.FunctionLoadException;\n\npublic class DynaLoader {\n    private DynaLoader() {}\n    public static Object getConstructor( final String className, final Class>> paramTypes, final Object... objects) {\n        try {\n            final Class> obj = classForName( className );\n            final Class>> cons = obj.getMethod( \"getConstructor\", paramTypes ).invoke( null, objects).getClass();\n            return cons.getConstructor().invoke( objects );\n        } catch( Exception e ) {\n            throw new RuntimeException(e);\n        }\n    }",
+        "codebleu": 0.12873229333755998,
+        "bleu": 2.4943348979594564e-79,
+        "rouge": 0.03519061583577713,
+        "levenshtein": 1583
+    },
+    {
+        "ref": "\t}\n\t}\n\t}\n\t\t\tSQLITE_LIMIT_EXPR_DEPTH = 3, SQLITE_LIMIT_COMPOUND_SELECT = 4, SQLITE_LIMIT_VDBE_OP = 5,\n\t\t\tSQLITE_LIMIT_FUNCTION_ARG = 6, SQLITE_LIMIT_ATTACHED = 7, SQLITE_LIMIT_LIKE_PATTERN_LENGTH = 8,\n\t\t\tSQLITE_LIMIT_VARIABLE_NUMBER = 9, SQLITE_LIMIT_TRIGGER_DEPTH = 10;\n\tstatic int sqlite3_limit(Pointer pDb, int id, int newVal) {\n\t\treturn library.sqlite3_limit(pDb, id, newVal);\n\t}\n\tstatic boolean sqlite3_get_autocommit(Pointer pDb) {\n\t\treturn library.sqlite3_get_autocommit(pDb);\n\t}\n\n\tstatic int sqlite3_changes(Pointer pDb) {\n\t\treturn library.sqlite3_changes(pDb);\n\t}\n\tstatic int sqlite3_total_changes(Pointer pDb) {\n\t\treturn library.sqlite3_total_changes(pDb);\n\t}\n\tstatic long sqlite3_last_insert_rowid(Pointer pDb) {\n\t\treturn library.sqlite3_last_insert_rowid(pDb);\n\t}\n\n\tstatic String sqlite3_db_filename(Pointer pDb, String dbName) { // no copy needed\n\t\treturn library.sqlite3_db_filename(pDb, dbName);\n\t}\n\tstatic int sqlite3_db_readonly(Pointer pDb, String dbName) { // no copy needed\n\t\treturn library.sqlite3_db_readonly(pDb, dbName);\n\t}\n\n\tstatic Pointer sqlite3_next_stmt(Pointer pDb, Pointer pStmt) {\n\t\treturn library.sqlite3_next_stmt(pDb, pStmt);\n\t}\n\n\tstatic int sqlite3_table_column_metadata(Pointer pDb, String dbName, String tableName, String columnName,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t PointerByReference pzDataType, PointerByReference pzCollSeq,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t IntByReference pNotNull, IntByReference pPrimaryKey, IntByReference pAutoinc) { // no copy needed\n\t\treturn library.sqlite3_table_column_metadata(pDb, dbName, tableName, columnName, pzDataType, pzCollSeq, pNotNull, pPrimaryKey, pAutoinc);\n\t}\n\n\tstatic int sqlite3_exec(Pointer pDb, String cmd, Pointer c, Pointer udp, PointerByReference errMsg) {\n\t\treturn library.sqlite3_exec(pDb, cmd, c, udp, errMsg);\n\t}\n\n\tstatic int sqlite3_prepare_v2(Pointer pDb, Pointer sql, int nByte, PointerByReference ppStmt,\n\t\t\tPointerByReference pTail) {\n\t\treturn library.sqlite3_prepare_v2(pDb, sql, nByte, ppStmt, pTail);\n\tstatic String sqlite3_sql(Pointer pStmt) { // no copy needed\n\t\treturn library.sqlite3_sql(pStmt);\n\t}\n\tstatic int sqlite3_finalize(Pointer pStmt) {\n\t\treturn library.sqlite3_finalize(pStmt);\n\t}\n\tstatic int sqlite3_step(Pointer pStmt) {\n\t\treturn library.sqlite3_step(pStmt);\n\t}\n\tstatic int sqlite3_reset(Pointer pStmt) {\n\t\treturn library.sqlite3_reset(pStmt);\n\t}\n\tstatic int sqlite3_clear_bindings(Pointer pStmt) {\n\t\treturn library.sqlite3_clear_bindings(pStmt);\n\t}\n\tstatic boolean sqlite3_stmt_busy(Pointer pStmt) {\n\t\treturn library.sqlite3_stmt_busy(pStmt);\n\t}\n\tstatic boolean sqlite3_stmt_readonly(Pointer pStmt) {\n\t\treturn library.sqlite3_stmt_readonly(pStmt);\n\t}\n\n\tstatic int sqlite3_column_count(Pointer pStmt) {\n\t\treturn library.sqlite3_column_count(pStmt);\n\t}\n\tstatic int sqlite3_data_count(Pointer pStmt) {\n\t\treturn library.sqlite3_data_count(pStmt);\n\t}\n\tstatic int sqlite3_column_type(Pointer pStmt, int iCol) {\n\t\treturn library.sqlite3_column_type(pStmt, iCol);\n\t}\n\tstatic String sqlite3_column_name(Pointer pStmt, int iCol) { // copy needed: The returned string pointer is valid until either the prepared statement is destroyed by sqlite3_finalize() or until the statement is automatically reprepared by the first call to sqlite3_step() for a particular run or until the next call to sqlite3_column_name() or sqlite3_column_name16() on the same column.\n\t\treturn library.sqlite3_column_name(pStmt, iCol);\n\t}\n\t//#if mvn.project.property.sqlite.enable.column.metadata == \"true\"\n\tstatic String sqlite3_column_origin_name(Pointer pStmt, int iCol) { // copy needed\n\t\treturn library.sqlite3_column_origin_name(pStmt, iCol);\n\t}\n\tstatic String sqlite3_column_table_name(Pointer pStmt, int iCol) { // copy needed\n\t\treturn library.sqlite3_column_table_name(pStmt, iCol);\n\t}\n\tstatic String sqlite3_column_database_name(Pointer pStmt, int iCol) { // copy needed\n\t\treturn library.sqlite3_column_database_name(pStmt, iCol);\n\t}\n\tstatic String sqlite3_column_decltype(Pointer pStmt, int iCol) { // copy needed\n\t\treturn library.sqlite3_column_decltype(pStmt, iCol);\n\t}\n\t//#else\n\tstatic String sqlite3_column_origin_name(Object pStmt, int iCol) {\n\t\tthrow new UnsupportedOperationException(\"SQLITE_ENABLE_COLUMN_METADATA not activated\");\n\t}\n\tstatic String sqlite3_column_table_name(Object pStmt, int iCol) {\n\t\tthrow new UnsupportedOperationException(\"SQLITE_ENABLE_COLUMN_METADATA not activated\");\n\t}\n\tstatic String sqlite3_column_database_name(Object pStmt, int iCol) {\n\t\tthrow new UnsupportedOperationException(\"SQLITE_ENABLE_COLUMN_METADATA not activated\");\n\t}\n\tstatic String sqlite3_column_decltype(Object pStmt, int iCol) {\n\t\tthrow new UnsupportedOperationException(\"SQLITE_ENABLE_COLUMN_METADATA not activated\");\n\t}\n\t//#endif\n\n\tstatic Pointer sqlite3_column_blob(Pointer pStmt, int iCol) { // copy needed: The pointers returned are valid until a type conversion occurs as described above, or until sqlite3_step() or sqlite3_reset() or sqlite3_finalize() is called.\n\t\treturn library.sqlite3_column_blob(pStmt, iCol);\n\t}\n\tstatic int sqlite3_column_bytes(Pointer pStmt, int iCol) {\n\t\treturn library.sqlite3_column_bytes(pStmt, iCol);\n\tstatic double sqlite3_column_double(Pointer pStmt, int iCol) {\n\t\treturn library.sqlite3_column_double(pStmt, iCol);\n\t}\n\tstatic int sqlite3_column_int(Pointer pStmt, int iCol) {\n\t\treturn library.sqlite3_column_int(pStmt, iCol);\n\t}\n\tstatic long sqlite3_column_int64(Pointer pStmt, int iCol) {\n\t\treturn library.sqlite3_column_int64(pStmt, iCol);\n\t}\n\tstatic String sqlite3_column_text(Pointer pStmt, int iCol) { // copy needed: The pointers returned are valid until a type conversion occurs as described above, or until sqlite3_step() or sqlite3_reset() or sqlite3_finalize() is called.\n\t\treturn library.sqlite3_column_text(pStmt, iCol);\n\t}\n\t//const void *sqlite3_column_text16(Pointer pStmt, int iCol);\n\t//sqlite3_value *sqlite3_column_value(Pointer pStmt, int iCol);\n\n\tstatic int sqlite3_bind_parameter_count(Pointer pStmt) {\n\t\treturn library.sqlite3_bind_parameter_count(pStmt);\n\tstatic int sqlite3_bind_parameter_index(Pointer pStmt, String name) { // no copy needed\n\t\treturn library.sqlite3_bind_parameter_index(pStmt, name);\n\t}\n\tstatic String sqlite3_bind_parameter_name(Pointer pStmt, int i) { // copy needed\n\t\treturn library.sqlite3_bind_parameter_name(pStmt, i);\n\t}\n\n\tstatic int sqlite3_bind_blob(Pointer pStmt, int i, byte[] value, int n, long xDel) { // no copy needed when xDel == SQLITE_TRANSIENT == -1\n\t\treturn library.sqlite3_bind_blob(pStmt, i, value, n, xDel);\n\t}\n\tstatic int sqlite3_bind_double(Pointer pStmt, int i, double value) {\n\t\treturn library.sqlite3_bind_double(pStmt, i, value);\n\t}\n\tstatic int sqlite3_bind_int(Pointer pStmt, int i, int value) {\n\t\treturn library.sqlite3_bind_int(pStmt, i, value);\n\t}\n\tstatic int sqlite3_bind_int64(Pointer pStmt, int i, long value) {\n\t\treturn library.sqlite3_bind_int64(pStmt, i, value);\n\t}\n\tstatic int sqlite3_bind_null(Pointer pStmt, int i) {\n\t\treturn library.sqlite3_bind_null(pStmt, i);\n\t}\n\tstatic int sqlite3_bind_text(Pointer pStmt, int i, String value, int n, long xDel) { // no copy needed when xDel == SQLITE_TRANSIENT == -1\n\t\treturn library.sqlite3_bind_text(pStmt, i, value, n, xDel);\n\t}\n\t//static int sqlite3_bind_text16(Pointer pStmt, int i, const void*, int, void(*)(void*));\n\t//static int sqlite3_bind_value(Pointer pStmt, int i, const sqlite3_value*);\n\tstatic int sqlite3_bind_zeroblob(Pointer pStmt, int i, int n) {\n\t\treturn library.sqlite3_bind_zeroblob(pStmt, i, n);\n\t}\n\tstatic int sqlite3_stmt_status(Pointer pStmt, int op, boolean reset) {\n\t\treturn library.sqlite3_stmt_status(pStmt, op, reset);\n\t}\n\t//#if mvn.project.property.sqlite.enable.stmt.scanstatus == \"true\"\n\tstatic int sqlite3_stmt_scanstatus(Pointer pStmt, int idx, int iScanStatusOp, PointerByReference pOut) {\n\t\treturn library.sqlite3_stmt_scanstatus(pStmt, idx, iScanStatusOp, pOut);\n\t}\n\tstatic void sqlite3_stmt_scanstatus_reset(Pointer pStmt) {\n\t\tlibrary.sqlite3_stmt_scanstatus_reset(pStmt);\n\t}\n\t//#endif\n\n\tstatic void sqlite3_free(Pointer p) {\n\t\tlibrary.sqlite3_free(p);\n\t}\n\n\tstatic int sqlite3_blob_open(Pointer pDb, String dbName, String tableName, String columnName,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t long iRow, boolean flags, PointerByReference ppBlob) { // no copy needed\n\t\treturn library.sqlite3_blob_open(pDb, dbName, tableName, columnName, iRow, flags, ppBlob);\n\t}\n\tstatic int sqlite3_blob_reopen(Pointer pBlob, long iRow) {\n\t\treturn library.sqlite3_blob_reopen(pBlob, iRow);\n\t}\n\tstatic int sqlite3_blob_bytes(Pointer pBlob) {\n\t\treturn library.sqlite3_blob_bytes(pBlob);\n\t}\n\tstatic int sqlite3_blob_read(Pointer pBlob, ByteBuffer z, int n, int iOffset) {\n\t\treturn library.sqlite3_blob_read(pBlob, z, n, iOffset);\n\t}\n\tstatic int sqlite3_blob_write(Pointer pBlob, ByteBuffer z, int n, int iOffset) {\n\t\treturn library.sqlite3_blob_write(pBlob, z, n, iOffset);\n\t}\n\tstatic int sqlite3_blob_close(Pointer pBlob) {\n\t\treturn library.sqlite3_blob_close(pBlob);\n\t}\n\n\tstatic Pointer sqlite3_backup_init(Pointer pDst, String dstName, Pointer pSrc, String srcName) {\n\t\treturn library.sqlite3_backup_init(pDst, dstName, pSrc, srcName);\n\t}\n\tstatic int sqlite3_backup_step(Pointer pBackup, int nPage) {\n\t\treturn library.sqlite3_backup_step(pBackup, nPage);\n\t}\n\tstatic int sqlite3_backup_remaining(Pointer pBackup) {\n\t\treturn library.sqlite3_backup_remaining(pBackup);\n\t}\n\tstatic int sqlite3_backup_pagecount(Pointer pBackup) {\n\t\treturn library.sqlite3_backup_pagecount(pBackup);\n\t}\n\tstatic int sqlite3_backup_finish(Pointer pBackup) {\n\t\treturn library.sqlite3_backup_finish(pBackup);\n\t}\n\n\t// As there is only one ProgressCallback by connection, and it is used to implement query timeout,\n\t// the method visibility is restricted.\n\tstatic void sqlite3_progress_handler(Pointer pDb, int nOps, ProgressCallback xProgress, Pointer pArg) {\n\t\tlibrary.sqlite3_progress_handler(pDb, nOps, xProgress, pArg);\n\t}\n\tstatic void sqlite3_trace(Pointer pDb, TraceCallback xTrace, Pointer pArg) {\n\t\tlibrary.sqlite3_trace(pDb, xTrace, pArg);\n\t}\n\tstatic void sqlite3_profile(Pointer pDb, ProfileCallback xProfile, Pointer pArg) {\n\t\tlibrary.sqlite3_profile(pDb, xProfile, pArg);\n\t}\n\n\t// TODO sqlite3_commit_hook, sqlite3_rollback_hook\n\tstatic Pointer sqlite3_update_hook(Pointer pDb, UpdateHook xUpdate, Pointer pArg) {\n\t\treturn library.sqlite3_update_hook(pDb, xUpdate, pArg);\n\t}\n\tstatic int sqlite3_set_authorizer(Pointer pDb, Authorizer authorizer, Pointer pUserData) {\n\t\treturn library.sqlite3_set_authorizer(pDb, authorizer, pUserData);\n\t}\n\n\t/*\n\tvoid (*)(sqlite3_context*,int,sqlite3_value**),",
+        "pred": "\t\treturn library.sqlite3_column_blob(pStmt, iCol);\n\t}\n\tstatic int sqlite3_column_bytes(Pointer pStmt, int iCol) { // copy needed\n\t\treturn library.sqlite3_column_bytes(pStmt, iCol);\n\t}\n\tstatic int sqlite3_column_bytes_declared(Pointer pStmt, int iCol) { // copy needed: The returned value is valid until the statement is reset or destroyed.\n\t\treturn library.sqlite3_column_bytes_declared(pStmt, iCol);\n\t}\n\tstatic String sqlite3_column_text(Pointer pStmt, int iCol) { // copy needed\n\t\treturn library.sqlite3_column_text(pStmt, iCol);\n\t}\n\tstatic String sqlite3_column_text16(Pointer pStmt, int iCol) { // copy needed\n\t\treturn library.sqlite3_column_text16(pStmt, iCol);\n\t}\n\tstatic Pointer sqlite3_column_double(Pointer pStmt, int iCol) { // copy needed\n\t\treturn library.sqlite3_column_double(pStmt, iCol);\n\t}\n\tstatic long sqlite3_column_int(Pointer pStmt, int iCol) { // copy needed: If a column has more than one row, then the second and subsequent rows will contain NULL.",
+        "codebleu": 0.13978488438686876,
+        "bleu": 0.0001598494337427953,
+        "rouge": 0.13735558408215662,
+        "levenshtein": 9553
+    },
+    {
+        "ref": "\t}\n\tvoid(*)(void*)\n\t*/\n\t// eTextRep: SQLITE_UTF8 => 1, ...\n\tstatic int sqlite3_create_function_v2(Pointer pDb, String functionName, int nArg, int eTextRep,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Pointer pApp, ScalarCallback xFunc, AggregateStepCallback xStep, AggregateFinalCallback xFinal, Pointer xDestroy) {\n\t\treturn library.sqlite3_create_function_v2(pDb, functionName, nArg, eTextRep, pApp, xFunc, xStep, xFinal, xDestroy);\n\t}\n\tstatic void sqlite3_result_null(Pointer pCtx) {\n\t\tlibrary.sqlite3_result_null(pCtx);\n\t}\n\tstatic void sqlite3_result_int(Pointer pCtx, int i) {\n\t\tlibrary.sqlite3_result_int(pCtx, i);\n\t}\n\tstatic void sqlite3_result_double(Pointer pCtx, double d) {\n\t\tlibrary.sqlite3_result_double(pCtx, d);\n\t}\n\tstatic void sqlite3_result_text(Pointer pCtx, String text, int n, long xDel) { // no copy needed when xDel == SQLITE_TRANSIENT == -1\n\t\tlibrary.sqlite3_result_text(pCtx, text, n, xDel);\n\t}\n\tstatic void sqlite3_result_blob(Pointer pCtx, byte[] blob, int n, long xDel) {\n\t\tlibrary.sqlite3_result_blob(pCtx, blob, n, xDel);\n\t}\n\tstatic void sqlite3_result_int64(Pointer pCtx, long l) {\n\t\tlibrary.sqlite3_result_int64(pCtx, l);\n\t}\n\tstatic void sqlite3_result_zeroblob(Pointer pCtx, int n) {\n\t\tlibrary.sqlite3_result_zeroblob(pCtx, n);\n\t}\n\n\tstatic void sqlite3_result_error(Pointer pCtx, String err, int length) {\n\t\tlibrary.sqlite3_result_error(pCtx, err, length);\n\t}\n\tstatic void sqlite3_result_error_code(Pointer pCtx, int errCode) {\n\t\tlibrary.sqlite3_result_error_code(pCtx, errCode);\n\t}\n\tstatic void sqlite3_result_error_nomem(Pointer pCtx) {\n\t\tlibrary.sqlite3_result_error_nomem(pCtx);\n\t}\n\tstatic void sqlite3_result_error_toobig(Pointer pCtx) {\n\t\tlibrary.sqlite3_result_error_toobig(pCtx);\n\t}\n\t//static void sqlite3_result_subtype(Pointer pCtx, int subtype);\n\n\tstatic Pointer sqlite3_value_blob(Pointer pValue) {\n\t\treturn library.sqlite3_value_blob(pValue);\n\t}\n\tstatic int sqlite3_value_bytes(Pointer pValue) {\n\t\treturn library.sqlite3_value_bytes(pValue);\n\t}\n\tstatic double sqlite3_value_double(Pointer pValue) {\n\t\treturn library.sqlite3_value_double(pValue);\n\t}\n\tstatic int sqlite3_value_int(Pointer pValue) {\n\t\treturn library.sqlite3_value_int(pValue);\n\t}\n\tstatic long sqlite3_value_int64(Pointer pValue) {\n\t\treturn library.sqlite3_value_int64(pValue);\n\tstatic String sqlite3_value_text(Pointer pValue) {\n\t\treturn library.sqlite3_value_text(pValue);\n\t}\n\tstatic int sqlite3_value_type(Pointer pValue) {\n\t\treturn library.sqlite3_value_type(pValue);\n\t}\n\tstatic int sqlite3_value_numeric_type(Pointer pValue) {\n\t\treturn library.sqlite3_value_numeric_type(pValue);\n\t}\n\n\tstatic Pointer sqlite3_get_auxdata(SQLite3Context pCtx, int n) {\n\t\treturn library.sqlite3_get_auxdata(pCtx.pCtx, n);\n\t}\n\tstatic void sqlite3_set_auxdata(SQLite3Context pCtx, int n, Pointer p, Destructor free) {\n\t\tlibrary.sqlite3_set_auxdata(pCtx.pCtx, n, p, free);\n\t}\n\tstatic Pointer sqlite3_aggregate_context(Pointer pCtx, int nBytes) {\n\t\treturn library.sqlite3_aggregate_context(pCtx, nBytes);\n\t}\n\tstatic Pointer sqlite3_context_db_handle(Pointer pCtx) {\n\t\treturn library.sqlite3_context_db_handle(pCtx);\n\t}\n\n\tpublic static final Charset UTF_8 = StandardCharsets.UTF_8;\n\tpublic static final String UTF_8_ECONDING = UTF_8.name();\n\tstatic Pointer nativeString(String sql) {\n\t\tfinal byte[] data = sql.getBytes(UTF_8);\n\t\tjnr.ffi.Runtime runtime = jnr.ffi.Runtime.getRuntime(library);",
+        "pred": "\n```java\n/**\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }",
+        "codebleu": 0.09084447188272007,
+        "bleu": 1.3535812171601732e-234,
+        "rouge": 0.024048096192384766,
+        "levenshtein": 3001
+    },
+    {
+        "ref": "\n\tpublic interface LogCallback {\n\t\t@SuppressWarnings(\"unused\")\n\t\t@Delegate\n\t\tdefault void callback(Pointer udp, int err,@Encoding(\"UTF-8\") String msg) {\n\t\t\tlog(err, msg);\n\t\t}\n\t\tvoid log(int err, String msg);\n\t}\n\n\tprivate static final LogCallback LOG_CALLBACK = new LogCallback() {",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n\n`````\n\n######\n\n````\n        if (!launcherJar.isFile()) {\n            throw new IllegalArgumentException(\"Launcher JAR file does not exist: \" + launcherJar);\n        }\n        command = getCommand(javaCommand, launcherJar, vmParameters);\n        sbt = new ProcessRunner(workingDir, command);\n    }\n\n    public final String getFormattedCommand() {\n        StringBuilder sb = new StringBuilder();\n        for (String s : command) {\n            if (s.contains(\" \")) {\n                sb.append(\"\\\"\").append(s).append(\"\\\"\");\n            } else {\n                sb.append(s);\n            }\n            sb.append(\" \");\n        }\n        return sb.toString();\n    }\n",
+        "codebleu": 0.2185713900671868,
+        "bleu": 2.6727411373916324e-155,
+        "rouge": 0.061538461538461535,
+        "levenshtein": 1073
+    },
+    {
+        "ref": "    if (p == null) {\n      return null;\n    } else {\n\t\treturn sqlite3_column_database_name(pStmt, iCol); // ko if pStmt is null\n\t}\n\n  public byte[] getColumnBlob(int iCol) throws StmtException {\n    checkColumnIndex(iCol);\n    final Pointer p = sqlite3_column_blob(pStmt, iCol); // ok if pStmt is null\n      final byte[] bytes = new byte[getColumnBytes(iCol)];\n      p.get(0L, bytes, 0, bytes.length); // a copy is made...\n      return bytes;\n    }\n  }\n\n\t@Override\n\tpublic int getColumnBytes(int iCol) throws StmtException {",
+        "pred": "/**\n * Provides a set of methods related to SQL queries.\n */\npublic class PreparedStatement {\n\n  private static final String EMPTY_STRING = \"\";\n  private static final long serialVersionUID = -343113184;\n  /** The underlying query statement. */\n  private Stmt pStmt;\n  /**\n   * @return the query statement.\n   */\n  public Stmt getPStmt() {\n    return pStmt;\n  }\n\n  /**\n   * @param query the query to set.\n   */\n  public void setQuery(String query) {\n    pStmt.setQuery(query);\n  }\n\n  /**\n   * @return true if this is a non-empty query. The query will be considered as non-empty if\n   * it contains any of the string'select', 'from', 'limit', 'offset', 'where', etc. This list is not\n   * necessarily complete but can be used as a first-pass test.\n   */\n  public boolean isQueryNonEmpty() {\n    String[] queries = { \"SELECT\", \"SELECT *\" + \" \", \"SELECT *\", \"FROM\", \"FROM \" + \" \", \"FROM \", \"WHERE\", \"WHERE \" + \" \", \"WHERE \" };\n    for (String query : queries) {\n      if (pStmt.queryContains(query)) {",
+        "codebleu": 0.14678463101771233,
+        "bleu": 2.489456564795555e-155,
+        "rouge": 0.10582010582010583,
+        "levenshtein": 796
+    },
+    {
+        "ref": "\t * @param tblName table name containing the affected row.\n\t * @param rowId id of the affected row.\n\t */\n\t@Delegate\n\tdefault void callback(Pointer pArg, int actionCode,@Encoding(\"UTF-8\") String dbName,@Encoding(\"UTF-8\") String tblName, long rowId) {\n\t\tupdate(actionCode, dbName, tblName, rowId);\n\t}\n\t/**\n\t * Data Change Notification Callback\n\t * @param actionCode org.sqlite.ActionCodes.SQLITE_INSERT | SQLITE_UPDATE | SQLITE_DELETE.\n\t * @param dbName database name containing the affected row.\n\t * @param tblName table name containing the affected row.\n\t * @param rowId id of the affected row.\n\t */\n\tvoid update(int actionCode, String dbName, String tblName, long rowId);\n}",
+        "pred": "\t * @param tblName table name containing the affected row.\n\t * @param rowId id of the affected row.\n\t */\n\tdefault void callback(Pointer pArg, int actionCode, String dbName, String tblName, long rowId) {\n\t\tupdate(actionCode, dbName, tblName, rowId);\n\t}\n\t/**\n\t * Data Change Notification Callback\n\t * @param actionCode org.sqlite.ActionCodes.SQLITE_INSERT | SQLITE_UPDATE | SQLITE_DELETE.\n\t * @param dbName database name containing the affected row.\n\t * @param tblName table name containing the affected row.\n\t * @param rowId id of the affected row.\n\t */\n\tvoid update(int actionCode, String dbName, String tblName, long rowId);",
+        "codebleu": 0.8464212730998897,
+        "bleu": 0.9096082045290829,
+        "rouge": 0.9585798816568047,
+        "levenshtein": 49
+    },
+    {
+        "ref": "\n\t\t\ttry {\n\t\t}\n\t}\n\n\n\t\t\t\t\ttry {\n\npackage org.sqlite.driver;\n\nimport java.sql.BatchUpdateException;\nimport java.sql.ResultSet;\nimport java.sql.SQLException;\nimport java.sql.SQLFeatureNotSupportedException;\nimport java.sql.SQLIntegrityConstraintViolationException;\nimport java.sql.SQLSyntaxErrorException;\nimport java.sql.SQLTimeoutException;\nimport java.sql.Statement;\n\nimport org.junit.Ignore;\nimport org.junit.Test;\nimport org.sqlite.FunctionFlags;\nimport org.sqlite.SQLite.SQLite3Context;\nimport org.sqlite.SQLite.SQLite3Values;\nimport org.sqlite.SQLiteException;\nimport org.sqlite.ScalarCallback;\nimport static org.junit.Assert.assertArrayEquals;\nimport static org.junit.Assert.assertEquals;\nimport static org.junit.Assert.assertFalse;\nimport static org.junit.Assert.assertNull;\nimport static org.junit.Assert.assertTrue;\nimport static org.junit.Assert.fail;\n\npublic class SqliteStatementTest extends SqliteTestHelper {\n\tprivate static final String[] BATCH_ATTACH_RESULT = {\n\t\t\t\"|db2|\",\n\t\t\t\"|main|\",\n\t};\n\n\t@Test\n\tpublic void testExecuteBatch() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tstmt.addBatch(\"INSERT INTO test_table VALUES (2, 'testing')\");\n\t\t\tstmt.addBatch(\"ATTACH ':memory:' as db2\");\n\t\t\t//stmt.addBatch(\"SELECT * FROM test_table\");\n\t\t\tstmt.addBatch(\"INSERT INTO test_table VALUES (3, 'testing again')\");\n\n\t\t\tassertArrayEquals(new int[]{1, 0/*, Statement.SUCCESS_NO_INFO*/, 1},\n\t\t\t\t\tstmt.executeBatch());\n\n\t\t\tfinal ResultSet catalogs = conn.getMetaData().getCatalogs();\n\t\t\tassertArrayEquals(BATCH_ATTACH_RESULT,\n\t\t\t\t\tformatResultSet(catalogs));\n\t\t\tcatalogs.close();\n\n\t\t\tassertArrayEquals(new int[0], stmt.executeBatch());\n\n\t\t\tstmt.addBatch(\"INSERT INTO test_table VALUES (4, 'testing again too')\");\n\t\t\tstmt.addBatch(\"INSERT INTO test_table VALUES (4, 'testing again too')\");\n\t\t\ttry {\n\t\t\t\tstmt.executeBatch();\n\t\t\t\tfail(\"executeBatch should not have succeeded\");\n\t\t\t} catch (BatchUpdateException e) {\n\t\t\t}\n\n\t\t\tassertArrayEquals(new int[0], stmt.executeBatch());\n\n\t\t\tfinal String[] tableDump = {\n\t\t\t\t\t\"|1|test|\",\n\t\t\t\t\t\"|2|testing|\",\n\t\t\t\t\t\"|3|testing again|\",\n\t\t\t\t\t\"|4|testing again too|\",\n\t\t\t};\n\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\"SELECT * FROM test_table\")) {\n\t\t\t\tassertArrayEquals(tableDump, formatResultSet(rs));\n\t\t\t}\n\n\t\t\tstmt.addBatch(\"INSERT INTO test_table VALUES (2, 'testing')\");\n\t\t\tstmt.clearBatch();\n\t\t\tassertArrayEquals(new int[0], stmt.executeBatch());\n\t\t}\n\t}\n\n\t@Test\n\tpublic void testCloseOnCompletion() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tassertFalse(stmt.isCloseOnCompletion());\n\n\t\t\tstmt.closeOnCompletion();\n\t\t\tassertTrue(stmt.isCloseOnCompletion());\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\"SELECT * FROM test_table\")) {\n\t\t\t\tformatResultSet(rs);\n\t\t\t}\n\t\t\tassertTrue(stmt.isClosed());\n\t\t}\n\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tassertFalse(stmt.isCloseOnCompletion());\n\n\t\t\tstmt.closeOnCompletion();\n\t\t\tassertTrue(stmt.isCloseOnCompletion());\n\t\t\tassertEquals(1, stmt.executeUpdate(\"INSERT INTO test_table VALUES (2, 'testing')\"));\n\t\t\tassertFalse(stmt.isClosed());\n\t\t}\n\t}\n\n\t@Test(expected = SQLException.class)\n\tpublic void testBadExecuteUpdate() throws Exception {\n\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tstmt.executeUpdate(\"SELECT * FROM test_table\");\n\t\t}\n\t}\n\n\t@Ignore\n\t@Test\n\tpublic void testQueryTimeout() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\ttry {\n\t\t\t\tstmt.setQueryTimeout(-1);\n\t\t\t\tfail(\"negative timeout value allowed?\");\n\t\t\t} catch (SQLException e) {\n\n\t\t\t}\n\n\t\t\t((Conn) conn).getConn().createScalarFunction(\"delay\", 0, FunctionFlags.SQLITE_UTF8, new ScalarCallback() {\n\t\t\t\t@Override\n\t\t\t\tpublic void func(SQLite3Context pCtx, SQLite3Values args) {\n\t\t\t\t\t\tThread.currentThread().join(1000);\n\t\t\t\t\t} catch (InterruptedException e) {\n\t\t\t\t\t\te.printStackTrace();\n\t\t\t\t\t}\n\t\t\t\t\tpCtx.setResultInt(0);\n\t\t\t\t}\n\t\t\t});\n\t\t\tstmt.setQueryTimeout(1);\n\t\t\tassertEquals(1, stmt.getQueryTimeout());\n\n\t\t\tlong startTime = System.currentTimeMillis();\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\"SELECT *, delay() from test_table\")) {\n\t\t\t\trs.next();\n\t\t\t\tfail(\"Expected a timeout exception\");\n\t\t\t} catch (SQLTimeoutException e) {\n\t\t\t\tlong endTime = System.currentTimeMillis();\n\n\t\t\t\tif (endTime - startTime < 1000) {\n\t\t\t\t\tfail(\"Timeout expired early -- \" + (endTime - startTime));\n\t\t\t\t}\n\t\t\t}\n\t\t\t\tstmt.execute(\"INSERT INTO test_table VALUES (2, delay())\");\n\t\t\t} catch (SQLiteException e) {\n\t\t\t\tlong endTime = System.currentTimeMillis();\n\n\t\t\t\tif (endTime - startTime < 1000) {\n\t\t\t\t\tfail(\"Timeout expired early -- \" + (endTime - startTime));\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\n\t@Test\n\tpublic void testMaxRows() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tstmt.executeUpdate(\"INSERT INTO test_table VALUES (2, 'testing')\");\n\n\t\t\tassertEquals(0, stmt.getMaxRows());\n\n\t\t\ttry {\n\t\t\t\tstmt.setMaxRows(-1);\n\t\t\t\tfail(\"able to set max rows to a negative number?\");\n\t\t\t} catch (SQLException e) {\n\t\t\t\tassertEquals(0, stmt.getMaxRows());\n\t\t\t}\n\n\t\t\tstmt.setMaxRows(1);\n\t\t\tassertEquals(1, stmt.getMaxRows());\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\"SELECT * FROM test_table\")) {\n\t\t\t\tassertTrue(rs.next());\n\t\t\t\tassertFalse(rs.next());\n\t\t\t}\n\n\t\t\tstmt.setMaxRows(4);\n\t\t\tassertEquals(4, stmt.getMaxRows());\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\"SELECT * FROM test_table\")) {\n\t\t\t\tassertTrue(rs.next());\n\t\t\t\tassertTrue(rs.next());\n\t\t\t\tassertFalse(rs.next());\n\t\t\t}\n\t\t}\n\t}\n\n\t@Ignore\n\t@Test\n\tpublic void testCancel() throws Exception {\n\t\ttry (final Statement stmt = conn.createStatement()) {\n\t\t\tfinal Object barrier = new Object();\n\n\t\t\tstmt.cancel();\n\n\t\t\tThread canceller = new Thread(new Runnable() {\n\t\t\t\t@Override\n\t\t\t\tpublic void run() {\n\t\t\t\t\tsynchronized (barrier) {\n\t\t\t\t\t\tbarrier.notifyAll();\n\t\t\t\t\t}\n\t\t\t\t\ttry {\n\t\t\t\t\t\tThread.sleep(10);\n\t\t\t\t\t\tstmt.cancel();\n\t\t\t\t\t} catch (InterruptedException e) {\n\n\t\t\t\t\t} catch (SQLException e) {\n\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t});\n\n\t\t\tcanceller.start();\n\t\t\tsynchronized (barrier) {\n\t\t\t\tbarrier.wait();\n\t\t\t}\n\n\t\t\ttry {\n\t\t\t\tstmt.executeUpdate(\"INSERT INTO test_table VALUES (2, 'testing cancel')\");\n\t\t\t\tfail(\"Statement was not cancelled?\");\n\t\t\t} catch (SQLException e) {\n\t\t\t}\n\t\t}\n\t}\n\n\t@Test(expected = SQLIntegrityConstraintViolationException.class)\n\tpublic void testIntegrityException() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tstmt.execute(\"INSERT INTO test_table VALUES (1, 'test')\");\n\t\t}\n\t}\n\n\t@Test(expected = SQLFeatureNotSupportedException.class)\n\tpublic void testFetchDirection() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tassertEquals(ResultSet.FETCH_FORWARD, stmt.getFetchDirection());\n\t\t\tstmt.setFetchDirection(ResultSet.FETCH_FORWARD);\n\t\t\tassertEquals(ResultSet.FETCH_FORWARD, stmt.getFetchDirection());\n\t\t\tstmt.setFetchDirection(ResultSet.FETCH_REVERSE);\n\t\t}\n\t}\n\n\t@Test\n\tpublic void testFetchSize() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tassertEquals(1, stmt.getFetchSize());\n\t\t\tstmt.setFetchSize(10);\n\t\t\tassertEquals(1, stmt.getFetchSize());\n\t\t}\n\t}\n\n\t@Test(expected = SQLException.class)\n\tpublic void testExecuteNonQuery() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tstmt.executeQuery(\"INSERT INTO test_table VALUES (2, 'testing')\");\n\t@Test(expected = SQLException.class)\n\tpublic void testClosedStatement() throws Exception {\n\t\tStatement stmt = conn.createStatement();\n\n\t\tassertFalse(stmt.isClosed());\n\t\tstmt.close();\n\t\tassertTrue(stmt.isClosed());\n\t\tstmt.execute(\"SELECT * FROM test_table\");\n\t}\n\n\t@Test\n\tpublic void testUpdateCount() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tassertEquals(1, stmt.executeUpdate(\"REPLACE INTO test_table VALUES (1, 'test')\"));\n\t\t\tassertEquals(-1, stmt.getUpdateCount());\n\t\t\tassertEquals(1, stmt.executeUpdate(\"INSERT INTO test_table VALUES (2, 'testing')\"));\n\t\t\tassertEquals(0, stmt.executeUpdate(\"CREATE TABLE change_tab (id INTEGER, name VARCHAR)\"));\n\t\t\tassertEquals(-1, stmt.getUpdateCount());\n\t\t\tassertEquals(0, stmt.executeUpdate(\"UPDATE test_table set name='more testing' where id > 2\"));\n\t\t\tassertEquals(1, stmt.executeUpdate(\"UPDATE test_table set name='more testing' where id > 1\"));\n\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\"SELECT * FROM test_table\")) {\n\t\t\t\tassertEquals(-1, stmt.getUpdateCount());\n\t\t\t\tassertNull(stmt.getResultSet());\n\t\t\t}\n\n\t\t\tassertEquals(2, stmt.executeUpdate(\"DELETE FROM test_table WHERE 1\"));\n\t\t}\n\t}\n\n\tprivate static final String[] ESCAPE_RESULTS = {\n\t\t\t\"||\",\n\t\t\t\"|1|\",\n\t\t\t\"|4|\",\n\t\t\t\"|2011-10-06|\",\n\t\t\t\"|15:00:00|\",\n\t\t\t\"|2011-10-06 15:00:00|\",\n\t\t\t\"|fooBAR,BAZ|\",\n\t\t\t\"|0|\",\n\t};\n\n\tprivate static final String[] ESCAPE_LIMIT_RESULTS = {\n\t\t\t\"|1|\",\n\t\t\t\"|2|\",\n\t};\n\n\t@Ignore\n\t@Test\n\tpublic void testEscapedQueries() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\n\t\t\t\t\t\"SELECT {fn user()} AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT {fn abs(-1)} AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT {fn char_length('test')} AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT {d '2011-10-06'} AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT {t '15:00:00'} AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT {ts '2011-10-06 15:00:00'} AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT {fn concat('foo', (select 'BAR,BAZ'))} AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT 'FOO' LIKE '\\\\%' {escape '\\\\'} AS RESULT\")) {\n\t\t\t\tassertArrayEquals(ESCAPE_RESULTS, formatResultSet(rs));\n\t\t\t}\n\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\n\t\t\t\t\t\"SELECT 1 AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT 2 AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT 3 AS RESULT {limit 2}\")) {\n\t\t\t\tassertArrayEquals(ESCAPE_LIMIT_RESULTS, formatResultSet(rs));\n\t\t\t}\n\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\n\t\t\t\t\t\"SELECT * FROM test_table {limit 1 offset 1}\")) {\n\t\t\t\tassertArrayEquals(new String[0], formatResultSet(rs));\n\t\t\t}\n\n\t\t\tstmt.setEscapeProcessing(false);\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\n\t\t\t\t\t\"SELECT * FROM test_table {limit 1 offset 1}\")) {\n\t\t\t\tfail(\"escaped statement worked?\");\n\t\t\t} catch (SQLSyntaxErrorException e) {\n\n\t\t\t}\n\t\t}\n\t}\n\n\t@Test(expected = SQLFeatureNotSupportedException.class)\n\tpublic void testCursorName() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tstmt.setCursorName(\"foo\");\n\t\t}\n\t}\n}",
+        "pred": "\n```\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n",
+        "codebleu": 0.05467065271018884,
+        "bleu": 1.1399067556359397e-88,
+        "rouge": 0.012291483757682176,
+        "levenshtein": 9663
+    },
+    {
+        "ref": "\nimport java.util.Vector;\nimport java.util.List;\nimport at.sti2.spark.core.condition.TripleCondition;\nimport at.sti2.spark.core.stream.Triple;\nimport at.sti2.spark.rete.Token;\nimport at.sti2.spark.rete.WorkingMemoryElement;\nimport at.sti2.spark.rete.alpha.AlphaMemory;",
+        "pred": "\n**Example 1:**\n```\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n            } else {\n                output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n",
+        "codebleu": 0.125,
+        "bleu": 0,
+        "rouge": 0.0,
+        "levenshtein": 567
+    },
+    {
+        "ref": "\n\t\tfor (WorkingMemoryElement item : permanentItems) {\n\t\t\tbuffer.append('\\n');\n\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.SUBJECT));\n\t\t\tbuffer.append(\" \");\n\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.PREDICATE));\n\t\t\tbuffer.append(\" \");\n\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.OBJECT));\n\t\t}\n\n\t\tfor (WorkingMemoryElement item : items) {\n\t\t\tbuffer.append('\\n');\n\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.SUBJECT));\n\t\t\tbuffer.append(\" \");\n\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.PREDICATE));\n\t\t\tbuffer.append(\" \");\n\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.OBJECT));\n\n\t\t}\n\n\t\treturn buffer.toString();",
+        "pred": "\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n\nResolution:\n\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n            } else {\n                output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n######\n\nConflict:\n\n```java\n        if (!launcherJar.isFile()) {",
+        "codebleu": 0.14273499185332023,
+        "bleu": 8.388336031921282e-232,
+        "rouge": 0.032432432432432434,
+        "levenshtein": 1113
+    },
+    {
+        "ref": "\n\t\tfor (JoinNodeTest test : tests) {\n\n\t\t\tvalueArg1 = wme.getTriple().getRDFTriple().getValueOfField(test.getArg1Field());\n\n\t\t\t// TODO Fix this for faster processing; instead of using indices\n\t\t\t// maybe we can use pointers?!",
+        "pred": "",
+        "codebleu": 0.25,
+        "bleu": 0,
+        "rouge": 0,
+        "levenshtein": 224
+    },
+    {
+        "ref": "\n\t\t\tint index = test.getArg2ConditionNumber();\n\t\t\tToken wmeToken = parentTokens.get(index);\n\t\t\tvalueArg2 = wmeToken.getWme().getTriple().getRDFTriple().getValueOfField(test.getArg2Field());\n\n\t\t\tif (!valueArg1.equals(valueArg2))\n\t\t\t\treturn false;",
+        "pred": "\n/**\n * Class that describes a particular condition to be evaluated in the context of the reasoning engine.\n * \n * @author David Martin Lucchesi\n *\n */\npublic class TestCondition {\n\t/** name of the test class in the WME that the condition is based on */\n\tprotected String testClass;\n\t/** name of the test method in the WME that the condition is based on */\n\tprotected String testMethod;\n\t/** name of the field to check in the WME */\n\tprotected String testField1;\n\t/** name of the second field to check in the WME */\n\tprotected String testField2;\n\n\t/**\n\t * Constructor for TestCondition.\n\t * \n\t * @param testClass\n\t *            name of the test class in the WME that the condition is based on\n\t * @param testMethod\n\t *            name of the test method in the WME that the condition is based on\n\t * @param testField1\n\t *            name of the first argument for the test method in the WME (will be compared to arg1)\n\t * @param testField2",
+        "codebleu": 0.203125,
+        "bleu": 0,
+        "rouge": 0.02484472049689441,
+        "levenshtein": 821
+    },
+    {
+        "ref": "\t/**\n\t * Deletes token and all its parents\n\t */\n//\tpublic void deleteTokenAndParents(){\n//\t\t\n//\t\tif (parent != null)\n//\t\t\tparent.deleteTokenAndParents();\n//\n//\t\t//Remove token from the list of node items\n//\t\t//TODO Beta and production node are basically the same so it should inherit the same parent\n//\t\tif (node instanceof BetaMemory)\n//\t\t\t((BetaMemory)node).removeItem(this);\n//\t\telse if (node instanceof ProductionNode)\n//\t\t\t((ProductionNode)node).removeItem(this);\n//\t\t\n//\t\t//Remove token from the list of tokens in WME\n//\t\twme.removeToken(this);\n//\t\t\n//\t\t//Remove token from the list of parent children\n//\t\tif (parent != null)\n//\t\t\tparent.removeChild(this);\n//\t}\n\t\n\tpublic String toString(){\n\t\treturn wme.toString();\n\t}\n}",
+        "pred": "",
+        "codebleu": 0.25,
+        "bleu": 0,
+        "rouge": 0,
+        "levenshtein": 726
+    },
+    {
+        "ref": "\t\taddItem(wme);\n\n\t\twme.addAlphaMemory(this);\n\n\t\tfor (RETENode reteNode : successors)\n\t\t\treteNode.rightActivate(wme);\n\t}",
+        "pred": "\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n\n###### 2nd example\n\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n            } else {\n                output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n\n###### 3rd example\n\n     */",
+        "codebleu": 0.2678994404232205,
+        "bleu": 5.9825138229219476e-232,
+        "rouge": 0.0,
+        "levenshtein": 1171
+    },
+    {
+        "ref": "\t}\n\n\t@Override\n\tpublic void leftActivate(Token parentToken, WorkingMemoryElement wme){\n\t\t\n\t\tToken newToken = createToken(parentToken, wme);\n",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n\n Resolution:\n\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n            } else {\n                output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n######\n\nConflict:\n\n```\n        if (!launcherJar.isFile()) {",
+        "codebleu": 0.29153710110179853,
+        "bleu": 7.82830916853581e-232,
+        "rouge": 0.017094017094017096,
+        "levenshtein": 1193
+    },
+    {
+        "ref": "\n\t\taddItem(newToken);\n\n\t\tfor (RETENode reteNode : children)\n\t\t\treteNode.leftActivate(newToken);\n\t}",
+        "pred": "\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n\n**Example II**\n\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n            } else {\n                output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```",
+        "codebleu": 0.32625802179690816,
+        "bleu": 6.017810420952586e-232,
+        "rouge": 0.0,
+        "levenshtein": 1162
+    },
+    {
+        "ref": "\n\t\tthis.sparkWeaveNetwork = sparkWeaveNetwork;\n\t\tthis.socket = socket;\n\t}\n\n\t\n\tpublic void run(){\n\t\t\n\t\tlong tripleCounter = 0;\n//\t\tlong timepoint = (new Date()).getTime();\n\n\t\tlong startProcessingTime;\n\t\tlong endProcessingTime;",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n           } else {\n            output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n        }\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n######\n\n```java\n        if (!launcherJar.isFile()) {",
+        "codebleu": 0.15259128149729337,
+        "bleu": 9.363140134330432e-232,
+        "rouge": 0.03225806451612903,
+        "levenshtein": 1124
+    },
+    {
+        "ref": "\t\t\t\tTriple sTriple = new Triple(parseTriple(tripleLine),\n\t\t\t\t\t\t(new Date()).getTime(), false, 0l);\n\t\t\t\tsparkWeaveNetwork.activateNetwork(sTriple);\n\n\t\t\t\ttripleCounter++;\n\t\t\t\tif(tripleCounter%2==0)\n\t\t\t\t\trunGC();\n\n\t\t\t\t// if (tripleCounter%1000 == 0){\n\t\t\t\t// logger.info(sparkWeaveNetwork.getEpsilonNetwork().getNetwork().getEpsilonMemoryLevels());\n\t\t\t\t// logger.info(sparkWeaveNetwork.getReteNetwork().getWorkingMemory().getAlphaMemoryLevels());\n\t\t\t\t// logger.info(sparkWeaveNetwork.getReteNetwork().getBetaMemoryLevels());\n\n\t\t\t\t// logger.info(\"Processing \" + (1000/(sTriple.getTimestamp() -\n\t\t\t\t// timepoint)) + \" triples/sec.\");\n\t\t\t\t// timepoint = sTriple.getTimestamp();\n\t\t\t\t// }\n\t\t\t}\n\n\t\t\tendProcessingTime = new Date().getTime();",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n\n```\n\nResolution:\n\n```\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n            } else {\n                output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n\n```\n######\n\nConflict:\n\n```\n        if (!launcherJar.isFile()) {",
+        "codebleu": 0.23914989083676547,
+        "bleu": 2.681910195329877e-155,
+        "rouge": 0.024999999999999998,
+        "levenshtein": 1087
+    },
+    {
+        "ref": "\tpublic void run() {\n\n\t\tlong tripleCounter = 0;\n\t\tlong startProcessingTime;\n\t\tlong endProcessingTime;\n",
+        "pred": "/**\n * Description: This function is used to parse and extract the necessary data from a line of text.\n *\n * Parameters:\n *  line - a line of text\n *  map - pre-initialized Bloom maps used when storing data in a file\n *  set - the maximum number of keys in each Bloom map\n *\n * Return:\n *  true indicates a field of this length was found in the data, false\n *  indicates it was not\n * @throws Exception\n */",
+        "codebleu": 0.25,
+        "bleu": 0,
+        "rouge": 0.0,
+        "levenshtein": 351
+    },
+    {
+        "ref": "\t\t\t\t// timepoint)) + \" triples/sec.\");\n\t\t\t\t// timepoint = sTriple.getTimestamp();\n\t\t\t\t// }\n\n\t\t\t}\n",
+        "pred": "        boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n\t\t\t\t// timepoint)) + \" triples/sec.\");\n\t\t\t\t// timepoint = sTriple.getTimestamp();\n\t\t\t\t// }\n\t\t\t\t}\n\n\t\t\t}",
+        "codebleu": 0.7938290081855742,
+        "bleu": 0.675316032742297,
+        "rouge": 0.6,
+        "levenshtein": 87
+    },
+    {
+        "ref": "\t\t\te.printStackTrace();\n\t\t}\n\t}\n\n\n\tpublic void runGC() {\n\n\t\t/************************************************\n\t\t * CLEANING EPSILON NETWORK\n\t\t ************************************************/\n\n\t\tfor (Iterator",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n\n```\n######\n\nConflict:\n\n```\n        if (!launcherJar.isFile()) {\n            throw new IllegalArgumentException(\"Launcher JAR file does not exist: \" + launcherJar);\n        }\n        command = getCommand/javaCommand, launcherJar, vmParameters);\n        sbt = new ProcessRunner(workingDir, command);\n    }\n\n    public final String getFormattedCommand() {\n        StringBuilder sb = new StringBuilder();\n        for (String s : command) {\n            if (s.contains(\" \")) {\n                sb.append(\"\\\"\").append(s).append(\"\\\"\");\n            } else {\n                sb.append(s);\n            }\n            sb.append(\" \");\n        }\n        return sb.toString();\n    }\n",
+        "codebleu": 0.441454683620233,
+        "bleu": 2.6592760182644606e-155,
+        "rouge": 0.03773584905660377,
+        "levenshtein": 1158
+    },
+    {
+        "ref": "\t\t}else{\n\tpublic void addSuccesor(RETENode node) {\n\t\tsuccessors.add(node);\n\t}\n\t\n\tpublic void addItem(WorkingMemoryElement wme){\n\t\t\n\t\tif(!wme.getTriple().isPermanent()){\n//\t\t\tsynchronized(items){\n\t\t\t\titems.add(wme);\n//\t\t\t}\n\t\t\tpermanentItems.add(wme);\n\t\t}\n",
+        "pred": "\n```\n\tpublic void addSuccesor(RETENode node) {\n\t\tsuccessors.add(node);\n\t}\n\n\tpublic void addItem(WorkingMemoryElement wme) {\n\n\t\tif (!wme.getTriple().isPermanent()) {\n\t\t\titems.add(wme);\n\t\t} else {\n\t\t\tpermanentItems.add(wme);\n\t\t}\n\t}",
+        "codebleu": 0.6543967978181155,
+        "bleu": 0.438257204177357,
+        "rouge": 0.9199999999999999,
+        "levenshtein": 52
+    },
+    {
+        "ref": "\t\t}\n\n\t}\n\t\n\tpublic void removeItem(WorkingMemoryElement wme){\n//\t\tsynchronized(items){\n\t\t\titems.remove(wme);\n//\t\t}\n\t}\n\n\tpublic List",
+        "pred": "\n```\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        sbt.writeInput(action + \"\\n\");\n\n        if (action.trim().equals(\"\")) {\n            output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n        } else {\n            output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n        }\n\n        boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n        return!error;\n    }\n}\n\n######\n\n\nConflict:\n\n```\n        if (!launcherJar.isFile()) {\n            throw new IllegalArgumentException(\"Launcher JAR file does not exist: \" + launcherJar);\n        }\n        sbt = new ProcessRunner(workingDir, getCommand(javaCommand, launcherJar, vmParameters));\n    }\n\n    private static String[] getCommand(String javaCommand, File launcherJar, String[] vmParameters) {\n        List\n```\n\nResolution:\n\n```\n        if (!launcherJar.isFile()) {\n            throw new IllegalArgumentException(\"Launcher JAR file does not exist: \" + launcherJar);\n        }\n        command = getCommand(javaCommand, launcherJar, vmParameters);\n        sbt = new ProcessRunner(workingDir, command);\n    }\n",
+        "codebleu": 0.4067627017875293,
+        "bleu": 2.340460035047826e-155,
+        "rouge": 0.03333333333333333,
+        "levenshtein": 1145
+    },
+    {
+        "ref": "//\t\t}\n\t\t\n\t\t\tbuffer.append(\" \");\n\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.OBJECT));\n\t\t}\n\t\t\n//\t\tsynchronized(items){\n\t\t\tfor (WorkingMemoryElement item : items){\n\t\t\t\tbuffer.append('\\n');\n\t\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.SUBJECT));\n\t\t\t\tbuffer.append(\" \");\n\t\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.PREDICATE));\n\t\t\t\tbuffer.append(\" \");\n\t\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.OBJECT));\n\t\t\t}\n\t\treturn buffer.toString();\n\t}\n}",
+        "pred": "\n### Example 1: Renamed files\n\nConflicting code:\n`// @formatter:off\nString id = \"123\";\n// @formatter:on`\n\n`// @formatter:off\nString id = \"123\";\n// @formatter:on`\n\nResolved code:\n`// @formatter:off\nString id = \"123\";\n// @formatter:on`\n\n### Example 2: Renamed files with different extensions\n\nConflicting code:\n`MyClass.java`\n`import MyClass;\n`import MyClass;\n`\n\nResolved code:\n`MyClass.cs`",
+        "codebleu": 0.0957829587970919,
+        "bleu": 8.06798322521923e-232,
+        "rouge": 0.0,
+        "levenshtein": 498
+    },
+    {
+        "ref": "import at.sti2.spark.rete.node.RETENode;\n\npublic class JoinNode extends RETENode {\n\t\n\tstatic Logger log = Logger.getLogger(JoinNode.class);\n\n\tprivate AlphaMemory alphaMemory = null;\n\tprivate List",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n            } else {\n                output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n######\n\n```java\n        if (!launcherJar.isFile()) {",
+        "codebleu": 0.24844154835930532,
+        "bleu": 8.460552185460498e-232,
+        "rouge": 0.015624999999999998,
+        "levenshtein": 1147
+    },
+    {
+        "ref": "\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\t//clean wme that are marked as out of window\n\t\tfor (WorkingMemoryElement cWME : wmeOutOfWindow) {\n\t\t\tcWME.remove();\n\t\t}\n\n\t\t// If the join node is under dummy root beta node left activation should\n\t\t// fire",
+        "pred": "\n```\n\t\t\t\t\t\treteNode.leftActivate(betaMemoryToken, wme);\n\t\t\t\t}\n\t\t\t}\n\n\t\t}\n\n\t\t// If the join node is under dummy root beta node left activation should\n\t\t// fire",
+        "codebleu": 0.5107289887467525,
+        "bleu": 0.43012325360129955,
+        "rouge": 0.6382978723404256,
+        "levenshtein": 102
+    },
+    {
+        "ref": "\t\t\t\t\t\tcontinue;\n\n\t\t\t\t\tfor (RETENode reteNode : children)\n\t\t\t\t\t\tif (reteNode instanceof BetaMemory)\n\t\t\t\t\t\t\t((BetaMemory) reteNode).leftActivate(token,\n\t\t\t\t\t\t\t\t\talphaWME);\n\t\t\t\t\t\telse\n\t\t\t\t\t\t\t((ProductionNode) reteNode).leftActivate(token,\n\t\t\t\t\t\t\t\t\talphaWME);\n\t\t\t\t}\n\t\t\t}\n\t\t}",
+        "pred": "\n```\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n\nResolution:\n\n```\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n            } else {\n                output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n######\n\nConflict:\n\n```\n        if (!launcherJar.isFile()) {",
+        "codebleu": 0.2516564770161196,
+        "bleu": 7.55941390200166e-79,
+        "rouge": 0.03252032520325203,
+        "levenshtein": 1161
+    },
+    {
+        "ref": "\n\t\tfor (JoinNodeTest test : tests) {\n\n\t\t\tlexicalValueArg1 = wme.getTriple().getRDFTriple().getLexicalValueOfField(test.getArg1Field());\n\n\t\t\t// TODO Fix this for faster processing; instead of using indices\n\t\t\t// maybe we can use pointers?!",
+        "pred": "\t\tfor (JoinNodeTest test : tests) {\n\n\t\t\tvalueArg1 = wme.getTriple().getRDFTriple().getValueOfField(test.getArg1Field());\n\n\t\t\t// TODO Fix this for faster processing; instead of using indices\n\t\t\t// maybe we can use pointers?!",
+        "codebleu": 0.9116968802584591,
+        "bleu": 0.8207202632332541,
+        "rouge": 0.9230769230769231,
+        "levenshtein": 16
+    },
+    {
+        "ref": "\n\t\t\tint index = test.getArg2ConditionNumber();\n\t\t\tToken wmeToken = parentTokens.get(index);\n\t\t\tlexicalvalueArg2 = wmeToken.getWme().getTriple().getRDFTriple().getLexicalValueOfField(test.getArg2Field());\n\n\t\t\tif (!lexicalValueArg1.equals(lexicalvalueArg2))\n\t\t\t\treturn false;\n\t\t}\n",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n\nResolution:\n\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n            } else {\n                output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n",
+        "codebleu": 0.322267200829205,
+        "bleu": 9.053100916341928e-232,
+        "rouge": 0.048780487804878044,
+        "levenshtein": 1077
+    },
+    {
+        "ref": "\t\n\t}\n\tpublic void addItem(Token token){\n//\t\tsynchronized(items){\n\t\t\titems.add(token);\n//\t\t}\n\t}\n\t\n\tpublic void removeItem(Token token){\n//\t\tsynchronized(items){\n\t\t\titems.remove(token);\n//\t\t}\n\t}\n\t\n\t@Override",
+        "pred": "",
+        "codebleu": 0.25,
+        "bleu": 0,
+        "rouge": 0,
+        "levenshtein": 205
+    },
+    {
+        "ref": "\t\t\n\t\tlogger.info(\"SparkWeave network completed...\");\n\t\t\n\n//\t\tSparkWeaveGarbageCollector sparkWeaveGC = new SparkWeaveGarbageCollector(this, gcSessionDelay);\n//\t\tsparkWeaveGC.start();\n\n//\t\t\n//\t\tlogger.info(\"SparkWeave garbage collector started...\");\n\n\t\t\n\t\t//If there is a CONSTRUCT part start also the output thread \n\t\tif (triplePatternGraph.getConstructConditions().size() > 0){",
+        "pred": "\t\t\n\t\tlogger.info(\"SparkWeave network completed...\");\n\t\t\n//\t\tSparkWeaveGarbageCollector sparkWeaveGC = new SparkWeaveGarbageCollector(this, gcSessionDelay);\n//\t\tsparkWeaveGC.start();\n\t\t\n//\t\tlogger.info(\"SparkWeave garbage collector started...\");\n\t\t\n\t\t//If there is a CONSTRUCT part start also the output thread \n\t\tif (triplePatternGraph.getConstructConditions().size() > 0){",
+        "codebleu": 0.9721286023467484,
+        "bleu": 0.9440368015398672,
+        "rouge": 1.0,
+        "levenshtein": 5
+    },
+    {
+        "ref": "\t\tthis.socket = socket;\n\t}\n\n\tpublic void run() {\n\n\t\tlong tripleCounter = 0;\n//\t\tlong timepoint = (new Date()).getTime();",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n ```\n\n**######**\n\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        sbt.writeInput(action + \"\\n\");\n\n        if (action.trim().equals(\"\")) {\n            output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n        } else {\n            output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n        }\n        boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n        return!error;\n    }\n}\n```\n**######**\n\n```java\n        if (!launcherJar.isFile()) {\n            throw new IllegalArgumentException(\"Launcher JAR file does not exist: \" + launcherJar);\n        }",
+        "codebleu": 0.17153198061132602,
+        "bleu": 9.206597977384398e-232,
+        "rouge": 0.04878048780487805,
+        "levenshtein": 1193
+    },
+    {
+        "ref": "\n\t\t\tstartProcessingTime = (new Date()).getTime();\n\n\t\t\tlong threshold = 0;\n\t\t\twhile ((tripleLine = streamReader.readLine()) != null) {\n\n\t\t\t\tlong currentTime = System.currentTimeMillis();\n\t\t\t\tTriple sTriple = new Triple(parseTriple(tripleLine),currentTime, false, 0l);\n\t\t\t\tsparkWeaveNetwork.activateNetwork(sTriple);\n\t\t\t\ttripleCounter++;\n\n//\t\t\t\tlong gcThresholdTimestamp = System.currentTimeMillis()- sparkWeaveNetwork.getTimeWindowLength();\n//\t\t\t\tif (gcThresholdTimestamp > threshold) {\n//\n//\t\t\t\t\tthreshold = gcThresholdTimestamp+3;\n////\t\t\t\t\tlogger.info(\"Running GC after \"+tripleCounter+\" triples\");\n//\t\t\t\t\trunGC();\n//\t\t\t\t}\n\t\t\t\t// logger.info(sparkWeaveNetwork.getEpsilonNetwork().getNetwork().getEpsilonMemoryLevels());\n\t\t\t\t// logger.info(sparkWeaveNetwork.getReteNetwork().getWorkingMemory().getAlphaMemoryLevels());\n\t\t\t\t// logger.info(sparkWeaveNetwork.getReteNetwork().getBetaMemoryLevels());\n\t\t\t\t//\n\t\t\t\t// logger.info(\"Processing \" + (1000/(sTriple.getTimestamp() -\n\t\t\t\t// timepoint)) + \" triples/sec.\");\n\t\t\t\t// timepoint = sTriple.getTimestamp();",
+        "pred": "\t\t\tstartProcessingTime = (new Date()).getTime();\n\t\t\tlong threshold = 0;\n\t\t\twhile ((tripleLine = streamReader.readLine())!= null) {\n\t\t\t\tTriple sTriple = new Triple(parseTriple(tripleLine),\n\t\t\t\t\t\t(new Date()).getTime(), false, 0l);\n\t\t\t\tsparkWeaveNetwork.activateNetwork(sTriple);\n\t\t\t\ttripleCounter++;\n\t\t\t\tif(tripleCounter%2==0)\n\t\t\t\t\trunGC();\n\t\t\t\t// if (tripleCounter%1000 == 0){\n\t\t\t\t// logger.info(sparkWeaveNetwork.getEpsilonNetwork().getNetwork().getEpsilonMemoryLevels());\n\t\t\t\t// logger.info(sparkWeaveNetwork.getReteNetwork().getWorkingMemory().getAlphaMemoryLevels());\n\t\t\t\t// logger.info(sparkWeaveNetwork.getReteNetwork().getBetaMemoryLevels());\n\t\t\t\t// logger.info(\"Processing \" + (1000/(sTriple.getTimestamp() -\n\t\t\t\t// timepoint)) + \" triples/sec.\");\n\t\t\t\t// timepoint = sTriple.getTimestamp();\n\t\t\t}",
+        "codebleu": 0.5639757219900401,
+        "bleu": 0.4315203720094945,
+        "rouge": 0.7832167832167831,
+        "levenshtein": 331
+    },
+    {
+        "ref": "\t\t\t\t// timepoint)) + \" triples/sec.\");\n\t\t\t\t// timepoint = sTriple.getTimestamp();\n\t\t\t\t// }\n\t\t\t\t// logger.info(\"Processed triple #\" + tripleCounter);\n\t\t\t}\n\n\t\t\tendProcessingTime = new Date().getTime();",
+        "pred": "```\n\t\t\t\t\t// timepoint)) + \" triples/sec.\");\n\t\t\t\t\t// timepoint = sTriple.getTimestamp();\n\t\t\t\t\t// }\n\t\t\t\t}\n\t\t\t\tendProcessingTime = new Date().getTime();",
+        "codebleu": 0.7503920553911001,
+        "bleu": 0.617200963351331,
+        "rouge": 0.8,
+        "levenshtein": 65
+    },
+    {
+        "ref": "\n/**\n * Immutable RDFURIReference\n * @author srdjankomazec\n *\n */\npublic final class RDFURIReference extends RDFValue {\n\n\tprivate static final long serialVersionUID = -900633337817042617L;\n\t\n\tprivate final String iri;\n\t\n\t// caching hashCode\n\tprivate int hashCode = 0;\n\t\n\tpublic RDFURIReference(final String iri){\n\t\tthis.iri = iri;",
+        "pred": "/**\n * Immutable RDFURIReference\n * @author srdjankomazec\n * @author michaelrogger\n *\n */\npublic final class RDFURIReference extends RDFValue {\n\n\tprivate static final long serialVersionUID = -900633337817042617L;\n\t\n\tprivate final String iri;\n\t\n\t// caching hashCode\n\tprivate int hashCode = 0;\n\t\n\tpublic RDFURIReference(final String iri){\n\t\tthis.iri = iri;",
+        "codebleu": 0.9734289737425919,
+        "bleu": 0.9130175707729784,
+        "rouge": 0.9714285714285714,
+        "levenshtein": 26
+    },
+    {
+        "ref": "\t\tthis.iri = namespace+name;\n\t}\n\n\tpublic String getValue() {\n\t\treturn iri;\n\t}\n\t\n\t@Override\n\tpublic boolean equals(Object that){\n\t\t",
+        "pred": "\t\tthis.iri = namespace+name;\n\t}\n\n\t@Override\n\tpublic boolean equals(Object that){\n\t\tif (this == that) {\n\t\t\treturn true;\n\t\t}\n\t\tif (notAString(that)) {\n\t\t\treturn false;\n\t\t}\n\t\tbyte[] otherBytes = ((String)that).getBytes(Charset.defaultCharset());\n\t\tbyte[] thisBytes = this.iri.getBytes(Charset.defaultCharset());\n\t\treturn Arrays.equals(thisBytes, otherBytes);\n\t}\n\t\n\t@Override\n\tpublic int hashCode() {\n\t\treturn Arrays.hashCode(this.iri.getBytes(Charset.defaultCharset()));\n\t}\n\t\n\tpublic static boolean equals(URI thisUri, String that) {\n\t\tif (thisUri == null) {\n\t\t\treturn isBlank(that);\n\t\t}\n\t\tif (notAString(that)) {\n\t\t\treturn false;\n\t\t}\n\t\tURI uri = new URI(that);\n\t\treturn thisUri.getScheme().equals(uri.getScheme()) && \n\t\t\t\tthisUri.getPath().equals(uri.getPath()) &&\n\t\t\t\tArrays.equals(thisUri.getAuthority().getBytes(Charset.defaultCharset()),\n\t\t\t\t\t\turi.getAuthority().getBytes(Charset.defaultCharset()));\n\t\t// the IRI part.\n\t}\n\t\n\t@Override\n\tpublic String toString() {\n\t\treturn this.iri;",
+        "codebleu": 0.5712246895538238,
+        "bleu": 0.08911696651501537,
+        "rouge": 0.19512195121951217,
+        "levenshtein": 860
+    },
+    {
+        "ref": "\t\n\t@Override\n\tpublic int hashCode() {\n\t\tif (hashCode == 0) {\n\t\t\thashCode = new HashCodeBuilder(17, 37).append(iri).toHashCode();\n\t\t}\n\t\treturn hashCode;\n\t}",
+        "pred": "/**\n* The base class for a service with a specified name, description, and configuration.\n*\n* @author  Jeremy Petzold\n* @author  Joshua Wynn\n*\n* @version $Revision: 20020320 $\n*\n* @since 0.4.0\n */\npublic class Service {\n\n    /**\n     * The name of the service.\n     */\n    private final String serviceName;\n    /**\n     * The description of the service.\n     */\n    private final String serviceDescription;\n    /**\n     * The configuration object for the service.\n     *\n     * @see  Service#configure(Configuration)\n     */\n    private final ServiceConfiguration serviceConfiguration;\n\n    /**\n     * Initializes the Service with the given name and description.\n     *\n     * @param  serviceName\n     *          The name of the service.\n     * @param   serviceDescription\n     *          The description of the service.\n     *\n     * @throws  NullPointerException\n     *          If null is given for any required argument.\n     */\n    public Service(final String serviceName, final String serviceDescription) {\n        this.serviceName = serviceName;\n        this.serviceDescription = serviceDescription;\n        this.serviceConfiguration = new ServiceConfiguration();\n    }\n\n    /**",
+        "codebleu": 0.1456838382913614,
+        "bleu": 1.9488813334223974e-155,
+        "rouge": 0.046511627906976744,
+        "levenshtein": 1095
+    },
+    {
+        "ref": "\n\t/** Creates a new ImageJ application context with all available services. */\n\tpublic static ImageJ createContext() {\n\t\ttry {\n\t\t\tif (!CheckSezpoz.check(false)) {\n\t\t\t\t// unfortunately, we *have* to restart. Sezpoz uses\n\t\t\t\t// ClassLoader.getResources() which is already initialized by the time\n\t\t\t\t// we come here\n\t\t\t\tLog.error(\"Sezpoz generated annotations. \"\n\t\t\t\t\t+ \"You need to restart for ImageJ2 to work properly!\");\n\t\t\t\tSystem.exit(1);\n\t\t\t}\n\t\t}\n\t\tcatch (final IOException e) {\n\t\t\tLog.error(e);\n\t\t}\n\t\treturn createContext((List",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        sbt.writeInput(action + \"\\n\");\n\n        if (action.trim().equals(\"\")) {\n            output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n        } else {\n            output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n        }\n\n        boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n        return!error;\n    }",
+        "codebleu": 0.22569252299402504,
+        "bleu": 1.523138775092225e-155,
+        "rouge": 0.10344827586206898,
+        "levenshtein": 481
+    },
+    {
+        "ref": "\nimport net.imglib2.RandomAccess;\nimport net.imglib2.img.Img;\nimport net.imglib2.img.array.ArrayImgFactory;\nimport net.imglib2.ops.PointSetIterator;\nimport net.imglib2.ops.image.ImageCombiner;\nimport net.imglib2.ops.operation.binary.real.RealAdd;\nimport net.imglib2.ops.operation.binary.real.RealAnd;\nimport net.imglib2.ops.operation.binary.real.RealAvg;\nimport net.imglib2.ops.operation.binary.real.RealBinaryOperation;\nimport net.imglib2.ops.operation.binary.real.RealCopyRight;\nimport net.imglib2.ops.operation.binary.real.RealCopyZeroTransparent;\nimport net.imglib2.ops.operation.binary.real.RealDifference;\nimport net.imglib2.ops.operation.binary.real.RealDivide;\nimport net.imglib2.ops.operation.binary.real.RealMax;\nimport net.imglib2.ops.operation.binary.real.RealMin;\nimport net.imglib2.ops.operation.binary.real.RealMultiply;\nimport net.imglib2.ops.operation.binary.real.RealOr;\nimport net.imglib2.ops.operation.binary.real.RealSubtract;\nimport net.imglib2.ops.operation.binary.real.RealXor;\nimport net.imglib2.ops.pointset.HyperVolumePointSet;\nimport net.imglib2.type.numeric.RealType;\nimport net.imglib2.type.numeric.real.DoubleType;\n",
+        "pred": "import net.imglib2.RandomAccess;\nimport net.imglib2.img.Img;\nimport net.imglib2.ops.Function;\nimport net.imglib2.ops.Operator;\nimport net.imglib2.ops.pointset.HyperVolumePointSet;\nimport net.imglib2.type.numeric.RealType;\nimport net.imglib2.type.numeric.real.DoubleType;\n",
+        "codebleu": 0.30798913773291,
+        "bleu": 0.07388913586608824,
+        "rouge": 0.37948717948717947,
+        "levenshtein": 877
+    },
+    {
+        "ref": "\t\taccelerator = \"control O\") })\npublic class OpenImage implements ImageJPlugin {\n\n\t@Parameter\n\tprivate LogService log;\n\n\t@Parameter\n\tprivate IOService ioService;\n",
+        "pred": "\n```\n*/\n\n/***************************************************************************\n * Copyright 2008-2013 the original author or authors\n * All rights reserved\n * \n * This software is licensed under the GNU Lesser General Public License.\n * \n * version 2.1 of the License, in which case the original author and contributors\n * quantify-photonics.org\n * quantify-photonics.info\n * \n */",
+        "codebleu": 0.25,
+        "bleu": 0,
+        "rouge": 0.034482758620689655,
+        "levenshtein": 329
+    },
+    {
+        "ref": "\t\taccelerator = \"control R\") })\npublic class RevertImage implements ImageJPlugin {\n\n\t@Parameter\n\tprivate LogService log;\n\n\t@Parameter\n\tprivate IOService ioService;\n",
+        "pred": "```\n/** Conflict Resolver */\n\npublic class CommandLineSbt extends AbstractCommandLineAction {\n\n    @Override\n    protected final boolean invokeAction(String action, boolean isRunningFromEditor) throws Exception {\n\n        CommandLineSbtExtension extension = new CommandLineSbtExtension();\n        extension.setIsRunningFromEditor(isRunningFromEditor);\n        CommandLineSbtExtension oldExtension = oldProject.getCommandLineSbtExtension(extension);\n\n        if (oldProject.getCommandLineSbtExtension(extension)!= null) {\n            extension.setCommandLineSbt(oldExtension);\n            extension = new CommandLineSbtExtension();\n        }\n\n        boolean result = super.invokeAction(action, extension, isRunningFromEditor);\n\n        if (result && isRunningFromEditor) {\n            if (extension.getProject() == null) {\n                extension Project = new Project(\"sbt\", \"sbt\");\n            }\n            extension.setCommandLineSbt(new CommandLineSbtCommand().setArguments(extension.getScriptPath()));\n            return CommandLineExtensionUtil.run(new CommandLineActionInvoker() {\n                @Override\n                public boolean invoke(String command) throws IOException {",
+        "codebleu": 0.2842170339380508,
+        "bleu": 2.3809857162598948e-155,
+        "rouge": 0.041237113402061855,
+        "levenshtein": 1084
+    },
+    {
+        "ref": "import imagej.log.LogService;\nimport imagej.menu.MenuConstants;\nimport imagej.module.ItemIO;\nimport imagej.render.RenderingService;\nimport imagej.render.TextRenderer.TextJustification;\nimport imagej.util.AppUtils;\nimport imagej.util.ColorRGB;\nimport imagej.util.Colors;\nimport imagej.util.MersenneTwisterFast;",
+        "pred": "\n```java\n/*/\npackage imagej;\n\nimport imagej.display.ImagePlus;\nimport imagej.io.ImageInputStream;\nimport imagej.io.ImageWriter;\nimport imagej.io.IOChecks;\nimport imagej.io.IOFunctions;\nimport imagej.io.IOService;\nimport imagej.io.IOUtils;\nimport imagej.log.LogService;\nimport imagej.menu.MenuConstants;\nimport imagej.module.ItemIO;\nimport imagej.render.RenderingService;\nimport imagej.render.TextRenderer.TextJustification;\nimport imagej.util.ColorRGB;\nimport imagej.util.Colors;\nimport imagej.util.MersenneTwisterFast;\nimport imagej.util.SynchronizedService;\nimport imagescience.util.PropertyResource;\nimport org.apache.commons.io.FileUtils;\nimport org.apache.commons.io.IOCase;\nimport org.apache.commons.io.filefilter.FileFilterUtils;\nimport org.apache.commons.io.filefilter.MagicNumbers;\nimport org.apache.commons.io.filefilter.WildcardFileFilter;\n\nimport javax.swing.JComponent;\nimport javax.swing.SwingUtilities;\nimport javax.swing.event.ChangeEvent;\nimport javax.swing.event.ChangeListener;\nimport java.awt.GridBagConstraints;\nimport java.awt.GridBagLayout;\nimport java.awt.Insets;\nimport java.awt.event.ActionEvent;\nimport java.awt.event.ActionListener;",
+        "codebleu": 0.7068344701690403,
+        "bleu": 0.21427652792193153,
+        "rouge": 0.3626373626373627,
+        "levenshtein": 863
+    },
+    {
+        "ref": "\t\t}\n\n\t\tprivate void waitForPluginThreads() {\n//\t\t\tlog.debug(\"LegacyCommand: begin waitForPluginThreads()\");\n\t\t\twhile (true) {\n\t\t\t\tboolean allDead = true;\n\t\t\t\tfinal List",
+        "pred": "\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n######\n\nThe conflict is resolved by applying the changes from the three branches: `HEAD`, `6a51d93d9f8b34a9086dd15397b1d4d019ca551d`, and `49cac4056d2adc734029aa6c86d942c2c6203ab3`.\n\n```java",
+        "codebleu": 0.3175573625432876,
+        "bleu": 9.871742677130652e-232,
+        "rouge": 0.05263157894736842,
+        "levenshtein": 673
+    },
+    {
+        "ref": "\t\t\t\t}\n\t\t\t\tcatch (final Exception e) {/**/}\n\t\t\t}\n//\t\t\tlog.debug(\"LegacyCommand: end waitForPluginThreads()\");\n\t\t}\n\n\t\tprivate List",
+        "pred": "\t\t\t\t}\n\t\t\t\tcatch (final Exception e) {/**/}\n\t\t\t}\n\t\t\tlog.debug(\"LegacyCommand: end waitForPluginThreads()\");\n\t\t}\n",
+        "codebleu": 0.7409872882991357,
+        "bleu": 0.6191566827062979,
+        "rouge": 0.9,
+        "levenshtein": 17
+    },
+    {
+        "ref": "\npackage imagej.core.commands.display;\n\nimport imagej.command.ContextCommand;\nimport imagej.data.ChannelCollection;\nimport imagej.data.Dataset;\nimport imagej.data.DatasetService;",
+        "pred": "\nimport java.util.List;\n\nimport imagej.command.ContextCommand;\nimport java.util.List;\n\nimport imagej.data.ChannelCollection;\nimport imagej.data.Dataset;",
+        "codebleu": 0.5230261379033552,
+        "bleu": 0.37991784282579627,
+        "rouge": 0.5853658536585366,
+        "levenshtein": 75
+    },
+    {
+        "ref": "import imagej.data.display.DatasetView;\nimport imagej.data.display.ImageDisplay;\nimport imagej.data.display.ImageDisplayService;\nimport imagej.menu.MenuConstants;\nimport imagej.module.ItemIO;\nimport imagej.plugin.Menu;\nimport imagej.plugin.Parameter;\nimport imagej.plugin.Plugin;\nimport imagej.render.RenderingService;\nimport imagej.render.TextRenderer.TextJustification;\nimport imagej.util.ColorRGB;\nimport imagej.util.Colors;\n",
+        "pred": "",
+        "codebleu": 0.25,
+        "bleu": 0,
+        "rouge": 0,
+        "levenshtein": 428
+    },
+    {
+        "ref": "\t\treturn ds;\n\t}\n\t\n\tprivate void drawLutInfo(Dataset ds, ColorTable ct) {\n\t\tDrawingTool tool = new DrawingTool(ds, renderingService);\n\t\tint xMargin = 35;\n\t\tint yMargin = 20;\n\t\tint width = 256;",
+        "pred": "\n```java\n\t\treturn ds;\n\t}\n\n\tprivate void drawLutInfo(Dataset ds, ColorTable ct) {\n\t\tDrawingTool tool = new DrawingTool(ds);\n\t\tint xMargin = 35;\n\t\tint yMargin = 20;\n\t\tint width = 256;\n\t\tint height = (int) (width / 8.0f * 1.25f); // 1.25 is an average of the height of a single entry in a LUT\n\t\tint entryWidth = 32;\n\t\tint maxValueHeight = 128;\n\t\tint maxValueStart = maxValueHeight * 0.8f;\n\t\t// Calculate the size necessary to hold the text for the info panel\n\t\tint textWidth = 0;\n\t\tfor (String text : ct.getLutInfoEntries()) {\n\t\t\tif (textWidth < 1 + text.length() * 3) {\n        }\n\t\t\t\ttextWidth = textWidth + text.length() * 3;\n\t\t\t}\n\t\tint textHeight = 12 + textWidth;\n\t\tint lutWidth = xMargin + width + entryWidth + 5;\n\t\tint lutHeight = yMargin + width + 10 + textHeight;",
+        "codebleu": 0.6499692715808026,
+        "bleu": 0.17408015371597677,
+        "rouge": 0.35658914728682173,
+        "levenshtein": 594
+    },
+    {
+        "ref": "\npackage imagej.data.display;\n\nimport imagej.util.ColorRGB;\nimport net.imglib2.display.ColorTable;\nimport net.imglib2.display.ColorTable8;\n",
+        "pred": "\n```\npackage imagej.data.display;\n\nimport imagej.util.ColorRGB;\nimport net.imglib2.display.ColorTable;\nimport net.imglib2.display.ColorTable8;\n",
+        "codebleu": 0.949168338675946,
+        "bleu": 0.8633400213704505,
+        "rouge": 1.0,
+        "levenshtein": 4
+    },
+    {
+        "ref": "\t\tif (mode == ColorMode.COMPOSITE) {\n\t\t\tdouble rSum = 0, gSum = 0, bSum = 0;\n\t\t\tfor (int c = 0; c < channelCount; c++) {\n\t\t\t\tfinal double value = channels.getChannelValue(c);\n\t\t\t\tfinal RealLUTConverter extends RealType>> converter =\n\t\t\t\t\t\tconverters.get(c);\n\t\t\t\tfinal double min = converter.getMin();\n\t\t\t\tfinal double max = converter.getMax();\n\t\t\t\tfinal int grayValue = Binning.valueToBin(256, min, max, value);\n\t\t\t\tfinal ColorTable colorTable = converter.getLUT();\n\t\t\t\trSum += colorTable.getResampled(ColorTable.RED, 256, grayValue);\n\t\t\t\tgSum += colorTable.getResampled(ColorTable.GREEN, 256, grayValue);\n\t\t\t\tbSum += colorTable.getResampled(ColorTable.BLUE, 256, grayValue);\n\t\t\t}\n\t\t\tr = (rSum > 255) ? 255 : (int) Math.round(rSum);\n\t\t\tg = (gSum > 255) ? 255 : (int) Math.round(gSum);",
+        "pred": "\t\t\t}\n\t\t\tdouble rSum = 0, gSum = 0, bSum = 0;\n\t\t\tfor (int c = 0; c < channelCount; c++) {\n\t\t\t\tfinal double value = channels.getChannelValue(c);\n\t\t\t\tfinal RealLUTConverter extends RealType>> converter =\n\t\t\t\t\tconverters.get(c);\n\t\t\t\tfinal double min = converter.getMin();\n\t\t\t\tfinal double max = converter.getMax();\n\t\t\t\tdouble relativeValue = (value - min) / (max - min);\n\t\t\t\tif (relativeValue < 0) relativeValue = 0;\n\t\t\t\tif (relativeValue > 1) relativeValue = 1;\n\t\t\t\tfinal int grayValue = (int) (relativeValue * 255);\n\t\t\t\tfinal ColorTable8 colorTable = converter.getLUT();\n\t\t\t\trSum += colorTable.get(0, grayValue);\n\t\t\t\tgSum += colorTable.get(1, grayValue);\n\t\t\t\tbSum += colorTable.get(2, grayValue);\n\t\t\t}\n\t\t\tr = (rSum > 255)? 255 : (int) Math.round(rSum);",
+        "codebleu": 0.6090513372891457,
+        "bleu": 0.5668787495336925,
+        "rouge": 0.6850828729281769,
+        "levenshtein": 321
+    },
+    {
+        "ref": "\t\t\tb = (bSum > 255) ? 255 : (int) Math.round(bSum);\n\t\t}\n\t\telse { // grayscale or color\n\t\t\tfinal long currChannel = getLongPosition(Axes.CHANNEL);\n\t\t\tfinal double value = channels.getChannelValue(currChannel);\n\t\t\tfinal RealLUTConverter extends RealType>> converter =\n\t\t\t\t\tconverters.get((int) currChannel);\n\t\t\tfinal double min = converter.getMin();\n\t\t\tfinal double max = converter.getMax();\n\t\t\tfinal int grayValue = Binning.valueToBin(256, min, max, value);\n\t\t\tif (mode == ColorMode.COLOR) {\n\t\t\t\tfinal ColorTable colorTable = converter.getLUT();\n\t\t\t\tr = colorTable.getResampled(ColorTable.RED, 256, grayValue);\n\t\t\t\tg = colorTable.getResampled(ColorTable.GREEN, 256, grayValue);\n\t\t\t\tb = colorTable.getResampled(ColorTable.BLUE, 256, grayValue);\n\t\t\t}\n\t\t\telse { // mode == grayscale\n\t\t\t\tr = grayValue;",
+        "pred": "\t\t\tlong currChannel = getLongPosition(Axes.CHANNEL);\n\t\t\tdouble value = channels.getChannelValue(currChannel);\n\t\t\tRealLUTConverter extends RealType>> converter =\n\t\t\t\t\tconverters.get((int) currChannel);\n\t\t\tdouble min = converter.getMin();\n\t\t\tdouble max = converter.getMax();\n            int grayValue = Binning.valueToBin(256, min, max, value);\n\t\t\tif (mode == ColorMode.COLOR) {\n\t\t\t\tColorTable colorTable = converter.getLUT();\n\t\t\t\tr = colorTable.getResampled(ColorTable.RED, 256, grayValue);\n\t\t\t\tg = colorTable.getResampled(ColorTable.GREEN, 256, grayValue);\n\t\t\t\tb = colorTable.getResampled(ColorTable.BLUE, 256, grayValue);\n\t\t\t}\n\t\t\telse { // mode == grayscale\n\t\t\t\tr = grayValue;\n\t\t\t\tg = grayValue;\n\t\t\t\tb = grayValue;\n\t\t\t}\n\t\t\tb = (bSum > 255)? 255 : (int) Math.round(bSum);\n\n        }\n        else { // grayscale or color\n\t\t\tfinal long currChannel = getLongPosition(Axes.CHANNEL);\n\t\t\tfinal double value = channels.getChannelValue(currChannel);",
+        "codebleu": 0.6640979295620014,
+        "bleu": 0.7336891410812938,
+        "rouge": 0.7431693989071038,
+        "levenshtein": 398
+    },
+    {
+        "ref": "\nimport imagej.data.display.ImageDisplay;\nimport imagej.service.Service;\n\n/**\n * Interface for sampler operations which manipulate {@link ImageDisplay} data.",
+        "pred": "\n```\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n\nResolution:\n\n```\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n            } else {\n                output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n######\n\nConflict:\n\n```\n        if (!launcherJar.isFile()) {",
+        "codebleu": 0.25,
+        "bleu": 0,
+        "rouge": 0.0,
+        "levenshtein": 1182
+    },
+    {
+        "ref": "package imagej.util;\n\nimport java.io.File;\nimport java.io.FileInputStream;\nimport java.io.IOException;\nimport java.io.PrintStream;\nimport java.net.MalformedURLException;\nimport java.net.URISyntaxException;",
+        "pred": "\n```\npackage imagej.util;\n\nimport java.io.File;\nimport java.io.IOException;\nimport java.io.PrintStream;\nimport java.net.MalformedURLException;\nimport java.net.URISyntaxException;",
+        "codebleu": 0.8313326167621073,
+        "bleu": 0.772577456487378,
+        "rouge": 0.92,
+        "levenshtein": 37
+    },
+    {
+        "ref": "\t\t*/\n\t}\n\n}",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n\nResolution:\n/*******************************************************************************\n * Copyright (c) 2009-2013 WalWare/StatET-Project (www.walware.de/goto/statet).\n * All rights reserved. This program and the accompanying materials\n * are made available under the terms of the Eclipse Public License v1.0\n * which accompanies this distribution, and is available at\n * http://www.eclipse.org/legal/epl-v10.html\n * \n * Contributors:\n *     Stephan Wahlbrink - initial API and implementation\n *******************************************************************************/\n\npackage de.walware.ecommons.notion.ui.actions;\n\nimport org.eclipse\\core\\internal.actions\\RunActionDeleg;\n\nimport de.walware.ecommons.notion.io.NotionPlugin;\n",
+        "codebleu": 0.43457587916528634,
+        "bleu": 1.978049756642675e-155,
+        "rouge": 0,
+        "levenshtein": 1288
+    },
+    {
+        "ref": "\t\t@Override\n\n\t\tpublic int getColumnCount() {\n\t\t\treturn tab.getColumnCount() + 1; // +1 for row header column\n\t\t}\n\n\t\t@Override",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n######\n\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        sbt.writeInput(action + \"\\n\");\n\n        if (action.trim().equals(\"\")) {\n            output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n        } else {\n            output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n        }\n        boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n        return!error;\n    }\n}\n```\n######\n\n```java\n        if (!launcherJar.isFile()) {\n            throw new IllegalArgumentException(\"Launcher JAR file does not exist: \" + launcherJar);\n        }",
+        "codebleu": 0.2932536196470802,
+        "bleu": 8.319100378795605e-232,
+        "rouge": 0.032520325203252036,
+        "levenshtein": 1185
+    },
+    {
+        "ref": "\t\t\tif (row < 0 || row >= getRowCount()) return null;\n\t\t\tif (col < 0 || col >= getColumnCount()) return null;\n\n\t\t\tif (col == 0) {\n\t\t\t\t// get row header, or row number if none\n\t\t\t\t// NB: Assumes the JTable can handle Strings equally as well as the\n\t\t\t\t// underlying type T of the Table.\n\t\t\t\tfinal String header = tab.getRowHeader(row);\n\t\t\t\tif (header != null) return header;\n\t\t\t\treturn \"\" + (row + 1);\n\t\t\t}\n\n\t\t\t// get the underlying table value\n\t\t\t// NB: The column is offset by one to accommodate the row header/number.\n\t\t\treturn tab.get(col - 1, row);\n\t\t}\n\n\t\t@Override",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n\n```java\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        sbt.writeInput(action + \"\\n\");\n\n        if (action.trim().equals(\"\")) {\n            output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n        } else {\n            output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n        }\n        boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n        return!error;\n    }\n}\n```\n\n```java\n        if (!launcherJar.isFile()) {\n            throw new IllegalArgumentException(\"Launcher JAR file does not exist: \" + launcherJar);\n        }",
+        "codebleu": 0.22771133846919414,
+        "bleu": 9.373555812122357e-232,
+        "rouge": 0.07329842931937172,
+        "levenshtein": 1055
+    },
+    {
+        "ref": "\t\tpublic void setValueAt(final Object value, final int row, final int col) {\n\t\t\tif (row < 0 || row >= getRowCount()) return;\n\t\t\tif (col < 0 || col >= getColumnCount()) return;\n\t\t\tif (col == 0) {\n\t\t\t\t// set row header\n\t\t\t\ttab.setRowHeader(row, value == null ? null : value.toString());\n\t\t\t\treturn;\n\t\t\t}\n\t\t\tset(tab, col - 1, row, value);\n\t\t\tfireTableCellUpdated(row, col);\n\t\t}\n",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n",
+        "codebleu": 0.1413648233761945,
+        "bleu": 6.784599154281486e-232,
+        "rouge": 0.06593406593406592,
+        "levenshtein": 448
+    },
+    {
+        "ref": "import java.net.MalformedURLException;\nimport java.net.URISyntaxException;\nimport java.net.URL;\nimport java.util.ArrayList;\nimport java.util.Collection;\nimport java.util.jar.JarEntry;\nimport java.util.jar.JarFile;\nimport java.util.regex.Matcher;\nimport java.util.regex.Pattern;\n\n/**",
+        "pred": "import java.net.URISyntaxException;\nimport java.net.URL;\nimport java.util.regex.Matcher;\nimport java.util.regex.Pattern;\n",
+        "codebleu": 0.4793947583873036,
+        "bleu": 0.21261190974640942,
+        "rouge": 0.6206896551724138,
+        "levenshtein": 161
+    },
+    {
+        "ref": "\t\t\t// hide/show the IJ2 main window\n\t\t\tfinal ApplicationFrame appFrame =\n\t\t\t\tuiService.getDefaultUI().getApplicationFrame();\n\t\t\tif (appFrame == null) {\n\t\t\t\tif (!wantIJ1) uiService.showUI();\n\t\t\t} else {\n\t\t\t\tappFrame.setVisible(!wantIJ1);\n\t\t\t}\n\n\t\t\t// TODO: move this into the LegacyImageMap's toggleLegacyMode, passing\n\t\t\t// the uiService",
+        "pred": "",
+        "codebleu": 0.25,
+        "bleu": 0,
+        "rouge": 0,
+        "levenshtein": 336
+    },
+    {
+        "ref": "\t\t}\n\n\t\t// override behavior of ij.plugin.frame.RoiManager\n\t\thacker.insertNewMethod(\"ij.plugin.frame.RoiManager\",\n\t\t\t\"public void show()\",\n\t\t\t\"if ($isLegacyMode()) { super.show(); }\");\n\t\thacker.insertNewMethod(\"ij.plugin.frame.RoiManager\",\n\t\t\t\"public void setVisible(boolean b)\",\n\t\t\t\"if ($isLegacyMode()) { super.setVisible($1); }\");\n\t\thacker.loadClass(\"ij.plugin.frame.RoiManager\");\n\n\t\t// make sure that there is a legacy service",
+        "pred": "     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(PROMPT_AFTER_EMPTY_ACTION);\n            } else {\n                output.waitForOutput(PROMPT);\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n\nResolution:\n\n```\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n            if (action.trim().equals(\"\")) {\n                output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n            } else {\n                output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n            }\n\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n######\n\nConflict:\n\n```\n        if (!launcherJar.isFile()) {",
+        "codebleu": 0.2162251912253863,
+        "bleu": 7.82830916853581e-232,
+        "rouge": 0.06535947712418301,
+        "levenshtein": 1113
+    },
+    {
+        "ref": "\n\t@EventHandler\n\tprotected void onEvent(final PanZoomEvent event) {\n\t\tif (event.getDisplay() != getDisplay()) return;\n\t\tupdateLabel();\n\t}\n\n\t@EventHandler",
+        "pred": "\n```\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        sbt.writeInput(action + \"\\n\");\n\n        if (action.trim().equals(\"\")) {\n            output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n        } else {\n            output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n        }\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n\nResolution:\n\n```\n     */\n    public boolean execute(String action) throws IOException {\n        OutputReader output = sbt.subscribeToOutput();\n        try {\n            sbt.writeInput(action + \"\\n\");\n\n        if (action.trim().equals(\"\")) {\n            output.waitForOutput(Arrays.asList(PROMPT_AFTER_EMPTY_ACTION, FAILED_TO_COMPILE_PROMPT));\n        } else {\n            output.waitForOutput(Arrays.asList(PROMPT, FAILED_TO_COMPILE_PROMPT));\n        }\n            boolean error = output.endOfOutputContains(ERROR_RUNNING_ACTION_PREFIX);\n            return!error;\n        } finally {\n            output.close();\n        }\n    }\n}\n```\n######\n\nConflict:\n\n```",
+        "codebleu": 0.3148567340283512,
+        "bleu": 7.873430974476304e-232,
+        "rouge": 0.048,
+        "levenshtein": 1168
+    },
+    {
+        "ref": "\npackage imagej.command;\n\nimport imagej.ValidityProblem;\nimport imagej.module.DefaultMutableModuleInfo;\nimport imagej.module.DefaultMutableModuleItem;\nimport imagej.module.ModuleInfo;\nimport imagej.module.ModuleItem;\nimport imagej.module.MutableModuleInfo;",
+        "pred": "\n```\npackage imagej.command;\n\nimport imagej.module.DefaultMutableModuleInfo;\nimport imagej.module.DefaultMutableModuleItem;\nimport imagej.module.ModuleInfo;\nimport imagej.module.ModuleItem;\nimport imagej.module.MutableModuleInfo;\n```\n\n**Example 1:**\n>>>>>>> master\n<<<<<<< HEAD\n/**\n * @author Stephan preibisch\n * @author Barak Shein\n * @author Tobias Pietzsch\n */\nimport de.sciss.jlab.util.Process;\n\n/**\n * @author Stephan preibisch\n * @author Barak Shein\n * @author Tobias Pietzsch\n */\npublic interface CLI extends Module {\n  /**\n   * @throws org.apache.lucene-document.InvalidDocIdException\n   */\n  default void execute(String command) throws IOException {\n    Process p = start(command);\n    p.waitFor();",
+        "codebleu": 0.6446656326938242,
+        "bleu": 0.1362750061842785,
+        "rouge": 0.4554455445544554,
+        "levenshtein": 498
+    }
+]

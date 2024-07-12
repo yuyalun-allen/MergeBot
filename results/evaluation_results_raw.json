@@ -1,0 +1,730 @@
+[
+    {
+        "ref": "\tprivate int writeOffset;\n\tprivate int size = -1;\n\n\tBlob(Conn c, long pBlob) {\n\t\tassert c != null;\n\t\tthis.c = c;\n\t\tthis.pBlob = pBlob;",
+        "pred": "\tprivate int writeOffset;\n\tprivate int size = -1;\n\n\tBlob(Conn c, long pBlob) {\n\t\tassert c!= null;\n\t\tthis.c = c;\n\t\tthis.pBlob = pBlob;",
+        "codebleu": 0.91887325865095,
+        "bleu": 0.8337411129887954,
+        "rouge": 1.0,
+        "levenshtein": 1
+    },
+    {
+        "ref": " */\npackage org.sqlite;\n\nimport java.util.Iterator;\nimport java.util.LinkedList;",
+        "pred": "\n````\n */\npackage org.sqlite;\n\nimport com.sun.jna.Pointer;\nimport com.sun.jna.ptr.IntByReference;\nimport com.sun.jna.ptr.PointerByReference;\n\nimport java.util.Collections;\nimport java.util.Iterator;\nimport java.util.LinkedList;\nimport java.util.Map;",
+        "codebleu": 0.7138368880848354,
+        "bleu": 0.2600768235722905,
+        "rouge": 0.46808510638297873,
+        "levenshtein": 169
+    },
+    {
+        "ref": "\tpublic static final String TEMP_FILE = \"\";\n\n\tprivate long pDb;\n\tprivate final boolean sharedCacheMode;\n\tprivate TimeoutProgressCallback timeoutProgressCallback;\n\tprivate long pTimeoutProgressCallbackContext;",
+        "pred": "\t/**\n     * If the filename is an empty string, then a private, temporary on-disk database will be created.\n     */\n    public static final String TEMP_FILE = \"\";\n\n    private long pDb;\n    private SQLite3 pDb;\n\n    private final boolean sharedCacheMode;\n    private TimeoutProgressCallback timeoutProgressCallback;\n    private long pTimeoutProgressCallbackContext;",
+        "codebleu": 0.8453984023740501,
+        "bleu": 0.4492670674326639,
+        "rouge": 0.6551724137931034,
+        "levenshtein": 161
+    },
+    {
+        "ref": "\t\tfinal int res = sqlite3_open_v2(filename, ppDb, flags, vfs);\n\t\tif (res != SQLITE_OK) {\n\t\t\tif (ppDb[0] != 0) {\n\t\t\t\tsqlite3_close(ppDb[0]);\n\t\t\t}\n\t\t\tthrow new SQLiteException(String.format(\"error while opening a database connection to '%s'\", filename), res);\n\t\t}",
+        "pred": "        if (pDb!= null) {\n            sqlite3_close(new SQLite3(pDb));\n        }\n        if (ppDb[0]!= 0) {\n            sqlite3_close(ppDb[0]);\n        }\n        throw new SQLiteException(String.format(\"error while opening a database connection to '%s'\", filename), res);",
+        "codebleu": 0.47716897742809905,
+        "bleu": 0.47287731961658724,
+        "rouge": 0.7058823529411764,
+        "levenshtein": 116
+    },
+    {
+        "ref": "\t * @return result code (No exception is thrown).\n\t */\n\tpublic int close() {\n\t\tif (pDb == 0) {\n\t\t\treturn SQLITE_OK;\n\t\t}\n",
+        "pred": "\t * Close a database connection.\n\t * @return result code (No exception is thrown).\n\t */\n\tpublic int close() {\n\t\tif (pDb == null) {\n\t\t\treturn SQLITE_OK;\n\t\t}",
+        "codebleu": 0.7720472277557044,
+        "bleu": 0.6885326214539055,
+        "rouge": 0.8333333333333334,
+        "levenshtein": 38
+    },
+    {
+        "ref": "\t\tflush();\n\n\t\t// Dangling statements\n\t\tlong stmt = sqlite3_next_stmt(pDb, 0);\n\t\twhile (stmt != 0) {\n\t\t\tif (sqlite3_stmt_busy(stmt)) {\n\t\t\t\tsqlite3_log(ErrCodes.SQLITE_MISUSE, \"Dangling statement (not reset): \\\"\" + sqlite3_sql(stmt) + \"\\\"\");\n\t\t\t} else {",
+        "pred": "\t\tflush();\n\n\t\t// Dangling statements\n\t\tSQLite3Stmt stmt = sqlite3_next_stmt(pDb, null);\n\t\twhile (stmt!= null) {\n\t\t\tif (sqlite3_stmt_busy(stmt)) {\n\t\t\t\tsqlite3_log(ErrCodes.SQLITE_MISUSE, \"Dangling statement (not reset): \\\"\" + sqlite3_sql(stmt) + \"\\\"\");\n\t\t\t} else {",
+        "codebleu": 0.7618083624616888,
+        "bleu": 0.6822315659383885,
+        "rouge": 0.9032258064516129,
+        "levenshtein": 20
+    },
+    {
+        "ref": "\t\t}\n\t}\n\n\tprivate Conn(long pDb, boolean sharedCacheMode) {\n\t\tassert pDb != 0;\n\t\tthis.pDb = pDb;\n\t\tthis.sharedCacheMode = sharedCacheMode;\n\t}",
+        "pred": "\t\t}\n\t}\n\n<<<<<<< HEAD\n\tprivate Conn(long pDb, boolean sharedCacheMode) {\n\t\tassert pDb!= 0;\n>>>>>>> 1659b9383b1ac0ec975a0d06181ac862430d713e\n\t\tpDb = SQLite3.class.cast(pDb);\n\t\tthis.pDb = pDb;\n\t\tthis.sharedCacheMode = sharedCacheMode;\n\t}",
+        "codebleu": 0.7304142467668104,
+        "bleu": 0.4983116255128665,
+        "rouge": 0.8108108108108109,
+        "levenshtein": 96
+    },
+    {
+        "ref": "\t\tfinal String[] ppTail = new String[1];\n\t\tfinal int res = sqlite3_prepare_v2(pDb, sql, -1, ppStmt, ppTail); // FIXME nbytes + 1\n\t\tcheck(res, \"error while preparing statement '%s'\", sql);\n\t\treturn new Stmt(this, ppStmt[0], ppTail, cacheable);\n\t}\n\n\t/**",
+        "pred": "\t\tfinal String[] ppTail = new String[1];\n\t\tfinal int res = sqlite3_prepare_v2(pDb, sql, -1, ppStmt, ppTail); // FIXME nbytes + 1\n\t\tcheck(res, \"error while preparing statement '%s'\", sql);\n\t\treturn new Stmt(this, ppStmt[0], ppTail, cacheable);\n\t}\n\n\t/**",
+        "codebleu": 1.0,
+        "bleu": 1.0,
+        "rouge": 1.0,
+        "levenshtein": 0
+    },
+    {
+        "ref": "\t\tif (res != SQLITE_OK) {\n\t\t\tsqlite3_blob_close(ppBlob[0]);\n\t\t\tthrow new SQLiteException(this, String.format(\"error while opening a blob to (db: '%s', table: '%s', col: '%s', row: %d)\",\n\t\t\t\t\tdbName, tblName, colName, iRow), res);\n\t\t}\n\t\treturn new Blob(this, ppBlob[0]);\n\t}\n\n\t/**",
+        "pred": "\t\tfinal Pointer pBlob = ppBlob.getValue();\n\t\tfinal SQLite3Blob blob = pBlob == null? null : new SQLite3Blob(pBlob);\n\t\tif (res!= SQLITE_OK) {\n\t\t\tsqlite3_blob_close(pBlob);\n\t\t\tthrow new SQLiteException(this, String.format(\"error while opening a blob to (db: '%s', table: '%s', col: '%s', row: %d)\",\n\t\t\t\t\tdbName, tblName, colName, iRow), res);\n\t\t}\n\t\treturn new Blob(this, pBlob);\n\t}\n\n\t/**",
+        "codebleu": 0.5691025859242667,
+        "bleu": 0.537699755518064,
+        "rouge": 0.7826086956521738,
+        "levenshtein": 125
+    },
+    {
+        "ref": "\tpublic static Backup open(Conn dst, String dstName, Conn src, String srcName) throws ConnException {\n\t\tdst.checkOpen();\n\t\tsrc.checkOpen();\n\t\tfinal long pBackup = sqlite3_backup_init(dst.pDb, dstName, src.pDb, srcName);\n\t\tif (pBackup == 0) {\n\t\t\tthrow new ConnException(dst, \"backup init failed\", dst.getErrCode());\n\t\t}\n\t\treturn new Backup(pBackup, dst, src);",
+        "pred": "\tpublic static Backup open(Conn dst, String dstName, Conn src, String srcName) throws ConnException {\n\t\tdst.checkOpen();\n\t\tsrc.checkOpen();\n\t\tfinal SQLite3Backup pBackup = sqlite3_backup_init(dst.pDb, dstName, src.pDb, srcName);\n\t\tif (pBackup == null) {\n\t\t\tthrow new ConnException(dst, \"backup init failed\", dst.getErrCode());\n\t\t}\n\t\treturn new Backup(pBackup, dst, src);",
+        "codebleu": 0.8809389665657912,
+        "bleu": 0.8729435194251833,
+        "rouge": 0.9583333333333334,
+        "levenshtein": 17
+    },
+    {
+        "ref": "\npublic class Stmt implements AutoCloseable, Row {\n\tfinal Conn c;\n\tprivate long pStmt;\n\tprivate final String tail;\n\t// cached parameter count\n\tprivate int paramCount = -1;",
+        "pred": "\tfinal Conn c;\n\tprivate SQLite3Stmt pStmt;\n\tprivate final String tail;\n\t// cached parameter count\n\tprivate int paramCount = -1;",
+        "codebleu": 0.6880759179346883,
+        "bleu": 0.5875210883251932,
+        "rouge": 0.7999999999999999,
+        "levenshtein": 62
+    },
+    {
+        "ref": "\tprivate int[] columnAffinities;\n\tprivate boolean cacheable;\n\n\tStmt(Conn c, long pStmt, String[] tail, boolean cacheable) {\n\t\tassert c != null;\n\t\tthis.c = c;\n\t\tthis.pStmt = pStmt;",
+        "pred": "private int[] columnAffinities;\nprivate boolean cacheable;\n\nStmt(Conn c, SQLite3Stmt pStmt, Pointer tail, boolean cacheable) {\n    assert c!= null;\n    this.c = c;\n    this.pStmt = pStmt;",
+        "codebleu": 0.765978484830939,
+        "bleu": 0.6535914578164288,
+        "rouge": 0.9166666666666666,
+        "levenshtein": 33
+    },
+    {
+        "ref": "\t * @param tblName table name containing the affected row.\n\t * @param rowId id of the affected row.\n\t */\n\tvoid invoke(int actionCode, String dbName, String tblName, long rowId);\n}",
+        "pred": "\t * @param tblName table name containing the affected row.\n\t * @param rowId id of the affected row.\n\t */\nvoid invoke(int actionCode, String dbName, String tblName, long rowId);",
+        "codebleu": 0.9726931525259854,
+        "bleu": 0.9636404443012863,
+        "rouge": 1.0,
+        "levenshtein": 3
+    },
+    {
+        "ref": "\t\tfinal Conn c = open();\n\t\tc.createScalarFunction(\"test\", 0, FunctionFlags.SQLITE_UTF8 | FunctionFlags.SQLITE_DETERMINISTIC, new ScalarCallback() {\n\t\t\t@Override\n\t\t\tpublic void invoke(long pCtx, int nArg, Object args) {\n\t\t\t\tassertNotNull(pCtx);",
+        "pred": "\t\tfinal Conn c = open();\n\t\tc.createScalarFunction(\"test\", 0, FunctionFlags.SQLITE_UTF8 | FunctionFlags.SQLITE_DETERMINISTIC, new ScalarCallback() {\n\t\t\t@Override\n\t\t\tpublic void invoke(long pCtx, int nArg, Object args) {\n\t\t\t\tassertNotNull(pCtx);\n\t\t\t\tassertEquals(0, args.getCount());\n\t\t\t\tpCtx.setResultNull();",
+        "codebleu": 0.9591640805754895,
+        "bleu": 0.8821108677565033,
+        "rouge": 0.9032258064516129,
+        "levenshtein": 64
+    },
+    {
+        "ref": "\n\t\t\t((Conn) conn).getConn().createScalarFunction(\"delay\", 0, FunctionFlags.SQLITE_UTF8, new ScalarCallback() {\n\t\t\t\t@Override\n\t\t\t\tpublic void invoke(long pCtx, int nArg, Object args) {\n\t\t\t\t\ttry {\n\t\t\t\t\t\tThread.currentThread().join(1000);\n\t\t\t\t\t} catch (InterruptedException e) {",
+        "pred": "\n\t\t\t((Conn) conn).getConn().createScalarFunction(\"delay\", 0, FunctionFlags.SQLITE_UTF8, new ScalarCallback() {\n\t\t\t\t@Override\n\t\t\t\tpublic void invoke(long pCtx, int nArg, Object args) {\n\t\t\t\t\ttry {\n\t\t\t\t\t\tThread.currentThread().join(1000);\n\t\t\t\t\t} catch (InterruptedException e) {",
+        "codebleu": 1.0,
+        "bleu": 1.0,
+        "rouge": 1.0,
+        "levenshtein": 0
+    },
+    {
+        "ref": "\t */\n\tpublic int setBusyHandler(BusyHandler bh) throws ConnException {\n\t\tcheckOpen();\n\t\treturn sqlite3_busy_handler(pDb, bh); // FIXME free callback_context\n\t}\n\n\t/**",
+        "pred": "\t */\n\tpublic int setBusyHandler(BusyHandler bh) throws ConnException {\n\t\tcheckOpen();\n\t\treturn sqlite3_busy_handler(pDb, bh, null);\n\t}\n\n\t/**",
+        "codebleu": 0.7189767449597845,
+        "bleu": 0.6130166406461115,
+        "rouge": 0.8484848484848485,
+        "levenshtein": 30
+    },
+    {
+        "ref": "\t */\n\tpublic void trace(TraceCallback tc) throws ConnException {\n\t\tcheckOpen();\n\t\tpTraceCallbackContext = sqlite3_trace(pDb, tc);\n\t}\n\n\t/**",
+        "pred": "\t */\n\tpublic void trace(TraceCallback tc) throws ConnException {\n\t\tcheckOpen();\n\t\tpTraceCallbackContext = sqlite3_trace(pDb, tc);\n\t}\n\n\t/**",
+        "codebleu": 1.0,
+        "bleu": 1.0,
+        "rouge": 1.0,
+        "levenshtein": 0
+    },
+    {
+        "ref": "\t */\n\tpublic void profile(ProfileCallback pc) throws ConnException {\n\t\tcheckOpen();\n\t\tpProfileContext = sqlite3_profile(pDb, pc);\n\t}\n\n\t/**",
+        "pred": "\t */\n\tpublic void profile(ProfileCallback pc) throws ConnException {\n\t\tcheckOpen();\n<<<<<<< HEAD\n\t\tpProfileContext = sqlite3_profile(pDb, pc);\n=======\n\tpProfileContext = sqlite3_profile(pDb, pc);\n>>>>>>> a4ab22779df004f9de87145f2bf97eb33949cccf\n\t}\n\n\t/**",
+        "codebleu": 0.7596862992094152,
+        "bleu": 0.45920647199089537,
+        "rouge": 0.787878787878788,
+        "levenshtein": 115
+    },
+    {
+        "ref": "\t */\n\tpublic int setAuhtorizer(Authorizer auth) throws ConnException {\n\t\tcheckOpen();\n\t\treturn sqlite3_set_authorizer(pDb, auth); // FIXME\n\t}\n\n\t/**",
+        "pred": "\t */\n\tpublic int setAuthorizer(Authorizer auth) throws ConnException {\n\t\tcheckOpen();\n\t\treturn sqlite3_set_authorizer(pDb, auth); // FIXME\n\t}\n\n\t/**",
+        "codebleu": 0.9093553788059117,
+        "bleu": 0.8153551038173115,
+        "rouge": 0.9333333333333333,
+        "levenshtein": 2
+    },
+    {
+        "ref": "\t * @param ns time in nanoseconds\n\t */\n\t@SuppressWarnings(\"unused\")\n\tvoid profile(String sql, long ns);\n}",
+        "pred": "\t * @param ns time in nanoseconds\n\t */\n\t@SuppressWarnings(\"unused\")\n\tdefault void callback(Pointer arg, String sql, long ns) {\n\t\tprofile(sql, ns);\n\t}\n\n\t/**\n\t * @param sql SQL statement text.\n\t * @param ns time in nanoseconds\n\t */\n\tdefault void profile(String sql, long ns) {\n\t}\n}",
+        "codebleu": 0.710823397783449,
+        "bleu": 0.22351161214583168,
+        "rouge": 0.5306122448979591,
+        "levenshtein": 175
+    },
+    {
+        "ref": "\tvoid(*)(void*)\n\t*/\n\t// eTextRep: SQLITE_UTF8 => 1, ...\n\tstatic native int sqlite3_create_function_v2(long pDb, String functionName, int nArg, int eTextRep,\n\t\t\tScalarCallback xFunc, AggregateStepCallback xStep, AggregateFinalCallback xFinal);\n\n\tstatic native void sqlite3_result_null(long pCtx);\n\tstatic native void sqlite3_result_int(long pCtx, int i);\n\tstatic native void sqlite3_result_double(long pCtx, double d);\n\tstatic native void sqlite3_result_text(long pCtx, String text, int n); // no copy needed\n\tstatic native void sqlite3_result_blob(long pCtx, byte[] blob, int n);\n\tstatic native void sqlite3_result_int64(long pCtx, long l);\n\tstatic native void sqlite3_result_zeroblob(long pCtx, int n);\n\n\tstatic native void sqlite3_result_error(long pCtx, String err, int length);\n\tstatic native void sqlite3_result_error_code(long pCtx, int errCode);\n\tstatic native void sqlite3_result_error_nomem(long pCtx);\n\tstatic native void sqlite3_result_error_toobig(long pCtx);\n\t//static native void sqlite3_result_subtype(long pCtx, /*unsigned*/ int subtype);\n\n\tstatic native byte[] sqlite3_value_blob(long pValue);\n\tstatic native int sqlite3_value_bytes(long pValue);\n\tstatic native double sqlite3_value_double(long pValue);\n\tstatic native int sqlite3_value_int(long pValue);\n\tstatic native long sqlite3_value_int64(long pValue);\n\tstatic native String sqlite3_value_text(long pValue);\n\tstatic native int sqlite3_value_type(long pValue);\n\tstatic native int sqlite3_value_numeric_type(long pValue);\n\n\tstatic native Object sqlite3_get_auxdata(long pCtx, int n);\n\tstatic native void sqlite3_set_auxdata(long pCtx, int n, Object p, Destructor free);\n\tstatic native long sqlite3_aggregate_context(long pCtx, int nBytes);\n\tstatic native long sqlite3_context_db_handle(long pCtx);\n\n\tpublic static final Charset UTF_8 = Charset.forName(\"UTF-8\");\n\tpublic static final String UTF_8_ECONDING = UTF_8.name();",
+        "pred": "\tvoid(*)(void*)\n\t*/\n\t// eTextRep: SQLITE_UTF8 => 1,...\nstatic native int sqlite3_create_function_v2(long pDb, String functionName, int nArg, int eTextRep,\n        ScalarCallback xFunc, AggregateStepCallback xStep, AggregateFinalCallback xFinal);\n\nstatic native void sqlite3_result_null(long pCtx);\nstatic native void sqlite3_result_int(long pCtx, int i);\nstatic native void sqlite3_result_double(long pCtx, double d);\nstatic native void sqlite3_result_text(long pCtx, String text, int n); // no copy needed\nstatic native void sqlite3_result_blob(long pCtx, byte[] blob, int n);\nstatic native void sqlite3_result_int64(long pCtx, long l);\nstatic native void sqlite3_result_zeroblob(long pCtx, int n);\n\nstatic native void sqlite3_result_error(long pCtx, String err, int length);\nstatic native void sqlite3_result_error_code(long pCtx, int errCode);\nstatic native void sqlite3_result_error_nomem(long pCtx);\nstatic native void sqlite3_result_error_toobig(long pCtx);\n//static native void sqlite3_result_subtype(long pCtx, /*unsigned*/ int subtype);\n",
+        "codebleu": 0.5716469011313793,
+        "bleu": 0.46068106237712464,
+        "rouge": 0.7064220183486238,
+        "levenshtein": 858
+    },
+    {
+        "ref": "\n\tpublic interface LogCallback {\n\t\t@SuppressWarnings(\"unused\")\n\t\tvoid log(int err, String msg);\n\t}\n",
+        "pred": "\n\tpublic interface LogCallback {\n\t\t@SuppressWarnings(\"unused\")\n\t\tdefault void callback(Pointer udp, int err, String msg) {\n\t\t\tlog(err, msg);\n\t\t}\n\t\tvoid log(int err, String msg);\n\t}\n",
+        "codebleu": 0.7157328053418247,
+        "bleu": 0.3573352482107136,
+        "rouge": 0.6470588235294118,
+        "levenshtein": 82
+    },
+    {
+        "ref": "\tpublic static class SQLite3Context {\n\t\tpublic final long pCtx;\n\n\t\tpublic SQLite3Context(long pCtx) {\n\t\t\tthis.pCtx = pCtx;\n\t\t}\n\n\t\t/**\n\t\t * @return a copy of the pointer to the database connection (the 1st parameter) of\n\t\t * {@link SQLite#sqlite3_create_function_v2(long, String, int, int, ScalarCallback, AggregateStepCallback, AggregateFinalCallback)}",
+        "pred": "\tpublic static class SQLite3Context {\n\t\tpublic final long pCtx;\n\n\t\tpublic SQLite3Context(long pCtx) {\n\t\t\tthis.pCtx = pCtx;\n\t\t}\n\n\t\t/**\n\t\t * @return a copy of the pointer to the database connection (the 1st parameter) of\n\t\t *         {@link SQLite#sqlite3_create_function_v2(long, String, int, int, ScalarCallback, AggregateStepCallback, AggregateFinalCallback)}\n\t\t */",
+        "codebleu": 0.7353351083749319,
+        "bleu": 0.975885888045182,
+        "rouge": 1.0,
+        "levenshtein": 14
+    },
+    {
+        "ref": "\t * @param sql SQL statement text.\n\t */\n\t@SuppressWarnings(\"unused\")\n\tvoid trace(String sql);\n}",
+        "pred": "\t * @param sql SQL statement text.\n\t */\n\t@SuppressWarnings(\"unused\")\n\tdefault void callback(Pointer arg, String sql) {\n\t\ttrace(sql);\n\t}\n\n\t/**\n\t * @param sql SQL statement text.\n\t */\n\tdefault void trace(String sql);\n}",
+        "codebleu": 0.7493765834039338,
+        "bleu": 0.30591118675057666,
+        "rouge": 0.5945945945945945,
+        "levenshtein": 121
+    },
+    {
+        "ref": "\t * @param tblName table name containing the affected row.\n\t * @param rowId id of the affected row.\n\t */\n\tvoid update(int actionCode, String dbName, String tblName, long rowId);\n}",
+        "pred": "\t * @param tblName table name containing the affected row.\n\t * @param rowId id of the affected row.\n\t */\n\tdefault void callback(Pointer pArg, int actionCode, String dbName, String tblName, long rowId) {\n\t\tupdate(actionCode, dbName, tblName, rowId);\n\t}\n\t/**\n\t * Data Change Notification Callback\n\t * @param actionCode org.sqlite.ActionCodes.SQLITE_INSERT | SQLITE_UPDATE | SQLITE_DELETE.\n\t * @param dbName database name containing the affected row.\n\t * @param tblName table name containing the affected row.\n\t * @param rowId id of the affected row.\n\t */\n\tvoid update(int actionCode, String dbName, String tblName, long rowId);\n}",
+        "codebleu": 0.81816370907422,
+        "bleu": 0.3096918733339172,
+        "rouge": 0.4716981132075471,
+        "levenshtein": 448
+    },
+    {
+        "ref": "\t\tconn.setAuhtorizer(new Authorizer() {\n\t\t\t@Override\n\t\t\tpublic int authorize(int actionCode, String arg1, String arg2, String dbName, String triggerName) {\n\t\t\t\t//System.out.println(\"actionCode = [\" + actionCode + \"], arg1 = [\" + arg1 + \"], arg2 = [\" + arg2 + \"], dbName = [\" + dbName + \"], triggerName = [\" + triggerName + \"]\");\n\t\t\t\treturn Authorizer.SQLITE_OK;\n\t\t\t}\n\t\t});",
+        "pred": "\tconn.setAuhtorizer(new Authorizer() {\n\t\t@Override\n\t\tpublic int authorize(int actionCode, String arg1, String arg2, String dbName, String triggerName) {\n\t\t\t//System.out.println(\"actionCode = [\" + actionCode + \"], arg1 = [\" + arg1 + \"], arg2 = [\" + arg2 + \"], dbName = [\" + dbName + \"], triggerName = [\" + triggerName + \"]\");\n\t\t\treturn Authorizer.SQLITE_OK;\n\t\t}\n\t});",
+        "codebleu": 1.0,
+        "bleu": 1.0,
+        "rouge": 1.0,
+        "levenshtein": 7
+    },
+    {
+        "ref": " */\npackage org.sqlite;\n\nimport jnr.ffi.Pointer;\n\nimport static org.sqlite.SQLite.SQLITE_DONE;\nimport static org.sqlite.SQLite.SQLITE_OK;\nimport static org.sqlite.SQLite.sqlite3_backup_finish;\nimport static org.sqlite.SQLite.sqlite3_backup_pagecount;\nimport static org.sqlite.SQLite.sqlite3_backup_remaining;\nimport static org.sqlite.SQLite.sqlite3_backup_step;\nimport static org.sqlite.SQLite.sqlite3_log;\n\n/**",
+        "pred": "\nimport jnr.ffi.Pointer;\nimport static org.sqlite.SQLite.*;\n\n/**",
+        "codebleu": 0.41596203023992334,
+        "bleu": 0.016224600122685073,
+        "rouge": 0.2608695652173913,
+        "levenshtein": 348
+    },
+    {
+        "ref": " */\npackage org.sqlite;\n\nimport jnr.ffi.Pointer;\n\nimport java.io.IOException;\nimport java.io.InputStream;\nimport java.io.OutputStream;",
+        "pred": " */\npackage org.sqlite;\n\nimport java.io.IOException;\nimport java.io.InputStream;\nimport java.io.OutputStream;",
+        "codebleu": 0.8286695736363898,
+        "bleu": 0.6961945239899252,
+        "rouge": 0.8823529411764706,
+        "levenshtein": 25
+    },
+    {
+        "ref": " */\npackage org.sqlite;\n\nimport jnr.ffi.LibraryLoader;\nimport jnr.ffi.LibraryOption;\nimport jnr.ffi.Memory;\nimport jnr.ffi.Pointer;\nimport jnr.ffi.Runtime;\nimport jnr.ffi.Struct;\nimport jnr.ffi.annotations.Delegate;\nimport jnr.ffi.annotations.Encoding;\nimport jnr.ffi.annotations.IgnoreError;\nimport jnr.ffi.annotations.In;\nimport jnr.ffi.annotations.Out;\nimport jnr.ffi.byref.IntByReference;\nimport jnr.ffi.byref.PointerByReference;\n\nimport java.nio.ByteBuffer;\nimport java.nio.charset.Charset;",
+        "pred": " */\npackage org.sqlite;\n\nimport jnr.ffi.LibraryLoader;\nimport jnr.ffi.LibraryOption;\nimport jnr.ffi.Memory;\nimport jnr.ffi.Pointer;\nimport jnr.ffi.annotations.Delegate;\nimport jnr.ffi.annotations.Encoding;\nimport jnr.ffi.annotations.IgnoreError;\nimport jnr.ffi.annotations.In;\nimport jnr.ffi.annotations.Out;\nimport jnr.ffi.byref.IntByReference;\nimport jnr.ffi.byref.PointerByReference;\nimport com.sun.jna.Callback;\nimport com.sun.jna.Library;\nimport com.sun.jna.Memory;\nimport com.sun.jna.Native;\nimport com.sun.jna.Pointer;\nimport com.sun.jna.PointerType;\nimport com.sun.jna.ptr.IntByReference;\nimport com.sun.jna.ptr.PointerByReference;\nimport java.nio.ByteBuffer;\nimport java.nio.charset.Charset;",
+        "codebleu": 0.8103698993986596,
+        "bleu": 0.6044701642681851,
+        "rouge": 0.7159090909090908,
+        "levenshtein": 271
+    },
+    {
+        "ref": "\n\tstatic final int SQLITE_TRANSIENT = -1;\n\n\tstatic String sqlite3_libversion() { // no copy needed\n\t\treturn library.sqlite3_libversion();\n\t}\n\tstatic int sqlite3_libversion_number() {\n\t\treturn library.sqlite3_libversion_number();\n\t}\n\tstatic boolean sqlite3_threadsafe() {\n\t\treturn library.sqlite3_threadsafe();\n\t}\n\tstatic boolean sqlite3_compileoption_used(String optName) {\n\t\treturn library.sqlite3_compileoption_used(optName);\n\t}\n\n\tpublic static final int SQLITE_CONFIG_SINGLETHREAD = 1,\n\t\t\tSQLITE_CONFIG_MULTITHREAD = 2, SQLITE_CONFIG_SERIALIZED = 3,",
+        "pred": "\nstatic native String sqlite3_libversion(); // no copy needed\nstatic native int sqlite3_libversion_number();\nstatic native boolean sqlite3_threadsafe();\nstatic native boolean sqlite3_compileoption_used(String optName);\nstatic native String sqlite3_compileoption_get(int n);\n\npublic static final int SQLITE_CONFIG_SINGLETHREAD = 1,",
+        "codebleu": 0.21493718694339484,
+        "bleu": 0.16538144416712539,
+        "rouge": 0.616822429906542,
+        "levenshtein": 277
+    },
+    {
+        "ref": "\t\tlibrary.sqlite3_log(iErrCode, msg);\n\t}\n\n\tstatic String sqlite3_errmsg(Pointer pDb) { // copy needed: the error string might be overwritten or deallocated by subsequent calls to other SQLite interface functions.\n\t\treturn library.sqlite3_errmsg(pDb);\n\t}\n\tstatic int sqlite3_errcode(Pointer pDb) {\n\t\treturn library.sqlite3_errcode(pDb);\n\t}\n\n\tstatic int sqlite3_extended_result_codes(Pointer pDb, boolean onoff) {\n\t\treturn library.sqlite3_extended_result_codes(pDb, onoff);\n\t}\n\tstatic int sqlite3_extended_errcode(Pointer pDb) {\n\t\treturn library.sqlite3_extended_errcode(pDb);\n\t}\n\n\tstatic int sqlite3_initialize() {\n\t\treturn library.sqlite3_initialize();",
+        "pred": "\tstatic String sqlite3_errmsg(Pointer pDb) { // copy needed: the error string might be overwritten or deallocated by subsequent calls to other SQLite interface functions.\n\t\treturn library.sqlite3_errmsg(pDb);\n\t}\n\tstatic int sqlite3_errcode(Pointer pDb) {\n\t\treturn library.sqlite3_errcode(pDb);\n\t}\n\n\tstatic int sqlite3_extended_result_codes(Pointer pDb, boolean onoff) {\n\t\treturn library.sqlite3_extended_result_codes(pDb, onoff);\n\t}\n\tstatic int sqlite3_extended_errcode(Pointer pDb) {\n\t\treturn library.sqlite3_extended_errcode(pDb);\n\t}\n\tstatic native String sqlite3_errmsg(SQLite3 pDb); // copy needed: the error string might be overwritten or deallocated by subsequent calls to other SQLite interface functions.\n\tstatic native int sqlite3_errcode(SQLite3 pDb);\n\tstatic native int sqlite3_extended_result_codes(SQLite3 pDb, boolean onoff);\n\tstatic native int sqlite3_extended_errcode(SQLite3 pDb);\n\tstatic int sqlite3_initialize() {\n\t\treturn library.sqlite3_initialize();\n```",
+        "codebleu": 0.796511789896877,
+        "bleu": 0.5743425826779814,
+        "rouge": 0.7383177570093459,
+        "levenshtein": 407
+    },
+    {
+        "ref": "\t\treturn library.sqlite3_shutdown();\n\t}\n\n\tstatic int sqlite3_open_v2(String filename, PointerByReference ppDb, int flags, String vfs) { // no copy needed\n\t\treturn library.sqlite3_open_v2(filename, ppDb, flags, vfs);\n\t}\n\tstatic int sqlite3_close(Pointer pDb) {\n\t\treturn library.sqlite3_close(pDb);\n\t}\n\tstatic int sqlite3_close_v2(Pointer pDb) { // since 3.7.14\n\t\treturn library.sqlite3_close_v2(pDb);\n\t}\n\tstatic void sqlite3_interrupt(Pointer pDb) {\n\t\tlibrary.sqlite3_interrupt(pDb);\n\t}\n\n\tstatic int sqlite3_busy_handler(Pointer pDb, BusyHandler bh, Pointer pArg) {\n\t\treturn library.sqlite3_busy_handler(pDb, bh, pArg);\n\t}\n\tstatic int sqlite3_busy_timeout(Pointer pDb, int ms) {\n\t\treturn library.sqlite3_busy_timeout(pDb, ms);\n\t}\n\tstatic int sqlite3_db_config(Pointer pDb, int op, int v, IntByReference pOk) {\n\t\treturn library.sqlite3_db_config(pDb, op, v, pOk);\n\t}\n\t//#if mvn.project.property.sqlite.omit.load.extension == \"true\"\n\tstatic int sqlite3_enable_load_extension(Object pDb, boolean onoff) {\n\t\tthrow new UnsupportedOperationException(\"SQLITE_OMIT_LOAD_EXTENSION activated\");\n\t}\n\tstatic int sqlite3_load_extension(Object pDb, String file, String proc, PointerByReference errMsg) {\n\t\tthrow new UnsupportedOperationException(\"SQLITE_OMIT_LOAD_EXTENSION activated\");\n\t}\n\t//#else\n\tstatic int sqlite3_enable_load_extension(Pointer pDb, boolean onoff) {\n\t\treturn library.sqlite3_enable_load_extension(pDb, onoff);\n\t}\n\tstatic int sqlite3_load_extension(Pointer pDb, String file, String proc, PointerByReference errMsg) {\n\t\treturn library.sqlite3_load_extension(pDb, file, proc, errMsg);\n\t}\n\t//#endif\n\tpublic static final int SQLITE_LIMIT_LENGTH = 0, SQLITE_LIMIT_SQL_LENGTH = 1, SQLITE_LIMIT_COLUMN = 2,\n\t\t\tSQLITE_LIMIT_EXPR_DEPTH = 3, SQLITE_LIMIT_COMPOUND_SELECT = 4, SQLITE_LIMIT_VDBE_OP = 5,\n\t\t\tSQLITE_LIMIT_FUNCTION_ARG = 6, SQLITE_LIMIT_ATTACHED = 7, SQLITE_LIMIT_LIKE_PATTERN_LENGTH = 8,",
+        "pred": "\t\treturn library.sqlite3_shutdown();\n\t}\n\nstatic native int sqlite3_open_v2(String filename, PointerByReference ppDb, int flags, String vfs); \nstatic native int sqlite3_close(SQLite3 pDb);\nstatic native int sqlite3_close_v2(SQLite3 pDb); \nstatic native void sqlite3_interrupt(SQLite3 pDb);\nstatic native int sqlite3_busy_handler(SQLite3 pDb, BusyHandler bh, Pointer pArg);\nstatic native int sqlite3_busy_timeout(SQLite3 pDb, int ms);\nstatic native int sqlite3_db_status(SQLite3 pDb, int op, IntByReference pCur, IntByReference pHiwtr, boolean resetFlg);\nstatic native int sqlite3_db_config(SQLite3 pDb, int op, int v, IntByReference pOk);\nstatic native int sqlite3_enable_load_extension(SQLite3 pDb, boolean onoff);\nstatic native int sqlite3_load_extension(SQLite3 pDb, String file, String proc, PointerByReference errMsg);\npublic static final int SQLITE_LIMIT_LENGTH = 0, SQLITE_LIMIT_SQL_LENGTH = 1, SQLITE_LIMIT_COLUMN = 2, ",
+        "codebleu": 0.27282789364324356,
+        "bleu": 0.15898422851725613,
+        "rouge": 0.5468354430379746,
+        "levenshtein": 1128
+    },
+    {
+        "ref": "\t}\n\t}\n\t}\n\t\t\tSQLITE_LIMIT_EXPR_DEPTH = 3, SQLITE_LIMIT_COMPOUND_SELECT = 4, SQLITE_LIMIT_VDBE_OP = 5,\n\t\t\tSQLITE_LIMIT_FUNCTION_ARG = 6, SQLITE_LIMIT_ATTACHED = 7, SQLITE_LIMIT_LIKE_PATTERN_LENGTH = 8,\n\t\t\tSQLITE_LIMIT_VARIABLE_NUMBER = 9, SQLITE_LIMIT_TRIGGER_DEPTH = 10;\n\tstatic int sqlite3_limit(Pointer pDb, int id, int newVal) {\n\t\treturn library.sqlite3_limit(pDb, id, newVal);\n\t}\n\tstatic boolean sqlite3_get_autocommit(Pointer pDb) {\n\t\treturn library.sqlite3_get_autocommit(pDb);\n\t}\n\n\tstatic int sqlite3_changes(Pointer pDb) {\n\t\treturn library.sqlite3_changes(pDb);\n\t}\n\tstatic int sqlite3_total_changes(Pointer pDb) {\n\t\treturn library.sqlite3_total_changes(pDb);\n\t}\n\tstatic long sqlite3_last_insert_rowid(Pointer pDb) {\n\t\treturn library.sqlite3_last_insert_rowid(pDb);\n\t}\n\n\tstatic String sqlite3_db_filename(Pointer pDb, String dbName) { // no copy needed\n\t\treturn library.sqlite3_db_filename(pDb, dbName);\n\t}\n\tstatic int sqlite3_db_readonly(Pointer pDb, String dbName) { // no copy needed\n\t\treturn library.sqlite3_db_readonly(pDb, dbName);\n\t}\n\n\tstatic Pointer sqlite3_next_stmt(Pointer pDb, Pointer pStmt) {\n\t\treturn library.sqlite3_next_stmt(pDb, pStmt);\n\t}\n\n\tstatic int sqlite3_table_column_metadata(Pointer pDb, String dbName, String tableName, String columnName,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t PointerByReference pzDataType, PointerByReference pzCollSeq,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t IntByReference pNotNull, IntByReference pPrimaryKey, IntByReference pAutoinc) { // no copy needed\n\t\treturn library.sqlite3_table_column_metadata(pDb, dbName, tableName, columnName, pzDataType, pzCollSeq, pNotNull, pPrimaryKey, pAutoinc);\n\t}\n\n\tstatic int sqlite3_exec(Pointer pDb, String cmd, Pointer c, Pointer udp, PointerByReference errMsg) {\n\t\treturn library.sqlite3_exec(pDb, cmd, c, udp, errMsg);\n\t}\n\n\tstatic int sqlite3_prepare_v2(Pointer pDb, Pointer sql, int nByte, PointerByReference ppStmt,\n\t\t\tPointerByReference pTail) {\n\t\treturn library.sqlite3_prepare_v2(pDb, sql, nByte, ppStmt, pTail);\n\tstatic String sqlite3_sql(Pointer pStmt) { // no copy needed\n\t\treturn library.sqlite3_sql(pStmt);\n\t}\n\tstatic int sqlite3_finalize(Pointer pStmt) {\n\t\treturn library.sqlite3_finalize(pStmt);\n\t}\n\tstatic int sqlite3_step(Pointer pStmt) {\n\t\treturn library.sqlite3_step(pStmt);\n\t}\n\tstatic int sqlite3_reset(Pointer pStmt) {\n\t\treturn library.sqlite3_reset(pStmt);\n\t}\n\tstatic int sqlite3_clear_bindings(Pointer pStmt) {\n\t\treturn library.sqlite3_clear_bindings(pStmt);\n\t}\n\tstatic boolean sqlite3_stmt_busy(Pointer pStmt) {\n\t\treturn library.sqlite3_stmt_busy(pStmt);\n\t}\n\tstatic boolean sqlite3_stmt_readonly(Pointer pStmt) {\n\t\treturn library.sqlite3_stmt_readonly(pStmt);\n\t}\n\n\tstatic int sqlite3_column_count(Pointer pStmt) {\n\t\treturn library.sqlite3_column_count(pStmt);\n\t}\n\tstatic int sqlite3_data_count(Pointer pStmt) {\n\t\treturn library.sqlite3_data_count(pStmt);\n\t}\n\tstatic int sqlite3_column_type(Pointer pStmt, int iCol) {\n\t\treturn library.sqlite3_column_type(pStmt, iCol);\n\t}\n\tstatic String sqlite3_column_name(Pointer pStmt, int iCol) { // copy needed: The returned string pointer is valid until either the prepared statement is destroyed by sqlite3_finalize() or until the statement is automatically reprepared by the first call to sqlite3_step() for a particular run or until the next call to sqlite3_column_name() or sqlite3_column_name16() on the same column.\n\t\treturn library.sqlite3_column_name(pStmt, iCol);\n\t}\n\t//#if mvn.project.property.sqlite.enable.column.metadata == \"true\"\n\tstatic String sqlite3_column_origin_name(Pointer pStmt, int iCol) { // copy needed\n\t\treturn library.sqlite3_column_origin_name(pStmt, iCol);\n\t}\n\tstatic String sqlite3_column_table_name(Pointer pStmt, int iCol) { // copy needed\n\t\treturn library.sqlite3_column_table_name(pStmt, iCol);\n\t}\n\tstatic String sqlite3_column_database_name(Pointer pStmt, int iCol) { // copy needed\n\t\treturn library.sqlite3_column_database_name(pStmt, iCol);\n\t}\n\tstatic String sqlite3_column_decltype(Pointer pStmt, int iCol) { // copy needed\n\t\treturn library.sqlite3_column_decltype(pStmt, iCol);\n\t}\n\t//#else\n\tstatic String sqlite3_column_origin_name(Object pStmt, int iCol) {\n\t\tthrow new UnsupportedOperationException(\"SQLITE_ENABLE_COLUMN_METADATA not activated\");\n\t}\n\tstatic String sqlite3_column_table_name(Object pStmt, int iCol) {\n\t\tthrow new UnsupportedOperationException(\"SQLITE_ENABLE_COLUMN_METADATA not activated\");\n\t}\n\tstatic String sqlite3_column_database_name(Object pStmt, int iCol) {\n\t\tthrow new UnsupportedOperationException(\"SQLITE_ENABLE_COLUMN_METADATA not activated\");\n\t}\n\tstatic String sqlite3_column_decltype(Object pStmt, int iCol) {\n\t\tthrow new UnsupportedOperationException(\"SQLITE_ENABLE_COLUMN_METADATA not activated\");\n\t}\n\t//#endif\n\n\tstatic Pointer sqlite3_column_blob(Pointer pStmt, int iCol) { // copy needed: The pointers returned are valid until a type conversion occurs as described above, or until sqlite3_step() or sqlite3_reset() or sqlite3_finalize() is called.\n\t\treturn library.sqlite3_column_blob(pStmt, iCol);\n\t}\n\tstatic int sqlite3_column_bytes(Pointer pStmt, int iCol) {\n\t\treturn library.sqlite3_column_bytes(pStmt, iCol);\n\tstatic double sqlite3_column_double(Pointer pStmt, int iCol) {\n\t\treturn library.sqlite3_column_double(pStmt, iCol);\n\t}\n\tstatic int sqlite3_column_int(Pointer pStmt, int iCol) {\n\t\treturn library.sqlite3_column_int(pStmt, iCol);\n\t}\n\tstatic long sqlite3_column_int64(Pointer pStmt, int iCol) {\n\t\treturn library.sqlite3_column_int64(pStmt, iCol);\n\t}\n\tstatic String sqlite3_column_text(Pointer pStmt, int iCol) { // copy needed: The pointers returned are valid until a type conversion occurs as described above, or until sqlite3_step() or sqlite3_reset() or sqlite3_finalize() is called.\n\t\treturn library.sqlite3_column_text(pStmt, iCol);\n\t}\n\t//const void *sqlite3_column_text16(Pointer pStmt, int iCol);\n\t//sqlite3_value *sqlite3_column_value(Pointer pStmt, int iCol);\n\n\tstatic int sqlite3_bind_parameter_count(Pointer pStmt) {\n\t\treturn library.sqlite3_bind_parameter_count(pStmt);\n\tstatic int sqlite3_bind_parameter_index(Pointer pStmt, String name) { // no copy needed\n\t\treturn library.sqlite3_bind_parameter_index(pStmt, name);\n\t}\n\tstatic String sqlite3_bind_parameter_name(Pointer pStmt, int i) { // copy needed\n\t\treturn library.sqlite3_bind_parameter_name(pStmt, i);\n\t}\n\n\tstatic int sqlite3_bind_blob(Pointer pStmt, int i, byte[] value, int n, long xDel) { // no copy needed when xDel == SQLITE_TRANSIENT == -1\n\t\treturn library.sqlite3_bind_blob(pStmt, i, value, n, xDel);\n\t}\n\tstatic int sqlite3_bind_double(Pointer pStmt, int i, double value) {\n\t\treturn library.sqlite3_bind_double(pStmt, i, value);\n\t}\n\tstatic int sqlite3_bind_int(Pointer pStmt, int i, int value) {\n\t\treturn library.sqlite3_bind_int(pStmt, i, value);\n\t}\n\tstatic int sqlite3_bind_int64(Pointer pStmt, int i, long value) {\n\t\treturn library.sqlite3_bind_int64(pStmt, i, value);\n\t}\n\tstatic int sqlite3_bind_null(Pointer pStmt, int i) {\n\t\treturn library.sqlite3_bind_null(pStmt, i);\n\t}\n\tstatic int sqlite3_bind_text(Pointer pStmt, int i, String value, int n, long xDel) { // no copy needed when xDel == SQLITE_TRANSIENT == -1\n\t\treturn library.sqlite3_bind_text(pStmt, i, value, n, xDel);\n\t}\n\t//static int sqlite3_bind_text16(Pointer pStmt, int i, const void*, int, void(*)(void*));\n\t//static int sqlite3_bind_value(Pointer pStmt, int i, const sqlite3_value*);\n\tstatic int sqlite3_bind_zeroblob(Pointer pStmt, int i, int n) {\n\t\treturn library.sqlite3_bind_zeroblob(pStmt, i, n);\n\t}\n\tstatic int sqlite3_stmt_status(Pointer pStmt, int op, boolean reset) {\n\t\treturn library.sqlite3_stmt_status(pStmt, op, reset);\n\t}\n\t//#if mvn.project.property.sqlite.enable.stmt.scanstatus == \"true\"\n\tstatic int sqlite3_stmt_scanstatus(Pointer pStmt, int idx, int iScanStatusOp, PointerByReference pOut) {\n\t\treturn library.sqlite3_stmt_scanstatus(pStmt, idx, iScanStatusOp, pOut);\n\t}\n\tstatic void sqlite3_stmt_scanstatus_reset(Pointer pStmt) {\n\t\tlibrary.sqlite3_stmt_scanstatus_reset(pStmt);\n\t}\n\t//#endif\n\n\tstatic void sqlite3_free(Pointer p) {\n\t\tlibrary.sqlite3_free(p);\n\t}\n\n\tstatic int sqlite3_blob_open(Pointer pDb, String dbName, String tableName, String columnName,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t long iRow, boolean flags, PointerByReference ppBlob) { // no copy needed\n\t\treturn library.sqlite3_blob_open(pDb, dbName, tableName, columnName, iRow, flags, ppBlob);\n\t}\n\tstatic int sqlite3_blob_reopen(Pointer pBlob, long iRow) {\n\t\treturn library.sqlite3_blob_reopen(pBlob, iRow);\n\t}\n\tstatic int sqlite3_blob_bytes(Pointer pBlob) {\n\t\treturn library.sqlite3_blob_bytes(pBlob);\n\t}\n\tstatic int sqlite3_blob_read(Pointer pBlob, ByteBuffer z, int n, int iOffset) {\n\t\treturn library.sqlite3_blob_read(pBlob, z, n, iOffset);\n\t}\n\tstatic int sqlite3_blob_write(Pointer pBlob, ByteBuffer z, int n, int iOffset) {\n\t\treturn library.sqlite3_blob_write(pBlob, z, n, iOffset);\n\t}\n\tstatic int sqlite3_blob_close(Pointer pBlob) {\n\t\treturn library.sqlite3_blob_close(pBlob);\n\t}\n\n\tstatic Pointer sqlite3_backup_init(Pointer pDst, String dstName, Pointer pSrc, String srcName) {\n\t\treturn library.sqlite3_backup_init(pDst, dstName, pSrc, srcName);\n\t}\n\tstatic int sqlite3_backup_step(Pointer pBackup, int nPage) {\n\t\treturn library.sqlite3_backup_step(pBackup, nPage);\n\t}\n\tstatic int sqlite3_backup_remaining(Pointer pBackup) {\n\t\treturn library.sqlite3_backup_remaining(pBackup);\n\t}\n\tstatic int sqlite3_backup_pagecount(Pointer pBackup) {\n\t\treturn library.sqlite3_backup_pagecount(pBackup);\n\t}\n\tstatic int sqlite3_backup_finish(Pointer pBackup) {\n\t\treturn library.sqlite3_backup_finish(pBackup);\n\t}\n\n\t// As there is only one ProgressCallback by connection, and it is used to implement query timeout,\n\t// the method visibility is restricted.\n\tstatic void sqlite3_progress_handler(Pointer pDb, int nOps, ProgressCallback xProgress, Pointer pArg) {\n\t\tlibrary.sqlite3_progress_handler(pDb, nOps, xProgress, pArg);\n\t}\n\tstatic void sqlite3_trace(Pointer pDb, TraceCallback xTrace, Pointer pArg) {\n\t\tlibrary.sqlite3_trace(pDb, xTrace, pArg);\n\t}\n\tstatic void sqlite3_profile(Pointer pDb, ProfileCallback xProfile, Pointer pArg) {\n\t\tlibrary.sqlite3_profile(pDb, xProfile, pArg);\n\t}\n\n\t// TODO sqlite3_commit_hook, sqlite3_rollback_hook\n\tstatic Pointer sqlite3_update_hook(Pointer pDb, UpdateHook xUpdate, Pointer pArg) {\n\t\treturn library.sqlite3_update_hook(pDb, xUpdate, pArg);\n\t}\n\tstatic int sqlite3_set_authorizer(Pointer pDb, Authorizer authorizer, Pointer pUserData) {\n\t\treturn library.sqlite3_set_authorizer(pDb, authorizer, pUserData);\n\t}\n\n\t/*\n\tvoid (*)(sqlite3_context*,int,sqlite3_value**),",
+        "pred": "void (*)(sqlite3_context*,int,sqlite3_value**),\n\t\t\tSQLITE_LIMIT_EXPR_DEPTH = 3, SQLITE_LIMIT_COMPOUND_SELECT = 4, SQLITE_LIMIT_VDBE_OP = 5,\n\t\t\tSQLITE_LIMIT_FUNCTION_ARG = 6, SQLITE_LIMIT_ATTACHED = 7, SQLITE_LIMIT_LIKE_PATTERN_LENGTH = 8,\n\t\t\tSQLITE_LIMIT_VARIABLE_NUMBER = 9, SQLITE_LIMIT_TRIGGER_DEPTH = 10;\n\nstatic int sqlite3_limit(Pointer pDb, int id, int newVal) {\n    return library.sqlite3_limit(pDb, id, newVal);\n}\n\n//... and so on...",
+        "codebleu": 0.12667272983896402,
+        "bleu": 1.0600226618249058e-10,
+        "rouge": 0.07811447811447812,
+        "levenshtein": 10148
+    },
+    {
+        "ref": "\t}\n\tvoid(*)(void*)\n\t*/\n\t// eTextRep: SQLITE_UTF8 => 1, ...\n\tstatic int sqlite3_create_function_v2(Pointer pDb, String functionName, int nArg, int eTextRep,\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Pointer pApp, ScalarCallback xFunc, AggregateStepCallback xStep, AggregateFinalCallback xFinal, Pointer xDestroy) {\n\t\treturn library.sqlite3_create_function_v2(pDb, functionName, nArg, eTextRep, pApp, xFunc, xStep, xFinal, xDestroy);\n\t}\n\tstatic void sqlite3_result_null(Pointer pCtx) {\n\t\tlibrary.sqlite3_result_null(pCtx);\n\t}\n\tstatic void sqlite3_result_int(Pointer pCtx, int i) {\n\t\tlibrary.sqlite3_result_int(pCtx, i);\n\t}\n\tstatic void sqlite3_result_double(Pointer pCtx, double d) {\n\t\tlibrary.sqlite3_result_double(pCtx, d);\n\t}\n\tstatic void sqlite3_result_text(Pointer pCtx, String text, int n, long xDel) { // no copy needed when xDel == SQLITE_TRANSIENT == -1\n\t\tlibrary.sqlite3_result_text(pCtx, text, n, xDel);\n\t}\n\tstatic void sqlite3_result_blob(Pointer pCtx, byte[] blob, int n, long xDel) {\n\t\tlibrary.sqlite3_result_blob(pCtx, blob, n, xDel);\n\t}\n\tstatic void sqlite3_result_int64(Pointer pCtx, long l) {\n\t\tlibrary.sqlite3_result_int64(pCtx, l);\n\t}\n\tstatic void sqlite3_result_zeroblob(Pointer pCtx, int n) {\n\t\tlibrary.sqlite3_result_zeroblob(pCtx, n);\n\t}\n\n\tstatic void sqlite3_result_error(Pointer pCtx, String err, int length) {\n\t\tlibrary.sqlite3_result_error(pCtx, err, length);\n\t}\n\tstatic void sqlite3_result_error_code(Pointer pCtx, int errCode) {\n\t\tlibrary.sqlite3_result_error_code(pCtx, errCode);\n\t}\n\tstatic void sqlite3_result_error_nomem(Pointer pCtx) {\n\t\tlibrary.sqlite3_result_error_nomem(pCtx);\n\t}\n\tstatic void sqlite3_result_error_toobig(Pointer pCtx) {\n\t\tlibrary.sqlite3_result_error_toobig(pCtx);\n\t}\n\t//static void sqlite3_result_subtype(Pointer pCtx, int subtype);\n\n\tstatic Pointer sqlite3_value_blob(Pointer pValue) {\n\t\treturn library.sqlite3_value_blob(pValue);\n\t}\n\tstatic int sqlite3_value_bytes(Pointer pValue) {\n\t\treturn library.sqlite3_value_bytes(pValue);\n\t}\n\tstatic double sqlite3_value_double(Pointer pValue) {\n\t\treturn library.sqlite3_value_double(pValue);\n\t}\n\tstatic int sqlite3_value_int(Pointer pValue) {\n\t\treturn library.sqlite3_value_int(pValue);\n\t}\n\tstatic long sqlite3_value_int64(Pointer pValue) {\n\t\treturn library.sqlite3_value_int64(pValue);\n\tstatic String sqlite3_value_text(Pointer pValue) {\n\t\treturn library.sqlite3_value_text(pValue);\n\t}\n\tstatic int sqlite3_value_type(Pointer pValue) {\n\t\treturn library.sqlite3_value_type(pValue);\n\t}\n\tstatic int sqlite3_value_numeric_type(Pointer pValue) {\n\t\treturn library.sqlite3_value_numeric_type(pValue);\n\t}\n\n\tstatic Pointer sqlite3_get_auxdata(SQLite3Context pCtx, int n) {\n\t\treturn library.sqlite3_get_auxdata(pCtx.pCtx, n);\n\t}\n\tstatic void sqlite3_set_auxdata(SQLite3Context pCtx, int n, Pointer p, Destructor free) {\n\t\tlibrary.sqlite3_set_auxdata(pCtx.pCtx, n, p, free);\n\t}\n\tstatic Pointer sqlite3_aggregate_context(Pointer pCtx, int nBytes) {\n\t\treturn library.sqlite3_aggregate_context(pCtx, nBytes);\n\t}\n\tstatic Pointer sqlite3_context_db_handle(Pointer pCtx) {\n\t\treturn library.sqlite3_context_db_handle(pCtx);\n\t}\n\n\tpublic static final Charset UTF_8 = StandardCharsets.UTF_8;\n\tpublic static final String UTF_8_ECONDING = UTF_8.name();\n\tstatic Pointer nativeString(String sql) {\n\t\tfinal byte[] data = sql.getBytes(UTF_8);\n\t\tjnr.ffi.Runtime runtime = jnr.ffi.Runtime.getRuntime(library);",
+        "pred": "void(*)(void*)\n\t*/\n\t// eTextRep: SQLITE_UTF8 => 1,...\nstatic native int sqlite3_create_function_v2(SQLite3 pDb, String functionName, int nArg, int eTextRep,\n\t\t\tPointer pApp, ScalarCallback xFunc, AggregateStepCallback xStep, AggregateFinalCallback xFinal, Destructor xDestroy);\n\nstatic native void sqlite3_result_null(SQLite3Context pCtx);\nstatic native void sqlite3_result_int(SQLite3Context pCtx, int i);\nstatic native void sqlite3_result_double(SQLite3Context pCtx, double d);\nstatic native void sqlite3_result_text(SQLite3Context pCtx, String text, int n, long xDel); // no copy needed when xDel == SQLITE_TRANSIENT == -1\nstatic native void sqlite3_result_blob(SQLite3Context pCtx, byte[] blob, int n, long xDel);\nstatic native void sqlite3_result_int64(SQLite3Context pCtx, long l);\nstatic native void sqlite3_result_zeroblob(SQLite3Context pCtx, int n);\n\nstatic native void sqlite3_result_error(SQLite3Context pCtx, String err, int length);",
+        "codebleu": 0.1737218377837164,
+        "bleu": 0.05696574705092143,
+        "rouge": 0.37113402061855666,
+        "levenshtein": 2570
+    },
+    {
+        "ref": "\n\tpublic interface LogCallback {\n\t\t@SuppressWarnings(\"unused\")\n\t\t@Delegate\n\t\tdefault void callback(Pointer udp, int err,@Encoding(\"UTF-8\") String msg) {\n\t\t\tlog(err, msg);\n\t\t}\n\t\tvoid log(int err, String msg);\n\t}\n\n\tprivate static final LogCallback LOG_CALLBACK = new LogCallback() {",
+        "pred": "\n\tpublic interface LogCallback {\n\t\t@SuppressWarnings(\"unused\")\n\t\t@Delegate\n\t\tvoid invoke(Pointer udp, int err, @Encoding(\"UTF-8\") String msg);\n\t\tdefault void callback(Pointer udp, int err, String msg) {\n\t\t\tlog(err, msg);\n\t\t}\n\t\tvoid log(int err, String msg);\n\t}\n\n\tprivate static final LogCallback LOG_CALLBACK = new LogCallback() {",
+        "codebleu": 0.8226160560584715,
+        "bleu": 0.6912565780777502,
+        "rouge": 0.8461538461538461,
+        "levenshtein": 76
+    },
+    {
+        "ref": "    if (p == null) {\n      return null;\n    } else {\n\t\treturn sqlite3_column_database_name(pStmt, iCol); // ko if pStmt is null\n\t}\n\n  public byte[] getColumnBlob(int iCol) throws StmtException {\n    checkColumnIndex(iCol);\n    final Pointer p = sqlite3_column_blob(pStmt, iCol); // ok if pStmt is null\n      final byte[] bytes = new byte[getColumnBytes(iCol)];\n      p.get(0L, bytes, 0, bytes.length); // a copy is made...\n      return bytes;\n    }\n  }\n\n\t@Override\n\tpublic int getColumnBytes(int iCol) throws StmtException {",
+        "pred": "      return null;\n    } else {\n\t\treturn sqlite3_column_database_name(pStmt, iCol); // ko if pStmt is null\n\t}\n\n  public byte[] getColumnBlob(int iCol) throws StmtException {\n    checkColumnIndex(iCol);\n    final Pointer p = sqlite3_column_blob(pStmt, iCol); // ok if pStmt is null\n    if (p == null) {\n      return null;\n    } else {\n      final byte[] bytes = new byte[p.getByteCount()];\n      p.get(0L, bytes, 0, bytes.length);\n      return bytes;\n    }\n  }\n\n  @Override\n  public int getColumnBytes(int iCol) throws StmtException {",
+        "codebleu": 0.839750208969867,
+        "bleu": 0.8370302294220461,
+        "rouge": 0.874074074074074,
+        "levenshtein": 113
+    },
+    {
+        "ref": "\t * @param tblName table name containing the affected row.\n\t * @param rowId id of the affected row.\n\t */\n\t@Delegate\n\tdefault void callback(Pointer pArg, int actionCode,@Encoding(\"UTF-8\") String dbName,@Encoding(\"UTF-8\") String tblName, long rowId) {\n\t\tupdate(actionCode, dbName, tblName, rowId);\n\t}\n\t/**\n\t * Data Change Notification Callback\n\t * @param actionCode org.sqlite.ActionCodes.SQLITE_INSERT | SQLITE_UPDATE | SQLITE_DELETE.\n\t * @param dbName database name containing the affected row.\n\t * @param tblName table name containing the affected row.\n\t * @param rowId id of the affected row.\n\t */\n\tvoid update(int actionCode, String dbName, String tblName, long rowId);\n}",
+        "pred": "\t * @param tblName table name containing the affected row.\n\t * @param rowId id of the affected row.\n\t */\n\tvoid invoke(Pointer pArg, int actionCode, @Encoding(\"UTF-8\") String dbName, @Encoding(\"UTF-8\") String tblName, long rowId);\n\t/**\n\t * Data Change Notification Callback\n\t * @param actionCode org.sqlite.ActionCodes.SQLITE_INSERT | SQLITE_UPDATE | SQLITE_DELETE.\n\t * @param dbName database name containing the affected row.\n\t * @param tblName table name containing the affected row.\n\t * @param rowId id of the affected row.\n\t */\n\tdefault void callback(Pointer pArg, int actionCode, String dbName, String tblName, long rowId) {\n\t\tupdate(actionCode, dbName, tblName, rowId);\n\t}\n\tvoid update(int actionCode, String dbName, String tblName, long rowId);",
+        "codebleu": 0.8764202613114528,
+        "bleu": 0.7825655716709082,
+        "rouge": 0.8556149732620321,
+        "levenshtein": 228
+    },
+    {
+        "ref": "\n\t\t\ttry {\n\t\t}\n\t}\n\n\n\t\t\t\t\ttry {\n\npackage org.sqlite.driver;\n\nimport java.sql.BatchUpdateException;\nimport java.sql.ResultSet;\nimport java.sql.SQLException;\nimport java.sql.SQLFeatureNotSupportedException;\nimport java.sql.SQLIntegrityConstraintViolationException;\nimport java.sql.SQLSyntaxErrorException;\nimport java.sql.SQLTimeoutException;\nimport java.sql.Statement;\n\nimport org.junit.Ignore;\nimport org.junit.Test;\nimport org.sqlite.FunctionFlags;\nimport org.sqlite.SQLite.SQLite3Context;\nimport org.sqlite.SQLite.SQLite3Values;\nimport org.sqlite.SQLiteException;\nimport org.sqlite.ScalarCallback;\nimport static org.junit.Assert.assertArrayEquals;\nimport static org.junit.Assert.assertEquals;\nimport static org.junit.Assert.assertFalse;\nimport static org.junit.Assert.assertNull;\nimport static org.junit.Assert.assertTrue;\nimport static org.junit.Assert.fail;\n\npublic class SqliteStatementTest extends SqliteTestHelper {\n\tprivate static final String[] BATCH_ATTACH_RESULT = {\n\t\t\t\"|db2|\",\n\t\t\t\"|main|\",\n\t};\n\n\t@Test\n\tpublic void testExecuteBatch() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tstmt.addBatch(\"INSERT INTO test_table VALUES (2, 'testing')\");\n\t\t\tstmt.addBatch(\"ATTACH ':memory:' as db2\");\n\t\t\t//stmt.addBatch(\"SELECT * FROM test_table\");\n\t\t\tstmt.addBatch(\"INSERT INTO test_table VALUES (3, 'testing again')\");\n\n\t\t\tassertArrayEquals(new int[]{1, 0/*, Statement.SUCCESS_NO_INFO*/, 1},\n\t\t\t\t\tstmt.executeBatch());\n\n\t\t\tfinal ResultSet catalogs = conn.getMetaData().getCatalogs();\n\t\t\tassertArrayEquals(BATCH_ATTACH_RESULT,\n\t\t\t\t\tformatResultSet(catalogs));\n\t\t\tcatalogs.close();\n\n\t\t\tassertArrayEquals(new int[0], stmt.executeBatch());\n\n\t\t\tstmt.addBatch(\"INSERT INTO test_table VALUES (4, 'testing again too')\");\n\t\t\tstmt.addBatch(\"INSERT INTO test_table VALUES (4, 'testing again too')\");\n\t\t\ttry {\n\t\t\t\tstmt.executeBatch();\n\t\t\t\tfail(\"executeBatch should not have succeeded\");\n\t\t\t} catch (BatchUpdateException e) {\n\t\t\t}\n\n\t\t\tassertArrayEquals(new int[0], stmt.executeBatch());\n\n\t\t\tfinal String[] tableDump = {\n\t\t\t\t\t\"|1|test|\",\n\t\t\t\t\t\"|2|testing|\",\n\t\t\t\t\t\"|3|testing again|\",\n\t\t\t\t\t\"|4|testing again too|\",\n\t\t\t};\n\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\"SELECT * FROM test_table\")) {\n\t\t\t\tassertArrayEquals(tableDump, formatResultSet(rs));\n\t\t\t}\n\n\t\t\tstmt.addBatch(\"INSERT INTO test_table VALUES (2, 'testing')\");\n\t\t\tstmt.clearBatch();\n\t\t\tassertArrayEquals(new int[0], stmt.executeBatch());\n\t\t}\n\t}\n\n\t@Test\n\tpublic void testCloseOnCompletion() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tassertFalse(stmt.isCloseOnCompletion());\n\n\t\t\tstmt.closeOnCompletion();\n\t\t\tassertTrue(stmt.isCloseOnCompletion());\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\"SELECT * FROM test_table\")) {\n\t\t\t\tformatResultSet(rs);\n\t\t\t}\n\t\t\tassertTrue(stmt.isClosed());\n\t\t}\n\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tassertFalse(stmt.isCloseOnCompletion());\n\n\t\t\tstmt.closeOnCompletion();\n\t\t\tassertTrue(stmt.isCloseOnCompletion());\n\t\t\tassertEquals(1, stmt.executeUpdate(\"INSERT INTO test_table VALUES (2, 'testing')\"));\n\t\t\tassertFalse(stmt.isClosed());\n\t\t}\n\t}\n\n\t@Test(expected = SQLException.class)\n\tpublic void testBadExecuteUpdate() throws Exception {\n\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tstmt.executeUpdate(\"SELECT * FROM test_table\");\n\t\t}\n\t}\n\n\t@Ignore\n\t@Test\n\tpublic void testQueryTimeout() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\ttry {\n\t\t\t\tstmt.setQueryTimeout(-1);\n\t\t\t\tfail(\"negative timeout value allowed?\");\n\t\t\t} catch (SQLException e) {\n\n\t\t\t}\n\n\t\t\t((Conn) conn).getConn().createScalarFunction(\"delay\", 0, FunctionFlags.SQLITE_UTF8, new ScalarCallback() {\n\t\t\t\t@Override\n\t\t\t\tpublic void func(SQLite3Context pCtx, SQLite3Values args) {\n\t\t\t\t\t\tThread.currentThread().join(1000);\n\t\t\t\t\t} catch (InterruptedException e) {\n\t\t\t\t\t\te.printStackTrace();\n\t\t\t\t\t}\n\t\t\t\t\tpCtx.setResultInt(0);\n\t\t\t\t}\n\t\t\t});\n\t\t\tstmt.setQueryTimeout(1);\n\t\t\tassertEquals(1, stmt.getQueryTimeout());\n\n\t\t\tlong startTime = System.currentTimeMillis();\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\"SELECT *, delay() from test_table\")) {\n\t\t\t\trs.next();\n\t\t\t\tfail(\"Expected a timeout exception\");\n\t\t\t} catch (SQLTimeoutException e) {\n\t\t\t\tlong endTime = System.currentTimeMillis();\n\n\t\t\t\tif (endTime - startTime < 1000) {\n\t\t\t\t\tfail(\"Timeout expired early -- \" + (endTime - startTime));\n\t\t\t\t}\n\t\t\t}\n\t\t\t\tstmt.execute(\"INSERT INTO test_table VALUES (2, delay())\");\n\t\t\t} catch (SQLiteException e) {\n\t\t\t\tlong endTime = System.currentTimeMillis();\n\n\t\t\t\tif (endTime - startTime < 1000) {\n\t\t\t\t\tfail(\"Timeout expired early -- \" + (endTime - startTime));\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n\n\t@Test\n\tpublic void testMaxRows() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tstmt.executeUpdate(\"INSERT INTO test_table VALUES (2, 'testing')\");\n\n\t\t\tassertEquals(0, stmt.getMaxRows());\n\n\t\t\ttry {\n\t\t\t\tstmt.setMaxRows(-1);\n\t\t\t\tfail(\"able to set max rows to a negative number?\");\n\t\t\t} catch (SQLException e) {\n\t\t\t\tassertEquals(0, stmt.getMaxRows());\n\t\t\t}\n\n\t\t\tstmt.setMaxRows(1);\n\t\t\tassertEquals(1, stmt.getMaxRows());\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\"SELECT * FROM test_table\")) {\n\t\t\t\tassertTrue(rs.next());\n\t\t\t\tassertFalse(rs.next());\n\t\t\t}\n\n\t\t\tstmt.setMaxRows(4);\n\t\t\tassertEquals(4, stmt.getMaxRows());\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\"SELECT * FROM test_table\")) {\n\t\t\t\tassertTrue(rs.next());\n\t\t\t\tassertTrue(rs.next());\n\t\t\t\tassertFalse(rs.next());\n\t\t\t}\n\t\t}\n\t}\n\n\t@Ignore\n\t@Test\n\tpublic void testCancel() throws Exception {\n\t\ttry (final Statement stmt = conn.createStatement()) {\n\t\t\tfinal Object barrier = new Object();\n\n\t\t\tstmt.cancel();\n\n\t\t\tThread canceller = new Thread(new Runnable() {\n\t\t\t\t@Override\n\t\t\t\tpublic void run() {\n\t\t\t\t\tsynchronized (barrier) {\n\t\t\t\t\t\tbarrier.notifyAll();\n\t\t\t\t\t}\n\t\t\t\t\ttry {\n\t\t\t\t\t\tThread.sleep(10);\n\t\t\t\t\t\tstmt.cancel();\n\t\t\t\t\t} catch (InterruptedException e) {\n\n\t\t\t\t\t} catch (SQLException e) {\n\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t});\n\n\t\t\tcanceller.start();\n\t\t\tsynchronized (barrier) {\n\t\t\t\tbarrier.wait();\n\t\t\t}\n\n\t\t\ttry {\n\t\t\t\tstmt.executeUpdate(\"INSERT INTO test_table VALUES (2, 'testing cancel')\");\n\t\t\t\tfail(\"Statement was not cancelled?\");\n\t\t\t} catch (SQLException e) {\n\t\t\t}\n\t\t}\n\t}\n\n\t@Test(expected = SQLIntegrityConstraintViolationException.class)\n\tpublic void testIntegrityException() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tstmt.execute(\"INSERT INTO test_table VALUES (1, 'test')\");\n\t\t}\n\t}\n\n\t@Test(expected = SQLFeatureNotSupportedException.class)\n\tpublic void testFetchDirection() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tassertEquals(ResultSet.FETCH_FORWARD, stmt.getFetchDirection());\n\t\t\tstmt.setFetchDirection(ResultSet.FETCH_FORWARD);\n\t\t\tassertEquals(ResultSet.FETCH_FORWARD, stmt.getFetchDirection());\n\t\t\tstmt.setFetchDirection(ResultSet.FETCH_REVERSE);\n\t\t}\n\t}\n\n\t@Test\n\tpublic void testFetchSize() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tassertEquals(1, stmt.getFetchSize());\n\t\t\tstmt.setFetchSize(10);\n\t\t\tassertEquals(1, stmt.getFetchSize());\n\t\t}\n\t}\n\n\t@Test(expected = SQLException.class)\n\tpublic void testExecuteNonQuery() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tstmt.executeQuery(\"INSERT INTO test_table VALUES (2, 'testing')\");\n\t@Test(expected = SQLException.class)\n\tpublic void testClosedStatement() throws Exception {\n\t\tStatement stmt = conn.createStatement();\n\n\t\tassertFalse(stmt.isClosed());\n\t\tstmt.close();\n\t\tassertTrue(stmt.isClosed());\n\t\tstmt.execute(\"SELECT * FROM test_table\");\n\t}\n\n\t@Test\n\tpublic void testUpdateCount() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tassertEquals(1, stmt.executeUpdate(\"REPLACE INTO test_table VALUES (1, 'test')\"));\n\t\t\tassertEquals(-1, stmt.getUpdateCount());\n\t\t\tassertEquals(1, stmt.executeUpdate(\"INSERT INTO test_table VALUES (2, 'testing')\"));\n\t\t\tassertEquals(0, stmt.executeUpdate(\"CREATE TABLE change_tab (id INTEGER, name VARCHAR)\"));\n\t\t\tassertEquals(-1, stmt.getUpdateCount());\n\t\t\tassertEquals(0, stmt.executeUpdate(\"UPDATE test_table set name='more testing' where id > 2\"));\n\t\t\tassertEquals(1, stmt.executeUpdate(\"UPDATE test_table set name='more testing' where id > 1\"));\n\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\"SELECT * FROM test_table\")) {\n\t\t\t\tassertEquals(-1, stmt.getUpdateCount());\n\t\t\t\tassertNull(stmt.getResultSet());\n\t\t\t}\n\n\t\t\tassertEquals(2, stmt.executeUpdate(\"DELETE FROM test_table WHERE 1\"));\n\t\t}\n\t}\n\n\tprivate static final String[] ESCAPE_RESULTS = {\n\t\t\t\"||\",\n\t\t\t\"|1|\",\n\t\t\t\"|4|\",\n\t\t\t\"|2011-10-06|\",\n\t\t\t\"|15:00:00|\",\n\t\t\t\"|2011-10-06 15:00:00|\",\n\t\t\t\"|fooBAR,BAZ|\",\n\t\t\t\"|0|\",\n\t};\n\n\tprivate static final String[] ESCAPE_LIMIT_RESULTS = {\n\t\t\t\"|1|\",\n\t\t\t\"|2|\",\n\t};\n\n\t@Ignore\n\t@Test\n\tpublic void testEscapedQueries() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\n\t\t\t\t\t\"SELECT {fn user()} AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT {fn abs(-1)} AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT {fn char_length('test')} AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT {d '2011-10-06'} AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT {t '15:00:00'} AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT {ts '2011-10-06 15:00:00'} AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT {fn concat('foo', (select 'BAR,BAZ'))} AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT 'FOO' LIKE '\\\\%' {escape '\\\\'} AS RESULT\")) {\n\t\t\t\tassertArrayEquals(ESCAPE_RESULTS, formatResultSet(rs));\n\t\t\t}\n\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\n\t\t\t\t\t\"SELECT 1 AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT 2 AS RESULT UNION ALL \" +\n\t\t\t\t\t\t\t\"SELECT 3 AS RESULT {limit 2}\")) {\n\t\t\t\tassertArrayEquals(ESCAPE_LIMIT_RESULTS, formatResultSet(rs));\n\t\t\t}\n\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\n\t\t\t\t\t\"SELECT * FROM test_table {limit 1 offset 1}\")) {\n\t\t\t\tassertArrayEquals(new String[0], formatResultSet(rs));\n\t\t\t}\n\n\t\t\tstmt.setEscapeProcessing(false);\n\t\t\ttry (ResultSet rs = stmt.executeQuery(\n\t\t\t\t\t\"SELECT * FROM test_table {limit 1 offset 1}\")) {\n\t\t\t\tfail(\"escaped statement worked?\");\n\t\t\t} catch (SQLSyntaxErrorException e) {\n\n\t\t\t}\n\t\t}\n\t}\n\n\t@Test(expected = SQLFeatureNotSupportedException.class)\n\tpublic void testCursorName() throws Exception {\n\t\ttry (Statement stmt = conn.createStatement()) {\n\t\t\tstmt.setCursorName(\"foo\");\n\t\t}\n\t}\n}",
+        "pred": "import org.junit.Test;\n\npackage org.sqlite.driver;\n\nimport jnr.ffi.Pointer;\nimport org.junit.Ignore;\nimport org.sqlite.FunctionFlags;",
+        "codebleu": 0.01984393853104345,
+        "bleu": 3.435771282994932e-119,
+        "rouge": 0.02329749103942652,
+        "levenshtein": 10025
+    },
+    {
+        "ref": "\nimport java.util.Vector;\nimport java.util.List;\nimport at.sti2.spark.core.condition.TripleCondition;\nimport at.sti2.spark.core.stream.Triple;\nimport at.sti2.spark.rete.Token;\nimport at.sti2.spark.rete.WorkingMemoryElement;\nimport at.sti2.spark.rete.alpha.AlphaMemory;",
+        "pred": "import java.util.List;\nimport java.util.Vector;\n\nimport at.sti2.spark.core condition.TripleCondition;\nimport at.sti2.spark.core.stream.Triple;\nimport at.sti2.spark.rete.Token;\nimport at.sti2.spark.rete.WorkingMemoryElement;\nimport at.sti2.spark.rete.alpha.AlphaMemory;",
+        "codebleu": 0.8312921230563031,
+        "bleu": 0.6464173938088861,
+        "rouge": 0.9512195121951219,
+        "levenshtein": 13
+    },
+    {
+        "ref": "\n\t\tfor (WorkingMemoryElement item : permanentItems) {\n\t\t\tbuffer.append('\\n');\n\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.SUBJECT));\n\t\t\tbuffer.append(\" \");\n\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.PREDICATE));\n\t\t\tbuffer.append(\" \");\n\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.OBJECT));\n\t\t}\n\n\t\tfor (WorkingMemoryElement item : items) {\n\t\t\tbuffer.append('\\n');\n\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.SUBJECT));\n\t\t\tbuffer.append(\" \");\n\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.PREDICATE));\n\t\t\tbuffer.append(\" \");\n\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.OBJECT));\n\n\t\t}\n\n\t\treturn buffer.toString();",
+        "pred": "\n\t\tfor (WorkingMemoryElement item : permanentItems) {\n\t\t\tbuffer.append('\\n');\n\t\t\tbuffer.append(item.getTriple().getRDFTriple()\n\t\t\t\t\t.getLexicalValueOfField(RDFTriple.Field.SUBJECT));\n\t\t\tbuffer.append(\" \");\n\t\t\tbuffer.append(item.getTriple().getRDFTriple()\n\t\t\t\t\t.getLexicalValueOfField(RDFTriple.Field.PREDICATE));\n\t\t\tbuffer.append(\" \");\n\t\t\tbuffer.append(item.getTriple().getRDFTriple()\n\t\t\t\t\t.getLexicalValueOfField(RDFTriple.Field.OBJECT));\n\t\t}\n\n\t\tfor (WorkingMemoryElement item : items) {\n\t\t\tbuffer.append('\\n');\n\t\t\tbuffer.append(item.getTriple().getRDFTriple()\n\t\t\t\t\t.getLexicalValueOfField(RDFTriple.Field.SUBJECT));\n\t\t\tbuffer.append(\" \");\n\t\t\tbuffer.append(item.getTriple().getRDFTriple()\n\t\t\t\t\t.getLexicalValueOfField(RDFTriple.Field.PREDICATE));\n\t\t\tbuffer.append(\" \");\n\t\t\tbuffer.append(item.getTriple().getRDFTriple()\n\t\t\t\t\t.getLexicalValueOfField(RDFTriple.Field.OBJECT));\n```\n",
+        "codebleu": 0.7004008338581773,
+        "bleu": 0.4067823842453411,
+        "rouge": 0.9032258064516129,
+        "levenshtein": 110
+    },
+    {
+        "ref": "\n\t\tfor (JoinNodeTest test : tests) {\n\n\t\t\tvalueArg1 = wme.getTriple().getRDFTriple().getValueOfField(test.getArg1Field());\n\n\t\t\t// TODO Fix this for faster processing; instead of using indices\n\t\t\t// maybe we can use pointers?!",
+        "pred": "\tfor (JoinNodeTest test : tests) {\n\n\t\tlexicalValueArg1 = wme.getTriple().getRDFTriple()\n\t\t\t\t.getLexicalValueOfField(test.getArg1Field());\n\t\t\n\t\t// TODO Fix this for faster processing; instead of using indices\n\t\t// maybe we can use pointers?!",
+        "codebleu": 0.9036347684596586,
+        "bleu": 0.7884718160380525,
+        "rouge": 0.9230769230769231,
+        "levenshtein": 25
+    },
+    {
+        "ref": "\n\t\t\tint index = test.getArg2ConditionNumber();\n\t\t\tToken wmeToken = parentTokens.get(index);\n\t\t\tvalueArg2 = wmeToken.getWme().getTriple().getRDFTriple().getValueOfField(test.getArg2Field());\n\n\t\t\tif (!valueArg1.equals(valueArg2))\n\t\t\t\treturn false;",
+        "pred": "\t\t\tint index = test.getArg2ConditionNumber();\n\t\t\tToken wmeToken = parentTokens.get(index);\n\t\t\tTokenLexicalValue lexicalvalueArg2 = wmeToken.getWme().getTriple().getRDFTriple().getLexicalValueOfField(test.getArg2Field());\n\t\t\tTokenValue valueArg2 = wmeToken.getWme().getTriple().getRDFTriple().getValueOfField(test.getArg2Field());\n\n\t\t\tif (!valueArg1.equals(valueArg2))\n\t\t\t\treturn false;",
+        "codebleu": 0.8205843134425201,
+        "bleu": 0.6383240325919926,
+        "rouge": 0.8214285714285715,
+        "levenshtein": 142
+    },
+    {
+        "ref": "\t/**\n\t * Deletes token and all its parents\n\t */\n//\tpublic void deleteTokenAndParents(){\n//\t\t\n//\t\tif (parent != null)\n//\t\t\tparent.deleteTokenAndParents();\n//\n//\t\t//Remove token from the list of node items\n//\t\t//TODO Beta and production node are basically the same so it should inherit the same parent\n//\t\tif (node instanceof BetaMemory)\n//\t\t\t((BetaMemory)node).removeItem(this);\n//\t\telse if (node instanceof ProductionNode)\n//\t\t\t((ProductionNode)node).removeItem(this);\n//\t\t\n//\t\t//Remove token from the list of tokens in WME\n//\t\twme.removeToken(this);\n//\t\t\n//\t\t//Remove token from the list of parent children\n//\t\tif (parent != null)\n//\t\t\tparent.removeChild(this);\n//\t}\n\t\n\tpublic String toString(){\n\t\treturn wme.toString();\n\t}\n}",
+        "pred": "/**\n * Deletes token and all its parents\n */\npublic void deleteTokenAndParents(){\n\t\t\n\tif (parent!= null)\n\t\tparent.deleteTokenAndParents();\n\n\t//Remove token from the list of node items\n\t//TODO Beta and production node are basically the same so it should inherit the same parent\n\tif (node instanceof BetaMemory)\n\t\t((BetaMemory)node).removeItem(this);\n\telse if (node instanceof ProductionNode)\n\t\t((ProductionNode)node).removeItem(this);\n\n\twme.removeToken(this);\n\t\t\n\t//Remove token from the list of parent children\n\tif (parent!= null)\n\t\tparent.removeChild(this);\n}\n\npublic String toString(){\n\treturn wme.toString();\n}",
+        "codebleu": 0.6835802359433228,
+        "bleu": 0.45404800364129666,
+        "rouge": 0.9454545454545454,
+        "levenshtein": 113
+    },
+    {
+        "ref": "\t\taddItem(wme);\n\n\t\twme.addAlphaMemory(this);\n\n\t\tfor (RETENode reteNode : successors)\n\t\t\treteNode.rightActivate(wme);\n\t}",
+        "pred": "\taddItem(wme);\n\n\twme.addAlphaMemory(this);\n\tlogger.debug(\"Added WME to alpha memory.\");\n\t\n\tfor (RETENode reteNode : successors)\n\t\treteNode.rightActivate(wme);",
+        "codebleu": 0.7320652201425784,
+        "bleu": 0.42803206067505944,
+        "rouge": 0.7741935483870968,
+        "levenshtein": 51
+    },
+    {
+        "ref": "\t}\n\n\t@Override\n\tpublic void leftActivate(Token parentToken, WorkingMemoryElement wme){\n\t\t\n\t\tToken newToken = createToken(parentToken, wme);\n",
+        "pred": "\t}\n\n\t@Override\n\tpublic void leftActivate(Token parentToken, WorkingMemoryElement wme) {\n\t\t\n\t\tlogger.debug(\"Performing leftActivate from parent token wme \" + wme.toString());\n\t\t\n\t\tToken newToken = createToken(parentToken, wme);\n\n\t\t// TODO Insert token at the head of items\n\t\t\n\t}",
+        "codebleu": 0.7032749454075569,
+        "bleu": 0.27673806768630216,
+        "rouge": 0.5909090909090909,
+        "levenshtein": 137
+    },
+    {
+        "ref": "\n\t\taddItem(newToken);\n\n\t\tfor (RETENode reteNode : children)\n\t\t\treteNode.leftActivate(newToken);\n\t}",
+        "pred": "\t}\n\n\t\t// TODO Insert token at the head of items\n\t\taddItem(newToken);\n\t\t\n\t\tfor (RETENode reteNode : children){\n\t\t\tlogger.debug(\"Activating child node \" + reteNode.toString() + \" with WME \" + wme.toString());\n\t\t\treteNode.leftActivate(newToken);\n\t\t}\n```\n",
+        "codebleu": 0.6260581330438776,
+        "bleu": 0.12489558671106761,
+        "rouge": 0.4864864864864865,
+        "levenshtein": 153
+    },
+    {
+        "ref": "\n\t\tthis.sparkWeaveNetwork = sparkWeaveNetwork;\n\t\tthis.socket = socket;\n\t}\n\n\t\n\tpublic void run(){\n\t\t\n\t\tlong tripleCounter = 0;\n//\t\tlong timepoint = (new Date()).getTime();\n\n\t\tlong startProcessingTime;\n\t\tlong endProcessingTime;",
+        "pred": "\n    long tripleCounter = 0;\n    long timepoint = (new Date()).getTime();\n    long startProcessingTime;",
+        "codebleu": 0.33914641276023544,
+        "bleu": 0.24945223497245178,
+        "rouge": 0.6451612903225806,
+        "levenshtein": 131
+    },
+    {
+        "ref": "\t\t\t\tTriple sTriple = new Triple(parseTriple(tripleLine),\n\t\t\t\t\t\t(new Date()).getTime(), false, 0l);\n\t\t\t\tsparkWeaveNetwork.activateNetwork(sTriple);\n\n\t\t\t\ttripleCounter++;\n\t\t\t\tif(tripleCounter%2==0)\n\t\t\t\t\trunGC();\n\n\t\t\t\t// if (tripleCounter%1000 == 0){\n\t\t\t\t// logger.info(sparkWeaveNetwork.getEpsilonNetwork().getNetwork().getEpsilonMemoryLevels());\n\t\t\t\t// logger.info(sparkWeaveNetwork.getReteNetwork().getWorkingMemory().getAlphaMemoryLevels());\n\t\t\t\t// logger.info(sparkWeaveNetwork.getReteNetwork().getBetaMemoryLevels());\n\n\t\t\t\t// logger.info(\"Processing \" + (1000/(sTriple.getTimestamp() -\n\t\t\t\t// timepoint)) + \" triples/sec.\");\n\t\t\t\t// timepoint = sTriple.getTimestamp();\n\t\t\t\t// }\n\t\t\t}\n\n\t\t\tendProcessingTime = new Date().getTime();",
+        "pred": "\n\t\t\t\tTriple sTriple = new Triple(parseTriple(tripleLine),\n\t\t\t\t\t\t(new Date()).getTime(), false, 0l);\n\t\t\t\tsparkWeaveNetwork.activateNetwork(sTriple);\n\t\t\t\ttripleCounter++;\t\t\t\t\n\t\t\t\tif (tripleCounter%1000 == 0){\n\t\t\t\t\tlogger.info(sparkWeaveNetwork.getEpsilonNetwork().getNetwork().getEpsilonMemoryLevels());\n\t\t\t\t\tlogger.info(sparkWeaveNetwork.getReteNetwork().getWorkingMemory().getAlphaMemoryLevels());\n\t\t\t\t\tlogger.info(sparkWeaveNetwork.getReteNetwork().getBetaMemoryLevels());\n\t\t\t\t\t\n\t\t\t\t\tlogger.info(\"Processing \" + (1000/(sTriple.getTimestamp() - timepoint)) + \" triples/sec.\");\n\t\t\t\t\ttimepoint = sTriple.getTimestamp();\n\t\t\t\t}\n\t\t\t\tlogger.info(\"Processed triple #\" + tripleCounter);\n\n\t\t\t\tif(tripleCounter%2==0)\n\t\t\t\t\trunGC();\n\t\t\t}\n\t\t\tendProcessingTime = new Date().getTime();\n``assistant\n",
+        "codebleu": 0.7151508354881921,
+        "bleu": 0.520711440911647,
+        "rouge": 0.8666666666666667,
+        "levenshtein": 179
+    },
+    {
+        "ref": "\tpublic void run() {\n\n\t\tlong tripleCounter = 0;\n\t\tlong startProcessingTime;\n\t\tlong endProcessingTime;\n",
+        "pred": "\tpublic void run() {\n\n\t\tlong tripleCounter = 0;\n<<<<<<< HEAD\n\t\tlong startProcessingTime;\n\t\tlong endProcessingTime;\n=======\n//\t\tlong timepoint = (new Date()).getTime();\n>>>>>>> df10b832fe4a9ae63f58bc0b3ea84f7570c71b0b\n\t\tlong startProcessingTime;\n\t\tlong endProcessingTime;\n",
+        "codebleu": 0.7405332623229387,
+        "bleu": 0.3419664738551679,
+        "rouge": 0.6451612903225806,
+        "levenshtein": 169
+    },
+    {
+        "ref": "\t\t\t\t// timepoint)) + \" triples/sec.\");\n\t\t\t\t// timepoint = sTriple.getTimestamp();\n\t\t\t\t// }\n\n\t\t\t}\n",
+        "pred": "\t\t\t\t// timepoint)) + \" triples/sec.\");\n\t\t\t\t// timepoint = sTriple.getTimestamp();\n\t\t\t\t// }\n\t\t\t\t// logger.info(\"Processed triple #\" + tripleCounter);\n\t\t\t}\n```\n",
+        "codebleu": 0.6188812187047092,
+        "bleu": 0.5520516129306315,
+        "rouge": 0.7058823529411764,
+        "levenshtein": 61
+    },
+    {
+        "ref": "\t\t\te.printStackTrace();\n\t\t}\n\t}\n\n\n\tpublic void runGC() {\n\n\t\t/************************************************\n\t\t * CLEANING EPSILON NETWORK\n\t\t ************************************************/\n\n\t\tfor (Iterator",
+        "pred": "\t\t\te.printStackTrace();\n\t\t}\n\t}\n\n\tpublic void runGC() {\n\t\t/**\n\t\t * Method to parse triple in N-Triple format.\n\t\t * \n\t\t * Note: StringTokenizer is not really helpful because lexical form in\n\t\t * literals can have blank spaces.\n\t\t * \n\t\t * @param tripleLine\n\t\t * @return\n\t\t */\n\t\tprivate RDFTriple parseTriple(String tripleLine) {\n\n\t\t\tchar tripleChars[] = tripleLine.toCharArray();\n\t\t\tint currentPos = 0;\n\n\t\t\t// ----------------------------------------------\n\t\t\t// Parse subject RDF node\n\t\t\t// ----------------------------------------------\n\t\t\twhile (tripleChars[currentPos]!= '<')\n\t\t\t\tcurrentPos++;\n\n\t\t\t// Move one place beyond '<'\n\t\t\tcurrentPos++;\n\n\t\t\t// Copy URI value\n\t\t\tStringBuffer buffer = new StringBuffer();\n\t\t\twhile (tripleChars[currentPos]!= '>') {\n\t\t\t\tbuffer.append(tripleChars[currentPos]);\n\t\t\t\tcurrentPos++;\n\t\t\t}\n\t\t\tRDFURIReference tripSubject = new RDFURIReference(buffer.toString());\n\n\t\t\t// ----------------------------------------------\n\t\t\t// Parse predicate RDF node\n\t\t\t// ----------------------------------------------\n\t\t\twhile (tripleChars[currentPos]!= '<')\n\t\t\t\tcurrentPos++;\n\n\t\t\t// Move one place beyond '<'",
+        "codebleu": 0.5471383768168561,
+        "bleu": 0.04948080245556939,
+        "rouge": 0.10101010101010101,
+        "levenshtein": 1025
+    },
+    {
+        "ref": "\t\t}else{\n\tpublic void addSuccesor(RETENode node) {\n\t\tsuccessors.add(node);\n\t}\n\t\n\tpublic void addItem(WorkingMemoryElement wme){\n\t\t\n\t\tif(!wme.getTriple().isPermanent()){\n//\t\t\tsynchronized(items){\n\t\t\t\titems.add(wme);\n//\t\t\t}\n\t\t\tpermanentItems.add(wme);\n\t\t}\n",
+        "pred": "public void addItem(WorkingMemoryElement wme){\n\t\t\n\t\tif(!wme.getTriple().isPermanent()){\n\t\t\titems.add(wme);\n\t\t}else{\n\t\t\tpermanentItems.add(wme);\n\t\t}\n",
+        "codebleu": 0.3131204395899414,
+        "bleu": 0.16102419161654632,
+        "rouge": 0.7142857142857143,
+        "levenshtein": 116
+    },
+    {
+        "ref": "\t\t}\n\n\t}\n\t\n\tpublic void removeItem(WorkingMemoryElement wme){\n//\t\tsynchronized(items){\n\t\t\titems.remove(wme);\n//\t\t}\n\t}\n\n\tpublic List",
+        "pred": "\tpublic void removeItem(WorkingMemoryElement wme) {\n\t\tsynchronized(items){\n\t\t(items!= null)?items.remove(wme):null;\n\t\t}\n\t}\n\n\tpublic List<WorkingMemoryElement> items;",
+        "codebleu": 0.44007834800475115,
+        "bleu": 4.806694559976532e-78,
+        "rouge": 0.8275862068965517,
+        "levenshtein": 64
+    },
+    {
+        "ref": "//\t\t}\n\t\t\n\t\t\tbuffer.append(\" \");\n\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.OBJECT));\n\t\t}\n\t\t\n//\t\tsynchronized(items){\n\t\t\tfor (WorkingMemoryElement item : items){\n\t\t\t\tbuffer.append('\\n');\n\t\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.SUBJECT));\n\t\t\t\tbuffer.append(\" \");\n\t\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.PREDICATE));\n\t\t\t\tbuffer.append(\" \");\n\t\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.OBJECT));\n\t\t\t}\n\t\treturn buffer.toString();\n\t}\n}",
+        "pred": "\t\t\tfor (WorkingMemoryElement item : items) {\n\t\t\t\tbuffer.append('\\n');\n\t\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.SUBJECT));\n\t\t\t\tbuffer.append(\" \");\n\t\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.PREDICATE));\n\t\t\t\tbuffer.append(\" \");\n\t\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.OBJECT));\n\t\t\t}\n\n\t\tfor (WorkingMemoryElement item : items) {\n\t\t\tbuffer.append('\\n');\n\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.SUBJECT));\n\t\t\tbuffer.append(\" \");\n\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.PREDICATE));\n\t\t\tbuffer.append(\" \");\n\t\t\tbuffer.append(item.getTriple().getRDFTriple().getValueOfField(RDFTriple.Field.OBJECT));\n\t\t}\n\n\t\treturn buffer.toString();",
+        "codebleu": 0.6591096129020209,
+        "bleu": 0.46259027968117067,
+        "rouge": 0.7819548872180452,
+        "levenshtein": 286
+    },
+    {
+        "ref": "import at.sti2.spark.rete.node.RETENode;\n\npublic class JoinNode extends RETENode {\n\t\n\tstatic Logger log = Logger.getLogger(JoinNode.class);\n\n\tprivate AlphaMemory alphaMemory = null;\n\tprivate List",
+        "pred": "import at.sti2.spark.rete.node.RETENode;\n\npublic class JoinNode extends RETENode {\n\t\n\tstatic Logger log = Logger.getLogger(JoinNode.class);\n\t\n\tprivate AlphaMemory alphaMemory = null;\n\tprivate List<JoinCondition> joinConditions = new ArrayList<>();",
+        "codebleu": 0.9075165113085313,
+        "bleu": 0.7771475625141703,
+        "rouge": 0.9259259259259259,
+        "levenshtein": 52
+    },
+    {
+        "ref": "\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\t//clean wme that are marked as out of window\n\t\tfor (WorkingMemoryElement cWME : wmeOutOfWindow) {\n\t\t\tcWME.remove();\n\t\t}\n\n\t\t// If the join node is under dummy root beta node left activation should\n\t\t// fire",
+        "pred": "\t\t\t\t\t\treteNode.leftActivate(betaMemoryToken, wme);\n\t\t\t\t}\n\t\t\t}\n\t\t\n\t\t//clean wme that are marked as out of window\n\t\tfor (WorkingMemoryElement cWME : wmeOutOfWindow) {\n\t\t\tcWME.remove();\n\t\t}",
+        "codebleu": 0.7034355234816657,
+        "bleu": 0.4391567467518952,
+        "rouge": 0.625,
+        "levenshtein": 136
+    },
+    {
+        "ref": "\t\t\t\t\t\tcontinue;\n\n\t\t\t\t\tfor (RETENode reteNode : children)\n\t\t\t\t\t\tif (reteNode instanceof BetaMemory)\n\t\t\t\t\t\t\t((BetaMemory) reteNode).leftActivate(token,\n\t\t\t\t\t\t\t\t\talphaWME);\n\t\t\t\t\t\telse\n\t\t\t\t\t\t\t((ProductionNode) reteNode).leftActivate(token,\n\t\t\t\t\t\t\t\t\talphaWME);\n\t\t\t\t}\n\t\t\t}\n\t\t}",
+        "pred": "\t\t\t\t\tif (!permanent &&!performTimeWindowTest(token, alphaWME))\n\t\t\t\t\t\tcontinue;\n\n\t\t\t\t\t// All tests successful\n\t\t\t\t\tfor (RETENode reteNode : children)\n\t\t\t\t\t\treteNode.leftActivate(token, alphaWME);\n\n\t\t\t\t}",
+        "codebleu": 0.2829509868030064,
+        "bleu": 0.2197878540279268,
+        "rouge": 0.48648648648648646,
+        "levenshtein": 180
+    },
+    {
+        "ref": "\n\t\tfor (JoinNodeTest test : tests) {\n\n\t\t\tlexicalValueArg1 = wme.getTriple().getRDFTriple().getLexicalValueOfField(test.getArg1Field());\n\n\t\t\t// TODO Fix this for faster processing; instead of using indices\n\t\t\t// maybe we can use pointers?!",
+        "pred": "\n\t\tfor (JoinNodeTest test : tests) {\n\n\t\t\tvalueArg1 = wme.getTriple().getRDFTriple().getValueOfField(test.getArg1Field());\n\n\t\t\t// TODO Fix this for faster processing; instead of using indices\n\t\t\t// maybe we can use pointers?!\n```\n",
+        "codebleu": 0.6237202385451288,
+        "bleu": 0.7884718160380525,
+        "rouge": 0.9230769230769231,
+        "levenshtein": 20
+    },
+    {
+        "ref": "\n\t\t\tint index = test.getArg2ConditionNumber();\n\t\t\tToken wmeToken = parentTokens.get(index);\n\t\t\tlexicalvalueArg2 = wmeToken.getWme().getTriple().getRDFTriple().getLexicalValueOfField(test.getArg2Field());\n\n\t\t\tif (!lexicalValueArg1.equals(lexicalvalueArg2))\n\t\t\t\treturn false;\n\t\t}\n",
+        "pred": "\n\t\t\tint index = test.getArg2ConditionNumber();\n\t\t\tToken wmeToken = parentTokens.get(index);\n\t\t\tvalueArg2 = wmeToken.getWme().getTriple().getRDFTriple().getValueOfField(test.getArg2Field());\n\n\t\t\tif (!valueArg1.equals(valueArg2))\n\t\t\t\treturn false;\n\t\t}\n",
+        "codebleu": 0.7799708572572343,
+        "bleu": 0.5533409598501607,
+        "rouge": 0.8260869565217391,
+        "levenshtein": 29
+    },
+    {
+        "ref": "\t\n\t}\n\tpublic void addItem(Token token){\n//\t\tsynchronized(items){\n\t\t\titems.add(token);\n//\t\t}\n\t}\n\t\n\tpublic void removeItem(Token token){\n//\t\tsynchronized(items){\n\t\t\titems.remove(token);\n//\t\t}\n\t}\n\t\n\t@Override",
+        "pred": "\t}\n\t\n\tpublic void addItem(Token token){\n\t\titems.add(token);\n\t}\n\t\n\tpublic void removeItem(Token token){\n\t\titems.remove(token);\n\t}\n\t\n\t@Override",
+        "codebleu": 0.6796766526350991,
+        "bleu": 0.33636890508000294,
+        "rouge": 0.8947368421052632,
+        "levenshtein": 66
+    },
+    {
+        "ref": "\t\t\n\t\tlogger.info(\"SparkWeave network completed...\");\n\t\t\n\n//\t\tSparkWeaveGarbageCollector sparkWeaveGC = new SparkWeaveGarbageCollector(this, gcSessionDelay);\n//\t\tsparkWeaveGC.start();\n\n//\t\t\n//\t\tlogger.info(\"SparkWeave garbage collector started...\");\n\n\t\t\n\t\t//If there is a CONSTRUCT part start also the output thread \n\t\tif (triplePatternGraph.getConstructConditions().size() > 0){",
+        "pred": "        SparkWeaveGarbageCollector sparkWeaveGC = new SparkWeaveGarbageCollector(this, gcSessionDelay);\n        sparkWeaveGC.start();\n        \n        logger.info(\"SparkWeave garbage collector started...\");\n        \n        //If there is a CONSTRUCT part start also the output thread \n        if (triplePatternGraph.getConstructConditions().size() > 0){",
+        "codebleu": 0.8310208889024735,
+        "bleu": 0.6898901970168222,
+        "rouge": 0.923076923076923,
+        "levenshtein": 107
+    },
+    {
+        "ref": "\t\tthis.socket = socket;\n\t}\n\n\tpublic void run() {\n\n\t\tlong tripleCounter = 0;\n//\t\tlong timepoint = (new Date()).getTime();",
+        "pred": "    this.socket = socket;\n}\n\npublic void run(){\n    long tripleCounter = 0;\n//    long timepoint = (new Date()).getTime();\n}",
+        "codebleu": 0.8292041621067664,
+        "bleu": 0.7778111223054219,
+        "rouge": 1.0,
+        "levenshtein": 17
+    },
+    {
+        "ref": "\n\t\t\tstartProcessingTime = (new Date()).getTime();\n\n\t\t\tlong threshold = 0;\n\t\t\twhile ((tripleLine = streamReader.readLine()) != null) {\n\n\t\t\t\tlong currentTime = System.currentTimeMillis();\n\t\t\t\tTriple sTriple = new Triple(parseTriple(tripleLine),currentTime, false, 0l);\n\t\t\t\tsparkWeaveNetwork.activateNetwork(sTriple);\n\t\t\t\ttripleCounter++;\n\n//\t\t\t\tlong gcThresholdTimestamp = System.currentTimeMillis()- sparkWeaveNetwork.getTimeWindowLength();\n//\t\t\t\tif (gcThresholdTimestamp > threshold) {\n//\n//\t\t\t\t\tthreshold = gcThresholdTimestamp+3;\n////\t\t\t\t\tlogger.info(\"Running GC after \"+tripleCounter+\" triples\");\n//\t\t\t\t\trunGC();\n//\t\t\t\t}\n\t\t\t\t// logger.info(sparkWeaveNetwork.getEpsilonNetwork().getNetwork().getEpsilonMemoryLevels());\n\t\t\t\t// logger.info(sparkWeaveNetwork.getReteNetwork().getWorkingMemory().getAlphaMemoryLevels());\n\t\t\t\t// logger.info(sparkWeaveNetwork.getReteNetwork().getBetaMemoryLevels());\n\t\t\t\t//\n\t\t\t\t// logger.info(\"Processing \" + (1000/(sTriple.getTimestamp() -\n\t\t\t\t// timepoint)) + \" triples/sec.\");\n\t\t\t\t// timepoint = sTriple.getTimestamp();",
+        "pred": "\t\t\tstartProcessingTime = (new Date()).getTime();\n\n\t\t\tlong threshold = 0;\n\t\t\twhile ((tripleLine = streamReader.readLine())!= null) {\n\n\t\t\t\tlong currentTime = System.currentTimeMillis();\n\t\t\t\tTriple sTriple = new Triple(parseTriple(tripleLine),currentTime, false, 0l);\n\t\t\t\tsparkWeaveNetwork.activateNetwork(sTriple);\n\t\t\t\ttripleCounter++;\n\t\t\t\tif(tripleCounter%2==0)\n\t\t\t\t\trunGC();\n//\t\t\t\tlong gcThresholdTimestamp = System.currentTimeMillis()- sparkWeaveNetwork.getTimeWindowLength();\n//\t\t\t\tif (gcThresholdTimestamp > threshold) {\n//\n//\t\t\t\t\tthreshold = gcThresholdTimestamp+3;\n////\t\t\t\t\tlogger.info(\"Running GC after \"+tripleCounter+\" triples\");\n//\t\t\t\t\trunGC();\n//\t\t\t\t}\n\t\t\t\t// logger.info(sparkWeaveNetwork.getEpsilonNetwork().getNetwork().getEpsilonMemoryLevels());\n\t\t\t\t// logger.info(sparkWeaveNetwork.getReteNetwork().getWorkingMemory().getAlphaMemoryLevels());\n\t\t\t\t// logger.info(sparkWeaveNetwork.getReteNetwork().getBetaMemoryLevels());\n\t\t\t\t// logger.info(\"Processing \" + (1000/(sTriple.getTimestamp() - startProcessingTime)) + \" triples/sec.\");",
+        "codebleu": 0.884119354601323,
+        "bleu": 0.8075879524539525,
+        "rouge": 0.9367088607594937,
+        "levenshtein": 110
+    },
+    {
+        "ref": "\t\t\t\t// timepoint)) + \" triples/sec.\");\n\t\t\t\t// timepoint = sTriple.getTimestamp();\n\t\t\t\t// }\n\t\t\t\t// logger.info(\"Processed triple #\" + tripleCounter);\n\t\t\t}\n\n\t\t\tendProcessingTime = new Date().getTime();",
+        "pred": "\t\t\t\t// timepoint)) + \" triples/sec.\");\n\t\t\t\t// timepoint = sTriple.getTimestamp();\n\t\t\t\t// logger.info(\"Processed triple #\" + tripleCounter);\n\t\t\t}",
+        "codebleu": 0.6024538342292034,
+        "bleu": 0.647076654809797,
+        "rouge": 0.846153846153846,
+        "levenshtein": 55
+    },
+    {
+        "ref": "\n/**\n * Immutable RDFURIReference\n * @author srdjankomazec\n *\n */\npublic final class RDFURIReference extends RDFValue {\n\n\tprivate static final long serialVersionUID = -900633337817042617L;\n\t\n\tprivate final String iri;\n\t\n\t// caching hashCode\n\tprivate int hashCode = 0;\n\t\n\tpublic RDFURIReference(final String iri){\n\t\tthis.iri = iri;",
+        "pred": "\n/**\n * Immutable RDFURIReference\n * @author srdjankomazec\n * @author michaelrogger\n *\n */\npublic final class RDFURIReference extends RDFValue {\n\n\tprivate static final long serialVersionUID = -900633337817042617L;\n\t\n\tprivate final String value;\n\t\n\t// cached hashCode\n\tprivate int hashCode = 0;\n\t\n\tpublic RDFURIReference(final String value) {\n\t\tthis.value = value;",
+        "codebleu": 0.8755015313811405,
+        "bleu": 0.7088874721446751,
+        "rouge": 0.8571428571428571,
+        "levenshtein": 49
+    },
+    {
+        "ref": "\t\tthis.iri = namespace+name;\n\t}\n\n\tpublic String getValue() {\n\t\treturn iri;\n\t}\n\t\n\t@Override\n\tpublic boolean equals(Object that){\n\t\t",
+        "pred": "    this.iri = namespace + name;\n}\n\npublic String getValue() {\n    return iri;\n}\n\n@Override\npublic boolean equals(Object that){",
+        "codebleu": 0.8947883855031699,
+        "bleu": 0.7351460991014883,
+        "rouge": 1.0,
+        "levenshtein": 19
+    },
+    {
+        "ref": "\t\n\t@Override\n\tpublic int hashCode() {\n\t\tif (hashCode == 0) {\n\t\t\thashCode = new HashCodeBuilder(17, 37).append(iri).toHashCode();\n\t\t}\n\t\treturn hashCode;\n\t}",
+        "pred": "\tif (hashCode == 0) {\n\t\thashCode = new HashCodeBuilder(17, 37).append(value).toHashCode();\n\t}\n\treturn hashCode;",
+        "codebleu": 0.55634390806796,
+        "bleu": 0.4797695635090194,
+        "rouge": 0.8000000000000002,
+        "levenshtein": 50
+    },
+    {
+        "ref": "\n\t/** Creates a new ImageJ application context with all available services. */\n\tpublic static ImageJ createContext() {\n\t\ttry {\n\t\t\tif (!CheckSezpoz.check(false)) {\n\t\t\t\t// unfortunately, we *have* to restart. Sezpoz uses\n\t\t\t\t// ClassLoader.getResources() which is already initialized by the time\n\t\t\t\t// we come here\n\t\t\t\tLog.error(\"Sezpoz generated annotations. \"\n\t\t\t\t\t+ \"You need to restart for ImageJ2 to work properly!\");\n\t\t\t\tSystem.exit(1);\n\t\t\t}\n\t\t}\n\t\tcatch (final IOException e) {\n\t\t\tLog.error(e);\n\t\t}\n\t\treturn createContext((List",
+        "pred": "\tdefault;\n\tpublic static ImageJ createContext() {\n\t\tDefaultUncaughtExceptionHandler.install();\n\t\ttry {\n\t\t\tif (!CheckSezpoz.check(false)) {\n\t\t\t\tLog.error(\"Sezpoz generated annotations. \"\n\t\t\t\t\t+ \"You need to restart for ImageJ2 to work properly!\");\n\t\t\t}\n\t\t}\n\t\tcatch (final IOException e) {\n\t\t\tLog.error(e);\n\t\t}\n\t\treturn createContext(null);\n\t}",
+        "codebleu": 0.6143348483409621,
+        "bleu": 0.33505585914236163,
+        "rouge": 0.6336633663366337,
+        "levenshtein": 267
+    },
+    {
+        "ref": "\nimport net.imglib2.RandomAccess;\nimport net.imglib2.img.Img;\nimport net.imglib2.img.array.ArrayImgFactory;\nimport net.imglib2.ops.PointSetIterator;\nimport net.imglib2.ops.image.ImageCombiner;\nimport net.imglib2.ops.operation.binary.real.RealAdd;\nimport net.imglib2.ops.operation.binary.real.RealAnd;\nimport net.imglib2.ops.operation.binary.real.RealAvg;\nimport net.imglib2.ops.operation.binary.real.RealBinaryOperation;\nimport net.imglib2.ops.operation.binary.real.RealCopyRight;\nimport net.imglib2.ops.operation.binary.real.RealCopyZeroTransparent;\nimport net.imglib2.ops.operation.binary.real.RealDifference;\nimport net.imglib2.ops.operation.binary.real.RealDivide;\nimport net.imglib2.ops.operation.binary.real.RealMax;\nimport net.imglib2.ops.operation.binary.real.RealMin;\nimport net.imglib2.ops.operation.binary.real.RealMultiply;\nimport net.imglib2.ops.operation.binary.real.RealOr;\nimport net.imglib2.ops.operation.binary.real.RealSubtract;\nimport net.imglib2.ops.operation.binary.real.RealXor;\nimport net.imglib2.ops.pointset.HyperVolumePointSet;\nimport net.imglib2.type.numeric.RealType;\nimport net.imglib2.type.numeric.real.DoubleType;\n",
+        "pred": "import net.imglib2.RandomAccess;\nimport net.imglib2.img.Img;\nimport net.imglib2.img.ImgPlus;\nimport net.imglib2.ops.function.Function;\nimport net.imglib2.ops.function.general.GeneralBinaryFunction;\nimport net.imglib2.ops.function.real.RealImageFunction;\nimport net.imglib2.ops.image.ImageAssignment;\nimport net.imglib2.ops.input.InputIteratorFactory;\nimport net.imglib2.ops.input.PointInputIteratorFactory;\nimport net.imglib2.ops.operation.BinaryOperation;\nimport net.imglib2.ops.operation.real.binary.RealAdd;\nimport net.imglib2.ops.operation.real.binary.RealAnd;\nimport net.imglib2.ops.operation.real.binary.RealAvg;\nimport net.imglib2.ops.operation.real.binary.RealBinaryOperation;\nimport net.imglib2.ops.operation.real.binary.RealCopyRight;\nimport net.imglib2.ops.operation.real.binary.RealCopyZeroTransparent;\nimport net.imglib2.ops.operation.real.binary.RealDifference;\nimport net.imglib2.ops.operation.real.binary.RealDivide;\nimport net.imglib2.ops.operation.real.binary.RealMax;\nimport net.imglib2.ops.operation.real.binary.RealMin;\nimport net.imglib2.ops.operation.real.binary.RealMultiply;\nimport net.imglib2.ops.operation.real.binary.RealOr;",
+        "codebleu": 0.5023653476970378,
+        "bleu": 0.11531002095450522,
+        "rouge": 0.6945337620578779,
+        "levenshtein": 428
+    },
+    {
+        "ref": "\t\taccelerator = \"control O\") })\npublic class OpenImage implements ImageJPlugin {\n\n\t@Parameter\n\tprivate LogService log;\n\n\t@Parameter\n\tprivate IOService ioService;\n",
+        "pred": "private LogService log;\n\n@SuppressWarnings(\"rawtypes\")\n@Parameter",
+        "codebleu": 0.35602997947392706,
+        "bleu": 4.487931738522115e-79,
+        "rouge": 0.36363636363636365,
+        "levenshtein": 133
+    },
+    {
+        "ref": "\t\taccelerator = \"control R\") })\npublic class RevertImage implements ImageJPlugin {\n\n\t@Parameter\n\tprivate LogService log;\n\n\t@Parameter\n\tprivate IOService ioService;\n",
+        "pred": "\t@Parameter\n\tprivate LogService log;\n\n\t@Parameter\n\tprivate IOService ioService;",
+        "codebleu": 0.30499904523430954,
+        "bleu": 0.25283959580474646,
+        "rouge": 0.6666666666666666,
+        "levenshtein": 85
+    },
+    {
+        "ref": "import imagej.log.LogService;\nimport imagej.menu.MenuConstants;\nimport imagej.module.ItemIO;\nimport imagej.render.RenderingService;\nimport imagej.render.TextRenderer.TextJustification;\nimport imagej.util.AppUtils;\nimport imagej.util.ColorRGB;\nimport imagej.util.Colors;\nimport imagej.util.MersenneTwisterFast;",
+        "pred": "import imagej.log.LogService;\nimport imagej.menu.MenuConstants;\nimport imagej.module.ItemIO;\nimport imagej.render.RenderingService;\nimport imagej.render.TextRenderer.TextJustification;\nimport imagej.util.AppUtils;\nimport imagej.util.ColorRGB;\nimport imagej.util.Colors;\nimport imagej.util.MersenneTwisterFast;",
+        "codebleu": 1.0,
+        "bleu": 1.0,
+        "rouge": 1.0,
+        "levenshtein": 0
+    },
+    {
+        "ref": "\t\t}\n\n\t\tprivate void waitForPluginThreads() {\n//\t\t\tlog.debug(\"LegacyCommand: begin waitForPluginThreads()\");\n\t\t\twhile (true) {\n\t\t\t\tboolean allDead = true;\n\t\t\t\tfinal List",
+        "pred": "\t\t}\n\n\t\tprivate void waitForPluginThreads() {\n\t\t\tlog.debug(\"Legacy: begin waitForPluginThreads()\");\n\t\t\twhile (true) {\n\t\t\t\tboolean allDead = true;\n\t\t\t\tfinal List<String> threadStates = new ArrayList<>();",
+        "codebleu": 0.7724138034371593,
+        "bleu": 0.605478327168454,
+        "rouge": 0.8235294117647058,
+        "levenshtein": 51
+    },
+    {
+        "ref": "\t\t\t\t}\n\t\t\t\tcatch (final Exception e) {/**/}\n\t\t\t}\n//\t\t\tlog.debug(\"LegacyCommand: end waitForPluginThreads()\");\n\t\t}\n\n\t\tprivate List",
+        "pred": "\t\t\t\t}\n\t\t\t\tcatch (final Exception e) {/**/}\n\t\t\t}\n\t\t\tlog.debug(\"LegacyPlugin: end waitForPluginThreads()\");\n\t\t}\n\n\t\tprivate List",
+        "codebleu": 0.8224817111538851,
+        "bleu": 0.7048050905062194,
+        "rouge": 0.9090909090909091,
+        "levenshtein": 8
+    },
+    {
+        "ref": "\npackage imagej.core.commands.display;\n\nimport imagej.command.ContextCommand;\nimport imagej.data.ChannelCollection;\nimport imagej.data.Dataset;\nimport imagej.data.DatasetService;",
+        "pred": "import imagej.command.ContextCommand;\nimport imagej.data.ChannelCollection;\nimport imagej.data.Dataset;",
+        "codebleu": 0.6197299211886171,
+        "bleu": 0.513417119032592,
+        "rouge": 0.7272727272727273,
+        "levenshtein": 75
+    },
+    {
+        "ref": "import imagej.data.display.DatasetView;\nimport imagej.data.display.ImageDisplay;\nimport imagej.data.display.ImageDisplayService;\nimport imagej.menu.MenuConstants;\nimport imagej.module.ItemIO;\nimport imagej.plugin.Menu;\nimport imagej.plugin.Parameter;\nimport imagej.plugin.Plugin;\nimport imagej.render.RenderingService;\nimport imagej.render.TextRenderer.TextJustification;\nimport imagej.util.ColorRGB;\nimport imagej.util.Colors;\n",
+        "pred": "import imagej.menu.MenuConstants;\nimport imagej.module.ItemIO;\nimport imagej.plugin.Menu;\nimport imagej.plugin.Parameter;\nimport imagej.plugin.Plugin;\nimport imagej.render.RenderingService;\nimport imagej.render.TextRenderer.TextJustification;",
+        "codebleu": 0.6247898636062738,
+        "bleu": 0.48954165955695317,
+        "rouge": 0.7160493827160493,
+        "levenshtein": 186
+    },
+    {
+        "ref": "\t\treturn ds;\n\t}\n\t\n\tprivate void drawLutInfo(Dataset ds, ColorTable ct) {\n\t\tDrawingTool tool = new DrawingTool(ds, renderingService);\n\t\tint xMargin = 35;\n\t\tint yMargin = 20;\n\t\tint width = 256;",
+        "pred": "\tprivate void drawLutInfo(Dataset ds, ColorTable ct) {\n\t\tDrawingTool tool = new DrawingTool(ds);\n\t\tint xMargin = 35;\n\t\tint yMargin = 20;\n\t\tint width = 256;\n\t}",
+        "codebleu": 0.5896326600577745,
+        "bleu": 0.7589575490148289,
+        "rouge": 0.9333333333333333,
+        "levenshtein": 39
+    },
+    {
+        "ref": "\npackage imagej.data.display;\n\nimport imagej.util.ColorRGB;\nimport net.imglib2.display.ColorTable;\nimport net.imglib2.display.ColorTable8;\n",
+        "pred": "\n```\n\npackage imagej.data.display;\n\nimport java.awt.Color;\nimport net.imglib2.display.ColorTable;\nimport net.imglib2.display.ColorTable8;\n",
+        "codebleu": 0.6357929448103615,
+        "bleu": 0.43167001068522526,
+        "rouge": 0.8333333333333334,
+        "levenshtein": 17
+    },
+    {
+        "ref": "\t\tif (mode == ColorMode.COMPOSITE) {\n\t\t\tdouble rSum = 0, gSum = 0, bSum = 0;\n\t\t\tfor (int c = 0; c < channelCount; c++) {\n\t\t\t\tfinal double value = channels.getChannelValue(c);\n\t\t\t\tfinal RealLUTConverter extends RealType>> converter =\n\t\t\t\t\t\tconverters.get(c);\n\t\t\t\tfinal double min = converter.getMin();\n\t\t\t\tfinal double max = converter.getMax();\n\t\t\t\tfinal int grayValue = Binning.valueToBin(256, min, max, value);\n\t\t\t\tfinal ColorTable colorTable = converter.getLUT();\n\t\t\t\trSum += colorTable.getResampled(ColorTable.RED, 256, grayValue);\n\t\t\t\tgSum += colorTable.getResampled(ColorTable.GREEN, 256, grayValue);\n\t\t\t\tbSum += colorTable.getResampled(ColorTable.BLUE, 256, grayValue);\n\t\t\t}\n\t\t\tr = (rSum > 255) ? 255 : (int) Math.round(rSum);\n\t\t\tg = (gSum > 255) ? 255 : (int) Math.round(gSum);",
+        "pred": "\n```\nif (mode == ColorMode.COMPOSITE) {\n    double rSum = 0, gSum = 0, bSum = 0;\n    for (int c = 0; c < channelCount; c++) {\n        final double value = channels.getChannelValue(c);\n        final RealLUTConverter extends RealType>> converter = converters.get(c);\n        final double min = converter.getMin();\n        final double max = converter.getMax();\n        double relativeValue = (value - min) / (max - min);\n        if (relativeValue < 0) relativeValue = 0;\n        if (relativeValue > 1) relativeValue = 1;\n        final int grayValue = (int) (relativeValue * 255);\n        final ColorTable8 colorTable = converter.getLUT();\n        rSum += colorTable.get(0, grayValue);\n        gSum += colorTable.get(1, grayValue);\n        bSum += colorTable.get(2, grayValue);\n    }\n    r = (rSum > 255)? 255 : (int) Math.round(rSum);\n    g = (gSum > 255)? 255 : (int) Math.round(gSum);",
+        "codebleu": 0.6795679958187157,
+        "bleu": 0.5905566958273218,
+        "rouge": 0.7668393782383419,
+        "levenshtein": 357
+    },
+    {
+        "ref": "\t\t\tb = (bSum > 255) ? 255 : (int) Math.round(bSum);\n\t\t}\n\t\telse { // grayscale or color\n\t\t\tfinal long currChannel = getLongPosition(Axes.CHANNEL);\n\t\t\tfinal double value = channels.getChannelValue(currChannel);\n\t\t\tfinal RealLUTConverter extends RealType>> converter =\n\t\t\t\t\tconverters.get((int) currChannel);\n\t\t\tfinal double min = converter.getMin();\n\t\t\tfinal double max = converter.getMax();\n\t\t\tfinal int grayValue = Binning.valueToBin(256, min, max, value);\n\t\t\tif (mode == ColorMode.COLOR) {\n\t\t\t\tfinal ColorTable colorTable = converter.getLUT();\n\t\t\t\tr = colorTable.getResampled(ColorTable.RED, 256, grayValue);\n\t\t\t\tg = colorTable.getResampled(ColorTable.GREEN, 256, grayValue);\n\t\t\t\tb = colorTable.getResampled(ColorTable.BLUE, 256, grayValue);\n\t\t\t}\n\t\t\telse { // mode == grayscale\n\t\t\t\tr = grayValue;",
+        "pred": "\t\t\tb = (bSum > 255)? 255 : (int) Math.round(bSum);\n\t\t}\n\t\telse { // grayscale or color\n\t\t\tlong currChannel = getLongPosition(Axes.CHANNEL);\n\t\t\tdouble value = channels.getChannelValue(currChannel);\n\t\t\tRealLUTConverterextends RealType>> converter = converters.get((int) currChannel);\n\t\t\tdouble min = converter.getMin();\n\t\t\tdouble max = converter.getMax();\n\t\t\tint grayValue = Binning.valueToBin(256, min, max, value);\n\t\t\tif (mode == ColorMode.COLOR) {\n\t\t\t\tColorTable colorTable = converter.getLUT();\n\t\t\t\tr = colorTable.getResampled(ColorTable.RED, 256, grayValue);\n\t\t\t\tg = colorTable.getResampled(ColorTable.GREEN, 256, grayValue);\n\t\t\t\tb = colorTable.getResampled(ColorTable.BLUE, 256, grayValue);\n\t\t\t}\n\t\t\telse { // mode == grayscale\n\t\t\t\tr = grayValue;\n\t\t\t}\n\t\t}",
+        "codebleu": 0.7779487248146415,
+        "bleu": 0.7233518834505479,
+        "rouge": 0.9397590361445785,
+        "levenshtein": 59
+    },
+    {
+        "ref": "\nimport imagej.data.display.ImageDisplay;\nimport imagej.service.Service;\n\n/**\n * Interface for sampler operations which manipulate {@link ImageDisplay} data.",
+        "pred": "\n```\nimport imagej.data.display.ImageDisplay;\nimport imagej.service.Service;\nimport imagej.util.RealRect;\n\nimport java.util.ArrayList;\nimport java.util.List;\n\nimport net.imglib2.RandomAccess;\nimport net.imglib2.display.ColorTable;\nimport net.imglib2.display.ColorTable16;\nimport net.imglib2.display.ColorTable8;\nimport net.imglib2.display.RealLUTConverter;\nimport net.imglib2.meta.Axes;\nimport net.imglib2.meta.AxisType;\nimport net(imglib2.type.numeric.RealType);\n",
+        "codebleu": 0.40595304751699623,
+        "bleu": 0.08688218206838484,
+        "rouge": 0.2278481012658228,
+        "levenshtein": 345
+    },
+    {
+        "ref": "package imagej.util;\n\nimport java.io.File;\nimport java.io.FileInputStream;\nimport java.io.IOException;\nimport java.io.PrintStream;\nimport java.net.MalformedURLException;\nimport java.net.URISyntaxException;",
+        "pred": "package imagej.util;\n\nimport java.io.File;\nimport java.io.FileInputStream;\nimport java.io.PrintStream;\nimport java.net.MalformedURLException;\nimport java.net.URISyntaxException;",
+        "codebleu": 0.831755602889014,
+        "bleu": 0.7742694009950041,
+        "rouge": 0.92,
+        "levenshtein": 28
+    },
+    {
+        "ref": "\t\t*/\n\t}\n\n}",
+        "pred": "\t\t*/\n\t}\n\nprivate void resultsTableToIJ1() {\n\tTableDisplay display = displayService.getActiveDisplay(TableDisplay.class);\n\tResultsTable table = getFirstResultsTable(display);\n\tif (table == null) {\n\t\tAnalyzer.setResultsTable(null);\n\t\treturn;\n\t}\n\tij.measure.ResultsTable ij1Table = new ij.measure.ResultsTable();\n\tfor (int r = 0; r < table.getRowCount(); r++) {\n\t\tij1Table.incrementCounter();\n\t\tij1Table.setLabel(table.getRowHeader(r), r);\n\t\tfor (int c = 0; c < table.getColumnCount(); c++) {\n\t\t\tdouble value = table.get(c, r);\n\t\t\tij1Table.setValue(table.getColumnHeader(c), r, value);\n\t\t}\n\t}\n\tAnalyzer.setResultsTable(ij1Table);\n}\n\nprivate void resultsTableFromIJ1() {\n\tTableDisplay display = displayService.getActiveDisplay(TableDisplay.class);\n\tResultsTable table = getFirstResultsTable(display);\n\tij.measure.ResultsTable ij1Table = Analyzer.getResultsTable();\n\n\tif (ij1Table == null) {\n\t\t// were there no ij1 results?\n\t\tif (display == null) return;",
+        "codebleu": 0.4459166700879944,
+        "bleu": 2.4143894668765366e-155,
+        "rouge": 0,
+        "levenshtein": 939
+    },
+    {
+        "ref": "\t\t@Override\n\n\t\tpublic int getColumnCount() {\n\t\t\treturn tab.getColumnCount() + 1; // +1 for row header column\n\t\t}\n\n\t\t@Override",
+        "pred": "\n\t\t@Override\n\t\tpublic int getColumnCount() {\n\t\t\treturn tab.getColumnCount() + 1; // +1 for row number column\n\t\t}\n\n\t\t@Override",
+        "codebleu": 0.9156750107138514,
+        "bleu": 0.8282477531331041,
+        "rouge": 0.9285714285714286,
+        "levenshtein": 6
+    },
+    {
+        "ref": "\t\t\tif (row < 0 || row >= getRowCount()) return null;\n\t\t\tif (col < 0 || col >= getColumnCount()) return null;\n\n\t\t\tif (col == 0) {\n\t\t\t\t// get row header, or row number if none\n\t\t\t\t// NB: Assumes the JTable can handle Strings equally as well as the\n\t\t\t\t// underlying type T of the Table.\n\t\t\t\tfinal String header = tab.getRowHeader(row);\n\t\t\t\tif (header != null) return header;\n\t\t\t\treturn \"\" + (row + 1);\n\t\t\t}\n\n\t\t\t// get the underlying table value\n\t\t\t// NB: The column is offset by one to accommodate the row header/number.\n\t\t\treturn tab.get(col - 1, row);\n\t\t}\n\n\t\t@Override",
+        "pred": "\t\t\tif (row < 0 || row >= getRowCount()) return null;\n\t\t\tif (col < 0 || col >= getColumnCount()) return null;\n\n\t\t\tif (col == 0) {\n\t\t\t\t// get row header, or row number if none\n\t\t\t\t// NB: Assumes the JTable can handle Strings equally as well as the\n\t\t\t\t// underlying type T of the Table.\n\t\t\t\tfinal String header = table.getRowHeader(row);\n\t\t\t\tif (header!= null) return header;\n\t\t\t\treturn \"\" + (row + 1);\n\t\t\t}\n\n\t\t\t// get the underlying table value by offsetting column\n\t\t\treturn table.get(col - 1, row);\n\t\t}\n\n\t\t@Override",
+        "codebleu": 0.8587304503408819,
+        "bleu": 0.776673291460465,
+        "rouge": 0.883116883116883,
+        "levenshtein": 67
+    },
+    {
+        "ref": "\t\tpublic void setValueAt(final Object value, final int row, final int col) {\n\t\t\tif (row < 0 || row >= getRowCount()) return;\n\t\t\tif (col < 0 || col >= getColumnCount()) return;\n\t\t\tif (col == 0) {\n\t\t\t\t// set row header\n\t\t\t\ttab.setRowHeader(row, value == null ? null : value.toString());\n\t\t\t\treturn;\n\t\t\t}\n\t\t\tset(tab, col - 1, row, value);\n\t\t\tfireTableCellUpdated(row, col);\n\t\t}\n",
+        "pred": "\t\tpublic void setValueAt(final Object value, final int row, final int col) {\n\t\t\tif (row < 0 || row >= getRowCount()) return;\n\t\t\tif (col < 0 || col >= getColumnCount()) return;\n\t\t\tif (col == 0) {\n\t\t\t\t// set row header\n\t\t\t\ttable.setRowHeader(row, value == null? null : value.toString());\n\t\t\t\treturn;\n\t\t\t}\n\t\t\tset(table, col - 1, row, value);\n\t\t\tfireTableCellUpdated(row, col);\n\t\t}\n",
+        "codebleu": 0.9270658379011977,
+        "bleu": 0.8512820546958957,
+        "rouge": 0.9583333333333334,
+        "levenshtein": 5
+    },
+    {
+        "ref": "import java.net.MalformedURLException;\nimport java.net.URISyntaxException;\nimport java.net.URL;\nimport java.util.ArrayList;\nimport java.util.Collection;\nimport java.util.jar.JarEntry;\nimport java.util.jar.JarFile;\nimport java.util.regex.Matcher;\nimport java.util.regex.Pattern;\n\n/**",
+        "pred": "import java.net.URISyntaxException;\nimport java.net.URL;\nimport java.util.ArrayList;\nimport java.util.Collection;\nimport java.util.jar.JarEntry;\nimport java.util.jar.JarFile;\nimport java.util.regex.Matcher;\nimport java.util.regex.Pattern;\n\n/**",
+        "codebleu": 0.9130158540215229,
+        "bleu": 0.8890097654027757,
+        "rouge": 0.9473684210526316,
+        "levenshtein": 39
+    },
+    {
+        "ref": "\t\t\t// hide/show the IJ2 main window\n\t\t\tfinal ApplicationFrame appFrame =\n\t\t\t\tuiService.getDefaultUI().getApplicationFrame();\n\t\t\tif (appFrame == null) {\n\t\t\t\tif (!wantIJ1) uiService.showUI();\n\t\t\t} else {\n\t\t\t\tappFrame.setVisible(!wantIJ1);\n\t\t\t}\n\n\t\t\t// TODO: move this into the LegacyImageMap's toggleLegacyMode, passing\n\t\t\t// the uiService",
+        "pred": "\t\t\t// hide/show the IJ2 main window\n\t\t\tfinal ApplicationFrame appFrame = uiService.getDefaultUI().getApplicationFrame();\n\t\t\tif (appFrame == null) {\n\t\t\t\tif (!wantIJ1) uiService.showUI();\n\t\t\t} else {\n\t\t\t\tappFrame.setVisible(!wantIJ1);\n\t\t\t}\n\n\t\t\t// TODO: move this into the LegacyImageMap's toggleLegacyMode, passing\n\t\t\t// the uiService",
+        "codebleu": 1.0,
+        "bleu": 1.0,
+        "rouge": 1.0,
+        "levenshtein": 5
+    },
+    {
+        "ref": "\t\t}\n\n\t\t// override behavior of ij.plugin.frame.RoiManager\n\t\thacker.insertNewMethod(\"ij.plugin.frame.RoiManager\",\n\t\t\t\"public void show()\",\n\t\t\t\"if ($isLegacyMode()) { super.show(); }\");\n\t\thacker.insertNewMethod(\"ij.plugin.frame.RoiManager\",\n\t\t\t\"public void setVisible(boolean b)\",\n\t\t\t\"if ($isLegacyMode()) { super.setVisible($1); }\");\n\t\thacker.loadClass(\"ij.plugin.frame.RoiManager\");\n\n\t\t// make sure that there is a legacy service",
+        "pred": "        }\n\n        // override behavior of ij.plugin.frame.RoiManager\n\t\thacker.insertMethod(\"ij.plugin.frame.RoiManager\",\n\t\t\t\"public void show()\",\n\t\t\t\"if ($isLegacyMode()) super.show();\");\n\t\thacker.insertMethod(\"ij.plugin.frame.RoiManager\",\n\t\t\t\"public void setVisible(boolean b)\",\n\t\t\t\"if ($isLegacyMode()) super.setVisible($1);\");\n\t\thacker.loadClass(\"ij.plugin.frame.RoiManager\");\n\n\t\t// make sure that there is a legacy service",
+        "codebleu": 0.8081089397266282,
+        "bleu": 0.6115561992878021,
+        "rouge": 0.96,
+        "levenshtein": 30
+    },
+    {
+        "ref": "\n\t@EventHandler\n\tprotected void onEvent(final PanZoomEvent event) {\n\t\tif (event.getDisplay() != getDisplay()) return;\n\t\tupdateLabel();\n\t}\n\n\t@EventHandler",
+        "pred": "\n\t@EventHandler\n\tprotected void onEvent(final PanZoomEvent event) {\n\t\tif (event.getDisplay().getCanvas() == event.getCanvas()) updateLabel();\n\t}\n\n\t@EventHandler",
+        "codebleu": 0.7081225349734119,
+        "bleu": 0.5737774096497974,
+        "rouge": 0.8275862068965518,
+        "levenshtein": 29
+    },
+    {
+        "ref": "\npackage imagej.command;\n\nimport imagej.ValidityProblem;\nimport imagej.module.DefaultMutableModuleInfo;\nimport imagej.module.DefaultMutableModuleItem;\nimport imagej.module.ModuleInfo;\nimport imagej.module.ModuleItem;\nimport imagej.module.MutableModuleInfo;",
+        "pred": "package imagej.command;\n\nimport imagej.module.DefaultMutableModuleInfo;\nimport imagej.module.DefaultMutableModuleItem;\nimport imagej.module.ModuleInfo;\nimport imagej.module.ModuleItem;\nimport imagej.module.MutableModuleInfo;",
+        "codebleu": 0.8394936981271091,
+        "bleu": 0.7742694009950041,
+        "rouge": 0.9387755102040816,
+        "levenshtein": 32
+    }
+]

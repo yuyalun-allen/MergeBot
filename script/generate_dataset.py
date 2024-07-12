@@ -228,4 +228,4 @@ def preprocess_merge_conflict_and_resolution(dataset_config, tokenizer, split):
 
 
 if __name__ == '__main__':
-    filter_merge_conflict_and_resolution_chunk("output.json", "filtered_chunks.json")
+    get_merge_conflict_and_resolution("fastjson")
